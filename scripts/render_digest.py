@@ -19,7 +19,8 @@ import json
 import sys
 
 PREPARED = "Prepared by the Associate Dean of Research, International and Innovation"
-E = lambda s: html.escape(str(s or ""), quote=True)
+import re
+E = lambda s: html.escape(re.sub(r"</?cite[^>]*>", "", str(s or "")), quote=True)
 
 
 def fmt_day(d):
@@ -89,9 +90,11 @@ h2 span{font-family:var(--f-mono);font-weight:400;letter-spacing:0;text-transfor
 .opp h4.sub span{font-family:var(--f-body);text-transform:none;letter-spacing:0;font-weight:400;color:var(--muted)}
 .opp .none{color:var(--ink-2)}
 .opp .rec{border:1px solid var(--line);border-radius:4px;padding:12px 14px;background:var(--paper);margin:0 0 10px}
+.opp .rw{font-size:13px;font-weight:600;color:var(--accent)}
+.opp .rec .sig{font-size:12px;color:var(--muted);margin:0 0 6px}
 .opp .rec h5{font-size:15px;margin:0 0 4px}.opp .rec h5 a{color:inherit}
 .opp dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 12px;margin:8px 0 0;font-size:13.5px}
-.opp dt{font-weight:600}.opp dd{margin:0}
+.opp dt{font-weight:600}.opp dd{margin:0}.opp dd ul{margin:0;padding-left:1.1em}.opp dd li{margin:0 0 4px}
 .opp .nm{padding:10px 0;border-top:1px solid var(--line-2)}
 .opp .nt{font-size:14px;font-weight:600;line-height:1.35}.opp .nt a{color:inherit}
 .opp .nw{font-size:12.5px;color:var(--muted);margin:2px 0 6px}
@@ -168,9 +171,7 @@ def innov_model(issue):
     rec = [dict(o, who=person(o.get("id")), url=(items.get(o.get("id")) or {}).get("url", "")) for o in inn.get("opportunities") or []]
     near = []
     for n in inn.get("near_misses") or []:
-        checks = n.get("checks") or _parse_why(n.get("why"))
-        near.append({"title": n.get("title", ""), "url": (items.get(n.get("id")) or {}).get("url", ""), "who": person(n.get("id")),
-                     "checks": checks, "passed": sum(1 for k in CHECK_ORDER if checks[k]["pass"]), "would_change": n.get("would_change", "")})
+        near.append(norm_near(dict(n, url=(items.get(n.get("id")) or {}).get("url", "")), person(n.get("id"))))
     near.sort(key=lambda x: -x["passed"])
     skipped = [{"title": (items.get(x["id"]) or {}).get("title", ""), "who": person(x["id"]), "reason": x.get("reason", "")}
                for x in inn.get("skipped") or [] if x.get("id")]
@@ -201,13 +202,87 @@ def gap_of(n):
     return [(CHECK_NAME[k], n["checks"][k]["note"]) for k in fails]
 
 
+def _cell(v, email=False):
+    if not isinstance(v, list):
+        return E(v)
+    st = " style='margin:0;padding-left:16px'" if email else ""
+    li = " style='margin:0 0 4px'" if email else ""
+    return f"<ul{st}>" + "".join(f"<li{li}>{E(x)}</li>" for x in v) + "</ul>"
+
+
 def rec_rows(o):
     ev = o.get("evidence") or {}
     rows = [("Route", o.get("licensing_note", "")), ("Market", o.get("market_fit", "")),
-            ("Partners", "; ".join(f"{p['name']} ({p['location']}): {p['why']}" for p in o.get("partners", []))),
+            ("Partners", [f"{p['name']} ({p['location']}): {p['why']}" for p in o.get("partners", [])]),
             ("Carleton lead", (o.get("who") or "") + (f". {ev.get('carleton_role')}" if ev.get("carleton_role") else "")),
             ("Evidence", ev.get("evidence", "")), ("Next step", o.get("next_step", ""))]
     return [(k, v) for k, v in rows if v]
+
+
+def norm_near(n, who=""):
+    checks = n.get("checks") if isinstance(n.get("checks"), dict) and all(isinstance(v, dict) for v in n["checks"].values()) else _parse_why(n.get("why"))
+    return {"title": n.get("title", ""), "url": n.get("url", ""), "who": n.get("who") or who, "checks": checks,
+            "passed": sum(1 for k in CHECK_ORDER if checks[k]["pass"]), "would_change": n.get("would_change", "")}
+
+
+def near_html(near, unit="paper"):
+    out = [f'<h4 class="sub">Near misses <span>closest first</span></h4>']
+    for n in near[:MAX_NEAR]:
+        t = f'<a href="{E(n["url"])}" target="_blank" rel="noopener">{E(n["title"])}</a>' if n.get("url") else E(n["title"])
+        chips = "".join(f'<span class="chk {"y" if n["checks"][k]["pass"] else "n"}">{"✓" if n["checks"][k]["pass"] else "✗"} {CHECK_NAME[k]}</span>' for k in CHECK_ORDER)
+        gaps = "".join(f"<li><b>{E(k)}:</b> {E(v)}</li>" for k, v in gap_of(n))
+        wc = f'<p class="wc"><b>Would change the call:</b> {E(n["would_change"])}</p>' if n.get("would_change") else ""
+        who = f'<div class="nw">{E(n["who"])}</div>' if n.get("who") else '<div class="nw"></div>'
+        out.append(f'<div class="nm"><div class="nt">{t}</div>{who}<div class="chips">{chips}</div><ul>{gaps}</ul>{wc}</div>')
+    if len(near) > MAX_NEAR:
+        out.append(f'<p class="more">Also screened: {E("; ".join(f"{x['title']} ({x['passed']}/4)" for x in near[MAX_NEAR:]))}.</p>')
+    return "".join(out)
+
+
+def near_email(near, muted, accent, line):
+    green = "#1d6b3a"
+    body = [f"<div style='font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#4a4f5a;font-weight:bold;margin:14px 0 4px'>Near misses <span style='text-transform:none;letter-spacing:0;font-weight:normal;color:{muted}'>closest first</span></div>"]
+    for n in near[:MAX_NEAR]:
+        chips = " ".join(f"<span style='display:inline-block;font-size:11.5px;padding:1px 6px;border:1px solid {'#b9dcc6' if n['checks'][k]['pass'] else '#f0c2c9'};"
+                         f"color:{green if n['checks'][k]['pass'] else accent};background:{'#eef7f1' if n['checks'][k]['pass'] else '#fbeef0'}'>{'&#10003;' if n['checks'][k]['pass'] else '&#10007;'} {CHECK_NAME[k]}</span>" for k in CHECK_ORDER)
+        gaps = "".join(f"<li style='margin:0 0 3px'><b>{E(k)}:</b> {E(v)}</li>" for k, v in gap_of(n))
+        wc = f"<p style='margin:4px 0 0;font-size:13px'><b>Would change the call:</b> {E(n['would_change'])}</p>" if n.get("would_change") else ""
+        body.append(f"<div style='border-top:1px solid {line};padding:9px 0'><div style='font-weight:bold;font-size:14px'>{E(n['title'])}</div>"
+                    f"<div style='font-size:12.5px;color:{muted};margin:2px 0 6px'>{E(n['who'])}</div><div>{chips}</div>"
+                    f"<ul style='margin:6px 0 0;padding-left:18px;font-size:13.5px'>{gaps}</ul>{wc}</div>")
+    if len(near) > MAX_NEAR:
+        rest = "; ".join(f"{x['title']} ({x['passed']}/4)" for x in near[MAX_NEAR:])
+        body.append(f"<p style='margin:8px 0 0;color:{muted};font-size:12.5px'>Also screened: {E(rest)}.</p>")
+    return "".join(body)
+
+
+def near_text(near):
+    L = ["", "NEAR MISSES (closest first)"]
+    for n in near[:MAX_NEAR]:
+        L += [n["title"]] + ([n["who"]] if n.get("who") else []) + ["   ".join(f"{'✓' if n['checks'][k]['pass'] else '✗'} {CHECK_NAME[k]}" for k in CHECK_ORDER)]
+        L += [f"- {k}: {v}" for k, v in gap_of(n)]
+        if n.get("would_change"):
+            L.append("Would change the call: " + n["would_change"])
+        L.append("")
+    if len(near) > MAX_NEAR:
+        L += ["Also screened: " + "; ".join(f"{x['title']} ({x['passed']}/4)" for x in near[MAX_NEAR:]), ""]
+    return L
+
+
+def rec_email(o, muted, line, extra=""):
+    return (f"<div style='background:#fff;border:1px solid {line};padding:10px 12px;margin:0 0 10px'>"
+            + (f"<div style='font-size:13px;font-weight:bold;color:#b0162b'>{E(o['who'])}</div>" if o.get("who") else "")
+            + f"<p style='margin:2px 0 4px;font-weight:bold;font-size:15px'>{E(o['heading'])}</p>{extra}"
+            f"<p style='margin:0 0 8px'>{E(o.get('what', ''))}</p><table role='presentation' cellpadding='0' cellspacing='0' style='font-size:13.5px'>"
+            + "".join(f"<tr><td style='font-weight:bold;padding:3px 12px 3px 0;vertical-align:top;white-space:nowrap'>{E(k)}</td><td style='padding:3px 0'>{_cell(v, True)}</td></tr>" for k, v in rec_rows(o))
+            + "</table></div>")
+
+
+def rec_html(o, extra=""):
+    t = f'<a href="{E(o["url"])}" target="_blank" rel="noopener">{E(o["heading"])}</a>' if o.get("url") else E(o["heading"])
+    who = f'<div class="rw">{E(o["who"])}</div>' if o.get("who") else ""
+    return (f'<div class="rec">{who}<h5>{t}</h5>{extra}<p>{E(o.get("what", ""))}</p><dl>'
+            + "".join(f"<dt>{E(k)}</dt><dd>{_cell(v)}</dd>" for k, v in rec_rows(o)) + "</dl></div>")
 
 
 def opp_html(inn_unused=None, issue=None):
@@ -218,20 +293,9 @@ def opp_html(inn_unused=None, issue=None):
     if not m["rec"]:
         out.append('<p class="none">Nothing this week. No paper passed all four checks.</p>')
     for o in m["rec"]:
-        t = f'<a href="{E(o["url"])}" target="_blank" rel="noopener">{E(o["heading"])}</a>' if o.get("url") else E(o["heading"])
-        out.append(f'<div class="rec"><h5>{t}</h5><p>{E(o.get("what", ""))}</p><dl>'
-                   + "".join(f"<dt>{E(k)}</dt><dd>{E(v)}</dd>" for k, v in rec_rows(o)) + "</dl></div>")
+        out.append(rec_html(o))
     if m["near"]:
-        out.append(f'<h4 class="sub">Near misses <span>closest first</span></h4>')
-        for n in m["near"][:MAX_NEAR]:
-            t = f'<a href="{E(n["url"])}" target="_blank" rel="noopener">{E(n["title"])}</a>' if n.get("url") else E(n["title"])
-            chips = "".join(f'<span class="chk {"y" if n["checks"][k]["pass"] else "n"}">{"✓" if n["checks"][k]["pass"] else "✗"} {CHECK_NAME[k]}</span>' for k in CHECK_ORDER)
-            gaps = "".join(f"<li><b>{E(k)}:</b> {E(v)}</li>" for k, v in gap_of(n))
-            wc = f'<p class="wc"><b>Would change the call:</b> {E(n["would_change"])}</p>' if n.get("would_change") else ""
-            out.append(f'<div class="nm"><div class="nt">{t}</div><div class="nw">{E(n["who"])}</div><div class="chips">{chips}</div><ul>{gaps}</ul>{wc}</div>')
-        if len(m["near"]) > MAX_NEAR:
-            rest = m["near"][MAX_NEAR:]
-            out.append(f'<p class="more">Also screened: {E("; ".join(f"{x['title']} ({x['passed']}/4)" for x in rest))}.</p>')
+        out.append(near_html(m["near"]))
     if m["skipped"]:
         out.append('<p class="more"><b>No commercial angle:</b> ' + E("; ".join(f"{x['title']} ({x['reason']})" for x in m["skipped"])) + ".</p>")
     elif m["skipped_text"]:
@@ -302,17 +366,9 @@ def render_text(issue, dashboard_url=""):
         if not m["rec"]:
             L.append("Nothing this week. No paper passed all four checks.")
         for o in m["rec"]:
-            L += [o["heading"], o.get("what", "")] + [f"{k}: {v}" for k, v in rec_rows(o)] + [""]
+            L += [o["heading"], o.get("who", ""), o.get("what", "")] + [f"{k}: {'; '.join(v) if isinstance(v, list) else v}" for k, v in rec_rows(o)] + [""]
         if m["near"]:
-            L += ["", "NEAR MISSES (closest first)"]
-            for n in m["near"][:MAX_NEAR]:
-                L += [n["title"], n["who"], "   ".join(f"{'✓' if n['checks'][k]['pass'] else '✗'} {CHECK_NAME[k]}" for k in CHECK_ORDER)]
-                L += [f"- {k}: {v}" for k, v in gap_of(n)]
-                if n.get("would_change"):
-                    L.append("Would change the call: " + n["would_change"])
-                L.append("")
-            if len(m["near"]) > MAX_NEAR:
-                L += ["Also screened: " + "; ".join(f"{x['title']} ({x['passed']}/4)" for x in m["near"][MAX_NEAR:]), ""]
+            L += near_text(m["near"])
         if m["skipped"]:
             L += ["No commercial angle: " + "; ".join(f"{x['title']} ({x['reason']})" for x in m["skipped"]), ""]
         elif m["skipped_text"]:
@@ -353,23 +409,9 @@ def render_email(issue, web_url="", dashboard_url="", logo_url=""):
         if not m["rec"]:
             body.append("<p style='margin:0 0 6px'>Nothing this week. No paper passed all four checks.</p>")
         for o in m["rec"]:
-            body.append(f"<div style='background:#fff;border:1px solid {line};padding:10px 12px;margin:0 0 10px'><p style='margin:0 0 4px;font-weight:bold;font-size:15px'>{E(o['heading'])}</p>"
-                        f"<p style='margin:0 0 8px'>{E(o.get('what', ''))}</p><table role='presentation' cellpadding='0' cellspacing='0' style='font-size:13.5px'>"
-                        + "".join(f"<tr><td style='font-weight:bold;padding:2px 12px 2px 0;vertical-align:top;white-space:nowrap'>{E(k)}</td><td style='padding:2px 0'>{E(v)}</td></tr>" for k, v in rec_rows(o))
-                        + "</table></div>")
+            body.append(rec_email(o, muted, line))
         if m["near"]:
-            body.append(f"<div style='font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#4a4f5a;font-weight:bold;margin:14px 0 4px'>Near misses <span style='text-transform:none;letter-spacing:0;font-weight:normal;color:{muted}'>closest first</span></div>")
-            for n in m["near"][:MAX_NEAR]:
-                chips = " ".join(f"<span style='display:inline-block;font-size:11.5px;padding:1px 6px;border:1px solid {'#b9dcc6' if n['checks'][k]['pass'] else '#f0c2c9'};"
-                                 f"color:{green if n['checks'][k]['pass'] else accent};background:{'#eef7f1' if n['checks'][k]['pass'] else '#fbeef0'}'>{'&#10003;' if n['checks'][k]['pass'] else '&#10007;'} {CHECK_NAME[k]}</span>" for k in CHECK_ORDER)
-                gaps = "".join(f"<li style='margin:0 0 3px'><b>{E(k)}:</b> {E(v)}</li>" for k, v in gap_of(n))
-                wc = f"<p style='margin:4px 0 0;font-size:13px'><b>Would change the call:</b> {E(n['would_change'])}</p>" if n.get("would_change") else ""
-                body.append(f"<div style='border-top:1px solid {line};padding:9px 0'><div style='font-weight:bold;font-size:14px'>{E(n['title'])}</div>"
-                            f"<div style='font-size:12.5px;color:{muted};margin:2px 0 6px'>{E(n['who'])}</div><div>{chips}</div>"
-                            f"<ul style='margin:6px 0 0;padding-left:18px;font-size:13.5px'>{gaps}</ul>{wc}</div>")
-            if len(m["near"]) > MAX_NEAR:
-                rest = "; ".join(f"{x['title']} ({x['passed']}/4)" for x in m["near"][MAX_NEAR:])
-                body.append(f"<p style='margin:8px 0 0;color:{muted};font-size:12.5px'>Also screened: {E(rest)}.</p>")
+            body.append(near_email(m["near"], muted, accent, line))
         if m["skipped"]:
             body.append(f"<p style='margin:10px 0 0;color:{muted};font-size:12.5px'><b>No commercial angle:</b> {E('; '.join(x['title'] + ' (' + x['reason'] + ')' for x in m['skipped']))}.</p>")
         elif m["skipped_text"]:
@@ -425,61 +467,57 @@ def _chips(sig):
     return out
 
 
-def render_brief_web(b, quarters, logo_src="../logo.png", prefix=""):
-    picks = b.get("picks") or []
-    cards = []
-    for o in picks:
+def brief_model(b):
+    rec = []
+    for o in b.get("picks") or []:
         sig = o.get("signals") or {}
-        chips = "".join(f'<span class="tag">{E(c)}</span> ' for c in _chips(sig))
-        partners = "".join(f"<li><b>{E(p['name'])}</b> ({E(p['location'])}). {E(p['why'])}</li>" for p in o.get("partners") or [])
-        cards.append(f'''<div class="item"><div class="who">{E(sig.get("name", ""))} <small>{E(", ".join(sig.get("units") or []))}</small></div>
-<h3>{E(o["heading"])}</h3><div class="src" style="margin:0 0 8px">{chips}</div>
-<p><b>What.</b> {E(o["what"])}</p><p><b>Market.</b> {E(o["market_fit"])}</p>
-{f"<p><b>Who to approach.</b></p><ul class='pl'>{partners}</ul>" if partners else ""}
-<p><b>Next step.</b> {E(o["next_step"])}</p>{f"<p><b>Route.</b> {E(o['licensing_note'])}</p>" if o.get("licensing_note") else ""}</div>''')
-    near = b.get("near_misses") or []
-    near_html = ("<h2>Near misses</h2><div class='also'><ul>" + "".join(f"<li><b>{E(n['title'])}</b>: {E(n['why'])}</li>" for n in near[:9]) + "</ul></div>") if near else ""
+        rec.append(dict(o, who=f"{sig.get('name', '')} ({', '.join(sig.get('units') or [])})" if sig.get("name") else "", sig=" · ".join(_chips(sig))))
+    near = sorted((norm_near(n) for n in b.get("near_misses") or []), key=lambda x: -x["passed"])
+    n = b.get("screened", 0)
+    tally_ = f"Screened {n} research line{'s' if n != 1 else ''} · {len(rec)} recommended · {len(near)} near miss{'es' if len(near) != 1 else ''}"
+    return rec, near, tally_
+
+
+BRIEF_RULE = CHECK_RULE.replace("A paper is recommended", "A research line is recommended")
+
+
+def render_brief_web(b, quarters, logo_src="../logo.png", prefix=""):
+    rec, near, tally_ = brief_model(b)
+    body = [f'<p class="tally">{E(tally_)}</p>', f'<p class="rule">{BRIEF_RULE}</p>', '<h4 class="sub">Recommended</h4>']
+    if not rec:
+        body.append('<p class="none">Nothing this quarter. No research line passed all four checks.</p>')
+    body += [rec_html(o, f'<p class="sig">{E(o["sig"])}</p>' if o.get("sig") else "") for o in rec]
+    if near:
+        body.append(near_html(near))
     arch = ('<div class="arch">All briefs: ' + " · ".join(f'<a href="{prefix}{E(q)}.html">{E(q)}</a>' for q in quarters) + "</div>") if quarters else ""
-    lead = (f"Screened the {b.get('screened', 0)} research lines with the strongest industry signals this quarter. "
-            + (f"{len(picks)} passed all four checks." if picks else "None passed all four checks, so there is nothing to act on this quarter."))
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Partnership Brief</title>{FONTS}<style>{CSS}.item ul.pl{{font-family:var(--f-body);font-size:14px;padding-left:1.1em;margin:4px 0 8px}}.item p{{font-size:15px;margin:0 0 8px}}.tag{{margin:0 4px 4px 0}}</style></head><body>
+<title>Partnership Brief</title>{FONTS}<style>{CSS}</style></head><body>
 <div class="col"><article class="sheet">
 <img class="logo" src="{E(logo_src)}" alt="Carleton University, Faculty of Science" width="800" height="297">
 <div class="eyebrow"><i></i>Quarterly partnership brief</div>
 <h1>Partnership and IP opportunities</h1>
 <div class="dates">{E(b.get('quarter', ''))} · prepared {E(b.get('date', ''))}</div>
 <div class="prep">{PREPARED}</div>
-<p class="lead">{E(lead)}</p>
-{"<h2>Top opportunities <span>" + str(len(picks)) + "</span></h2>" if picks else ""}
-{"".join(cards)}
-{near_html}
+<section class="opp"><h2>This quarter <span>{len(rec) or "nothing"} to act on</span></h2>
+{"".join(body)}
+</section>
 <div class="foot">{BRIEF_FOOT}</div>{arch}
 </article></div></body></html>"""
 
 
 def render_brief_email(b, web_url="", logo_url=""):
-    ink, muted, accent = "#15171c", "#6e7380", "#b0162b"
+    ink, muted, accent, line = "#15171c", "#6e7380", "#b0162b", "#e3e5e8"
     font = "font-family:Helvetica,Arial,sans-serif;"
-    picks = b.get("picks") or []
-    rows = []
-    for o in picks:
-        sig = o.get("signals") or {}
-        partners = "".join(f"<li style='margin:0 0 6px'><b>{E(p['name'])}</b> ({E(p['location'])}). {E(p['why'])}</li>" for p in o.get("partners") or [])
-        rows.append(f"""<tr><td style="padding:16px 0;border-bottom:1px solid #e3e5e8;{font}font-size:14px;line-height:1.55;color:{ink}">
-<div style="font-size:13px;font-weight:bold;color:{accent}">{E(sig.get('name', ''))} <span style="color:{muted};font-weight:normal">{E(', '.join(sig.get('units') or []))}</span></div>
-<div style="font-size:16px;font-weight:bold;margin:4px 0 6px">{E(o['heading'])}</div>
-<div style="font-size:12px;color:{muted};margin-bottom:8px">{E(' · '.join(_chips(sig)))}</div>
-<p style="margin:0 0 8px"><b>What.</b> {E(o['what'])}</p><p style="margin:0 0 8px"><b>Market.</b> {E(o['market_fit'])}</p>
-{f"<p style='margin:0 0 4px'><b>Who to approach.</b></p><ul style='margin:0 0 8px;padding-left:18px'>{partners}</ul>" if partners else ""}
-<p style="margin:0 0 8px"><b>Next step.</b> {E(o['next_step'])}</p>{f"<p style='margin:0'><b>Route.</b> {E(o['licensing_note'])}</p>" if o.get('licensing_note') else ""}</td></tr>""")
-    near = b.get("near_misses") or []
+    rec, near, tally_ = brief_model(b)
+    body = [f"<div style='font-family:Menlo,Consolas,monospace;font-size:12px;color:#4a4f5a;margin:0 0 6px'>{E(tally_)}</div>",
+            f"<div style='font-size:12.5px;color:{muted};margin:0 0 12px'>{BRIEF_RULE}</div>",
+            "<div style='font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#4a4f5a;font-weight:bold;margin:0 0 6px'>Recommended</div>"]
+    if not rec:
+        body.append("<p style='margin:0 0 6px'>Nothing this quarter. No research line passed all four checks.</p>")
+    body += [rec_email(o, muted, line, f"<div style='font-size:12px;color:{muted};margin:0 0 6px'>{E(o['sig'])}</div>" if o.get("sig") else "") for o in rec]
     if near:
-        rows.append(f"<tr><td style=\"{font}font-size:13px;color:{ink};padding-top:18px\"><b>Near misses</b><ul style='padding-left:18px;margin:6px 0 0'>"
-                    + "".join(f"<li style='margin:0 0 6px'><b>{E(n['title'])}</b>: {E(n['why'])}</li>" for n in near[:9]) + "</ul></td></tr>")
-    lead = (f"Screened the {b.get('screened', 0)} research lines with the strongest industry signals. "
-            + (f"{len(picks)} passed all four checks." if picks else "None passed all four checks this quarter."))
+        body.append(near_email(near, muted, accent, line))
     return f"""<!doctype html><html><body style="margin:0;background:#f3f4f6"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:20px 10px">
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:#fff;border:1px solid #d9dce1"><tr><td style="padding:28px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
@@ -487,8 +525,7 @@ def render_brief_email(b, web_url="", logo_url=""):
 <tr><td style="{font}font-size:11px;letter-spacing:1px;text-transform:uppercase;color:{muted}">Quarterly partnership brief</td></tr>
 <tr><td style="{font}font-size:28px;font-weight:bold;color:{ink};padding:6px 0 4px">Partnership and IP opportunities</td></tr>
 <tr><td style="{font}font-size:13px;color:#4a4f5a">{E(b.get('quarter', ''))}<br>{PREPARED}</td></tr>
-<tr><td style="font-family:Georgia,serif;font-size:16px;line-height:1.6;color:{ink};padding:14px 0 0">{E(lead)}</td></tr>
 {f'<tr><td style="{font}font-size:13px;padding:10px 0 0"><a href="{E(web_url)}" style="color:{accent}">Read on the web</a></td></tr>' if web_url else ''}
-{''.join(rows)}
+<tr><td style="padding:16px 0 0"><div style="{font}font-size:14px;line-height:1.55;color:{ink};background:#f3f4f6;border-left:3px solid {accent};padding:14px 16px">{"".join(body)}</div></td></tr>
 <tr><td style="{font}font-size:12px;color:{muted};padding:20px 0 0">{BRIEF_FOOT}</td></tr>
 </table></td></tr></table></td></tr></table></body></html>"""

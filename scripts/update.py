@@ -306,7 +306,10 @@ def innovation(items):
               "Also give 'would_change': at most 15 words on the one concrete thing that would flip the failed checks (for example 'a Carleton-led prototype "
               "with field data'), or an empty string if nothing realistic would. Use web search to verify partner "
               "companies are real and currently active (prefer Ottawa or Canadian), and to check whether code or methods are already public. "
-              "Judge each check on its own; do not let one check decide another. Be consistent: the same facts must always give the same answers.\n\n"
+              "Judge each check on its own; do not let one check decide another. Be consistent: the same facts must always give the same answers. "
+              "Keep every field short so it scans: heading at most 12 words, what at most 40, market_fit at most 35, each partner why at most 20, "
+              "next_step at most 40, route_reason at most 30. One fact per sentence. "
+              "\n\n"
               "Return only JSON in a ```json block:\n"
               "{\"assessments\": [{\"id\": str, \"title\": str,\n"
               "  \"checks\": {\"market\": {\"pass\": bool, \"evidence\": str}, \"partner\": {\"pass\": bool, \"evidence\": str},\n"
@@ -475,14 +478,18 @@ def quarterly_brief(lines, n_screen=12):
               f"Rules:\n\n{crit}\n\nFor 'carleton_role', use share_as_lead_author (0.5 or more passes) plus the titles. For 'evidence', judge the "
               "line as a whole, not one paper. For 'partner', prefer companies already in the signals; verify with web search that they are real and "
               "active, preferring Ottawa and Canadian ones, and add at most one new company you find. Note open preprints as an IP clock. "
-              "Be strict and consistent: most lines will not pass every check.\n\n"
+              "Be strict and consistent: most lines will not pass every check. Each check's evidence is at most 20 words, a plain fact. "
+              "Also give 'would_change': at most 15 words on the one concrete thing that would flip the failed checks, or an empty string. "
+              "Keep every field short so it scans: heading at most 12 words, what at most 40, market_fit at most 35, each partner why at most 20, "
+              "next_step at most 40, route_reason at most 30. One fact per sentence. "
+              "\n\n"
               "Return only JSON in a ```json block:\n"
               "{\"assessments\": [{\"id\": str, \"title\": str (researcher and topic),\n"
               "  \"checks\": {\"market\": {\"pass\": bool, \"evidence\": str}, \"partner\": {\"pass\": bool, \"evidence\": str},\n"
               "              \"carleton_role\": {\"pass\": bool, \"evidence\": str}, \"evidence\": {\"pass\": bool, \"evidence\": str}},\n"
               "  \"route\": \"licence\" | \"partnership\" | \"unclear\", \"route_reason\": str,\n"
               "  \"heading\": str, \"what\": str, \"market_fit\": str, \"partners\": [{\"name\": str, \"location\": str, \"why\": str}],\n"
-              "  \"next_step\": str}],\n \"skipped_note\": str}\n\n" + json.dumps(payload, ensure_ascii=False))
+              "  \"next_step\": str, \"would_change\": str}],\n \"skipped_note\": str}\n\n" + json.dumps(payload, ensure_ascii=False))
     tools = [{"type": "web_search_20250305", "name": "web_search", "max_uses": 15, "user_location": {"type": "approximate", "city": "Ottawa", "region": "Ontario", "country": "CA"}}]
     raw = parse_json(claude([{"role": "user", "content": prompt}], max_tokens=20000, tools=tools))
     tiers = tier_assessments(raw)
@@ -494,6 +501,10 @@ def quarterly_brief(lines, n_screen=12):
         o["score"] = L.get("score", 0)
         picks.append(o)
     picks.sort(key=lambda o: o["score"], reverse=True)
+    for n in tiers.get("near_misses", []):
+        L = byid.get(n.get("id"), {})
+        if L:
+            n["who"] = f"{L['name']} ({', '.join(L['units'])})"
     return {"picks": picks[:3], "near_misses": tiers.get("near_misses", []), "screened": len(short)}
 
 
