@@ -95,6 +95,7 @@ A small Cloudflare Worker (`worker/worker.js`) holds one AI key and relays quest
 | `PROVIDER` | Text | `openai` (or `anthropic`, with `ANTHROPIC_API_KEY` instead) |
 | `MODEL` | Text | `gpt-5-mini` (cheap, good) or `gpt-5` (deeper) |
 | `ALLOWED_ORIGIN` | Text | `https://biggarlab.github.io` |
+| `OPENAI_BASE_URL` | Text | Azure only: your endpoint, e.g. `https://<name>.services.ai.azure.com/openai/v1` (then `MODEL` is the deployment name) |
 
 4. Optional daily cap: **Storage & Databases → KV → Create** a namespace `LIMITS`; then Worker **Settings → Bindings → Add → KV namespace**, variable name `LIMITS`. Default cap is 200 questions a day; change with a text variable `DAILY_LIMIT`.
 5. Copy the Worker's address (like `https://carleton-science-ai.<you>.workers.dev`). In this repo, edit `docs/ai.json` to `{"endpoint": "https://carleton-science-ai.<you>.workers.dev"}` and commit. The site picks it up within a minute.

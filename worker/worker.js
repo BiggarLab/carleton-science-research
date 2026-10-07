@@ -4,9 +4,10 @@
 //
 // Worker settings (Cloudflare dashboard > your Worker > Settings > Variables and Secrets):
 //   PROVIDER          "openai" or "anthropic"                         (plain text, default openai)
-//   OPENAI_API_KEY    your OpenAI key                                  (secret, if PROVIDER=openai)
+//   OPENAI_API_KEY    your OpenAI or Azure OpenAI key                  (secret, if PROVIDER=openai)
+//   OPENAI_BASE_URL   only for Azure, e.g. https://<name>.services.ai.azure.com/openai/v1 (plain text)
 //   ANTHROPIC_API_KEY your Claude key                                  (secret, if PROVIDER=anthropic)
-//   MODEL             model name, e.g. gpt-5-mini or claude-sonnet-5-5 (plain text, optional)
+//   MODEL             model name, e.g. gpt-5-mini or claude-sonnet-5-5 (plain text, optional; on Azure, the deployment name)
 //   ALLOWED_ORIGIN    https://biggarlab.github.io                       (plain text)
 //   PASSCODE          shared passcode people type once                  (secret, optional but recommended)
 //   DAILY_LIMIT       max questions per day, default 200                (plain text, optional; needs a KV binding named LIMITS)
@@ -88,17 +89,30 @@ function toOpenAIInput(messages) {
   return input;
 }
 
-async function viaOpenAI(body, env) {
-  const tools = (body.tools || []).slice(0, 10).map(t => ({ type: "function", name: t.name, description: t.description, parameters: t.input_schema || { type: "object", properties: {} } }));
-  if (body.web) tools.push({ type: "web_search" });
-  const r = await fetch("https://api.openai.com/v1/responses", {
+async function openaiCall(env, payload) {
+  const base = (env.OPENAI_BASE_URL || "https://api.openai.com/v1").replace(/\/+$/, "");
+  const azure = /azure\.com/i.test(base);
+  const r = await fetch(`${base}/responses`, {
     method: "POST",
-    headers: { "Authorization": `Bearer ${env.OPENAI_API_KEY}`, "content-type": "application/json" },
-    body: JSON.stringify({ model: env.MODEL || "gpt-5-mini", instructions: body.system || undefined, input: toOpenAIInput(body.messages),
-      ...(tools.length ? { tools } : {}), max_output_tokens: 6000, store: false }),
+    headers: { ...(azure ? { "api-key": env.OPENAI_API_KEY } : { "Authorization": `Bearer ${env.OPENAI_API_KEY}` }), "content-type": "application/json" },
+    body: JSON.stringify(payload),
   });
-  const d = await r.json();
-  if (!r.ok) throw Object.assign(new Error(d.error?.message || `OpenAI error ${r.status}`), { status: r.status === 401 ? 502 : r.status });
+  let d = {};
+  try { d = await r.json(); } catch {}
+  return { r, d };
+}
+
+async function viaOpenAI(body, env) {
+  const fns = (body.tools || []).slice(0, 10).map(t => ({ type: "function", name: t.name, description: t.description, parameters: t.input_schema || { type: "object", properties: {} } }));
+  const payload = { model: env.MODEL || "gpt-5-mini", instructions: body.system || undefined, input: toOpenAIInput(body.messages), max_output_tokens: 6000, store: false };
+  const withWeb = body.web && env.WEB_SEARCH !== "off";
+  let { r, d } = await openaiCall(env, { ...payload, tools: withWeb ? [...fns, { type: "web_search" }] : fns });
+  // Some deployments (often Azure) don't offer web search: retry once without it and tell the model.
+  if (!r.ok && withWeb && r.status === 400) {
+    ({ r, d } = await openaiCall(env, { ...payload, tools: fns,
+      instructions: (body.system || "") + "\n\nWeb search is not available on this deployment. Say so if a question needs current outside information." }));
+  }
+  if (!r.ok) throw Object.assign(new Error(d.error?.message || `OpenAI error ${r.status}`), { status: r.status === 401 || r.status === 403 ? 502 : r.status });
   const content = [];
   let calls = 0;
   for (const item of d.output || []) {
