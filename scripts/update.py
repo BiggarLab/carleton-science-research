@@ -453,7 +453,7 @@ def quarterly_brief(lines, n_screen=12):
     if not short:
         return {"picks": [], "near_misses": [], "screened": 0}
     for L in short:
-        L["patent_landscape"] = SIG.lens_landscape([L["topic"]] + L["titles"][:1])
+        L["patent_landscape"] = SIG.patent_landscape([L["topic"]] + L["titles"][:1])
     payload = [{"id": f"L{k}", "researcher": f"{L['name']} ({', '.join(L['units'])}, {L['rank']})", "topic": L["topic"],
                 "papers_last_3y": L["n"], "recent_2y": L["recent"], "earlier": L["prior"], "share_as_lead_author": L["lead_share"],
                 "recent_titles": L["titles"], "companies_coauthoring": L["companies"], "companies_citing": L["citers"],

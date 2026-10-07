@@ -7,7 +7,7 @@ several papers) and scores each line on evidence that industry already cares:
   company citers         companies whose own papers cite our papers           (OpenAlex)
   industry funding       Mitacs, NSERC Alliance/CRD/Engage, OCI, company funders (OpenAlex funders and awards)
   NSERC partners         partner organizations on the researcher's NSERC grants (NSERC open data, if reachable)
-  patents                patents with the researcher as inventor and Carleton as applicant (Lens.org, if LENS_API_TOKEN is set)
+  patents                Carleton patents naming the researcher (USPTO PatentSearch and/or EPO OPS, free keys)
   preprint clock         preprints in the last 12 months (patent grace period still open in Canada and the US)
   CV signals             grants, theses and other items from config/cv_signals.csv, when that file exists
 
@@ -197,76 +197,156 @@ def _read_local(p):
     return []
 
 
-# ------------------------------------------------------------------ patents via Lens.org (optional)
-def _lens(query, size=50, include=None):
-    tok = os.environ.get("LENS_API_TOKEN")
-    body = {"query": query, "size": size}
-    if include:
-        body["include"] = include
-    req = urllib.request.Request("https://api.lens.org/patent/search", data=json.dumps(body).encode(),
-                                 headers={"Authorization": f"Bearer {tok}", "Content-Type": "application/json"})
+# ------------------------------------------------------------------ patents (optional, free sources)
+# USPTO PatentSearch (PatentsView): free key from account.uspto.gov/api-manager, secret PATENTSVIEW_API_KEY. US patents.
+# EPO Open Patent Services: free registration at developers.epo.org (4 GB/week), secrets EPO_OPS_KEY and EPO_OPS_SECRET. Worldwide incl. CA and PCT.
+NON_COMPANY = re.compile(r"univ|college|institut|hospital|research council|government|ministry|foundation|school|academy|\bcnrs\b|\binserm\b", re.I)
+
+
+def _post_json(url, body, headers, timeout=60):
+    req = urllib.request.Request(url, data=json.dumps(body).encode(), headers={"Content-Type": "application/json", **headers})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return json.loads(r.read())
+
+
+def _pv(q, f, size=100):
+    return _post_json("https://search.patentsview.org/api/v1/patent/", {"q": q, "f": f, "o": {"size": size}, "s": [{"patent_date": "desc"}]},
+                      {"X-Api-Key": os.environ["PATENTSVIEW_API_KEY"]})
+
+
+_ops_token = {}
+
+
+def _ops(path, params):
+    import base64
+    import urllib.parse
+    if "t" not in _ops_token:
+        cred = base64.b64encode(f"{os.environ['EPO_OPS_KEY']}:{os.environ['EPO_OPS_SECRET']}".encode()).decode()
+        req = urllib.request.Request("https://ops.epo.org/3.2/auth/accesstoken", data=b"grant_type=client_credentials",
+                                     headers={"Authorization": f"Basic {cred}", "Content-Type": "application/x-www-form-urlencoded"})
+        with urllib.request.urlopen(req, timeout=60) as r:
+            _ops_token["t"] = json.loads(r.read())["access_token"]
+    url = f"https://ops.epo.org/3.2/rest-services/{path}?{urllib.parse.urlencode(params)}"
+    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {_ops_token['t']}", "Accept": "application/json"})
     with urllib.request.urlopen(req, timeout=60) as r:
         return json.loads(r.read())
 
 
-def _names(obj, keys=("applicants", "applicant")):
-    """Pull applicant names out of a Lens record without depending on one exact schema."""
-    out = []
+def _walk(obj, key):
+    """Yield every value stored under `key` anywhere in a nested JSON structure."""
     if isinstance(obj, dict):
         for k, v in obj.items():
-            if k in keys and isinstance(v, list):
-                for a in v:
-                    n = (a.get("extracted_name") or {}).get("value") if isinstance(a, dict) else None
-                    n = n or (a.get("name") if isinstance(a, dict) else None)
-                    if n:
-                        out.append(n)
-            else:
-                out += _names(v, keys)
+            if k == key:
+                yield v
+            yield from _walk(v, key)
     elif isinstance(obj, list):
         for v in obj:
-            out += _names(v, keys)
-    return out
+            yield from _walk(v, key)
 
 
-def lens_patents(people):
-    """Return {person index: [patent titles]} for patents naming the person as inventor with Carleton as applicant."""
-    if not os.environ.get("LENS_API_TOKEN"):
-        log("LENS_API_TOKEN not set; skipping patents")
-        return {}
-    out = {}
+def _texts(v):
+    if isinstance(v, dict):
+        if "$" in v:
+            return [v["$"]]
+        return [t for x in v.values() for t in _texts(x)]
+    if isinstance(v, list):
+        return [t for x in v for t in _texts(x)]
+    return [v] if isinstance(v, str) else []
+
+
+def _match_inventors(names, people):
+    """names: list of (first, last) or 'LAST FIRST' strings -> roster indices."""
+    by_last = defaultdict(list)
     for i, p in enumerate(people):
-        if not p.get("oa"):
-            continue
+        last, _, first = p["sort"].partition(", ")
+        by_last[norm(last).replace(" ", "")].append((i, norm(first)[:3]))
+    hits = set()
+    for n in names:
+        if isinstance(n, tuple):
+            first, last = norm(n[0]), norm(n[1])
+        else:
+            t = norm(str(n).replace(",", " ")).split()
+            if len(t) < 2:
+                continue
+            last, first = t[0], " ".join(t[1:])
+        for i, f3 in by_last.get(last.replace(" ", ""), []):
+            if not f3 or first.startswith(f3) or (len(first.split()[0] if first else '') == 1 and first[:1] == f3[:1]):
+                hits.add(i)
+    return hits
+
+
+def carleton_patents(people, since_year):
+    """Return {person index: [patent titles]} for patents assigned to Carleton that name the person as inventor."""
+    out = defaultdict(list)
+    used = []
+    if os.environ.get("PATENTSVIEW_API_KEY"):
         try:
-            d = _lens({"bool": {"must": [{"match_phrase": {"inventor.name": p["n"]}}, {"match": {"applicant.name": "Carleton"}}]}}, size=20)
+            d = _pv({"_and": [{"_text_phrase": {"assignees.assignee_organization": "Carleton University"}}, {"_gte": {"patent_date": f"{since_year}-01-01"}}]},
+                    ["patent_id", "patent_title", "patent_date", "inventors.inventor_name_first", "inventors.inventor_name_last"], size=500)
+            for pt in d.get("patents", []):
+                inv = [(x.get("inventor_name_first", ""), x.get("inventor_name_last", "")) for x in pt.get("inventors") or []]
+                for i in _match_inventors(inv, people):
+                    out[i].append(f"{pt.get('patent_title', '')} (US {pt.get('patent_id', '')}, {pt.get('patent_date', '')[:4]})")
+            used.append(f"USPTO: {len(d.get('patents', []))} Carleton patents")
         except Exception as e:
-            log("Lens lookup failed:", p["n"], e)
-            continue
-        titles = []
-        for rec in d.get("data", []):
-            t = rec.get("biblio", {}).get("invention_title") or rec.get("title")
-            if isinstance(t, list):
-                t = (t[0] or {}).get("text") if t else ""
-            titles.append(t or rec.get("lens_id", "patent"))
-        if titles:
-            out[i] = titles
-    log(f"patents: {sum(len(v) for v in out.values())} Carleton patents across {len(out)} researchers")
-    return out
+            log("USPTO PatentSearch failed:", e)
+    if os.environ.get("EPO_OPS_KEY") and os.environ.get("EPO_OPS_SECRET"):
+        try:
+            n = 0
+            for start in range(1, 401, 100):
+                d = _ops("published-data/search/biblio", {"q": f'pa="Carleton University" and pd>={since_year}', "Range": f"{start}-{start + 99}"})
+                docs = list(_walk(d, "exchange-document"))
+                docs = [x for v in docs for x in (v if isinstance(v, list) else [v])]
+                for doc in docs:
+                    title = next(iter(_texts(next(iter(_walk(doc, "invention-title")), ""))), "")
+                    inv = [t for v in _walk(doc, "inventor-name") for t in _texts(v)]
+                    num = next(iter(_texts(next(iter(_walk(doc, "doc-number")), ""))), "")
+                    cc = doc.get("@country", "") if isinstance(doc, dict) else ""
+                    for i in _match_inventors(inv, people):
+                        label = f"{title} ({cc}{num})"
+                        if label not in out[i]:
+                            out[i].append(label)
+                n += len(docs)
+                if len(docs) < 100:
+                    break
+            used.append(f"EPO: {n} Carleton documents")
+        except Exception as e:
+            log("EPO OPS failed:", e)
+    if not used:
+        log("No patent keys set (PATENTSVIEW_API_KEY or EPO_OPS_KEY/SECRET); skipping patents")
+    else:
+        log("patents:", "; ".join(used), f"-> {sum(len(v) for v in out.values())} matched to {len(out)} researchers")
+    return dict(out)
 
 
-def lens_landscape(keywords, years=3):
-    """Companies filing patents on a topic in recent years: a ready-made partner list."""
-    if not os.environ.get("LENS_API_TOKEN"):
+def patent_landscape(keywords, years=3):
+    """Companies filing patents on a topic recently: a ready-made partner list."""
+    since = dt.date.today().year - years
+    words = [w for w in re.findall(r"[A-Za-z][A-Za-z-]{3,}", " ".join(keywords)) if w.lower() not in {"studies", "analysis", "research", "applications", "advanced", "techniques", "management", "systems"}][:4]
+    if not words:
         return []
-    since = (dt.date.today() - dt.timedelta(days=365 * years)).isoformat()
-    q = " OR ".join(f'"{k}"' for k in keywords[:4])
-    try:
-        d = _lens({"bool": {"must": [{"query_string": {"query": q, "fields": ["title", "abstract", "claim"]}}],
-                            "filter": [{"range": {"date_published": {"gte": since}}}]}}, size=100)
-    except Exception as e:
-        log("Lens landscape failed:", e)
-        return []
-    c = Counter(n for n in _names(d.get("data", [])) if not re.search(r"univ|college|institut|hospital|research council|government", n, re.I))
+    c = Counter()
+    if os.environ.get("PATENTSVIEW_API_KEY"):
+        try:
+            d = _pv({"_and": [{"_text_all": {"patent_abstract": " ".join(words[:3])}}, {"_gte": {"patent_date": f"{since}-01-01"}}]},
+                    ["assignees.assignee_organization"], size=200)
+            for pt in d.get("patents", []):
+                for a in pt.get("assignees") or []:
+                    o = a.get("assignee_organization")
+                    if o and not NON_COMPANY.search(o):
+                        c[o] += 1
+        except Exception as e:
+            log("USPTO landscape failed:", e)
+    if os.environ.get("EPO_OPS_KEY") and os.environ.get("EPO_OPS_SECRET"):
+        try:
+            q = " and ".join(f'ta="{w}"' for w in words[:3]) + f" and pd>={since}"
+            d = _ops("published-data/search/biblio", {"q": q, "Range": "1-100"})
+            for v in _walk(d, "applicant-name"):
+                for o in _texts(v):
+                    if o and not NON_COMPANY.search(o):
+                        c[o.strip().title()] += 1
+        except Exception as e:
+            log("EPO landscape failed:", e)
     return c.most_common(8)
 
 
@@ -361,10 +441,10 @@ def compute(data, works, y0, oa_pages):
     except Exception as e:
         log("NSERC skipped:", e)
         nserc = {}
-    patents = lens_patents(people)
+    patents = carleton_patents(people, dt.date.today().year - 10)
     cvs = cv_signals(people)
     lines = build_lines(data, works, citers, nserc, patents, cvs)
-    sources = {"openalex": True, "company_citers": bool(citers), "nserc": bool(nserc), "patents": bool(os.environ.get("LENS_API_TOKEN")), "cv": bool(cvs)}
+    sources = {"openalex": True, "company_citers": bool(citers), "nserc": bool(nserc), "patents": bool(os.environ.get("PATENTSVIEW_API_KEY") or os.environ.get("EPO_OPS_KEY")), "cv": bool(cvs)}
     (ROOT / "docs/signals.json").write_text(json.dumps({"gen": dt.date.today().isoformat(), "sources": sources, "lines": lines[:120]},
                                                        ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     log(f"signals.json: {len(lines)} research lines, top score {lines[0]['score'] if lines else 0}")

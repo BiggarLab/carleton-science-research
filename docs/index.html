@@ -763,7 +763,7 @@ function opps(){
       <div class="sc">${L.n} papers · ${L.recent} recent<br>${Math.round(L.lead_share*100)}% as lead</div></div>`).join("")
     : `<div class="empty">No research lines with industry signals match these filters.</div>`;
   box.onclick = e => { const b = e.target.closest(".nm[data-p]"); if (b) openProfile(+b.dataset.p); };
-  const src = SG.sources || {}; const on = [["OpenAlex co-authors and funders", src.openalex], ["companies citing our work", src.company_citers], ["NSERC partners", src.nserc], ["patents (Lens.org)", src.patents], ["CV data", src.cv]];
+  const src = SG.sources || {}; const on = [["OpenAlex co-authors and funders", src.openalex], ["companies citing our work", src.company_citers], ["NSERC partners", src.nserc], ["patents (USPTO, EPO)", src.patents], ["CV data", src.cv]];
   $("#opp-src").textContent = `Signals updated ${SG.gen}. Sources in use: ${on.filter(x => x[1]).map(x => x[0]).join(", ")}.` + (on.some(x => !x[1]) ? ` Not yet connected: ${on.filter(x => !x[1]).map(x => x[0]).join(", ")}.` : "");
 }
 

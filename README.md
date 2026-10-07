@@ -70,7 +70,7 @@ The **Partnership signals** tab ranks *research lines* (one researcher working o
 | Industry funding (Mitacs, NSERC Alliance/CRD/Engage, OCI, company funders) | OpenAlex funders and award IDs | nothing extra |
 | Preprints in the last 12 months (patent grace period still open) | OpenAlex | nothing extra |
 | Partner organizations on the researcher's NSERC grants | NSERC open data | used automatically when NSERC's files are reachable; otherwise drop the yearly `*_Expenditures.csv` and `*_PARTNER.csv` files from open.canada.ca into `config/nserc/` |
-| Carleton patents, and companies patenting in a topic | Lens.org | free token: request one at lens.org (Account → API access), then add the secret `LENS_API_TOKEN` |
+| Carleton patents, and companies patenting in a topic | USPTO PatentSearch (US) and/or EPO Open Patent Services (worldwide, incl. Canada and PCT) | free: a USPTO key from account.uspto.gov/api-manager as secret `PATENTSVIEW_API_KEY`; and/or an EPO app from developers.epo.org as secrets `EPO_OPS_KEY` and `EPO_OPS_SECRET` |
 | Grants, theses, patents from CVs | `config/cv_signals.csv` | your CV dataset, in the format of `config/cv_signals.example.csv` |
 
 Industry pull drives the ranking; paper volume only breaks ties, so prolific publishers don't crowd out real signals. The weekly innovation screen also sees these signals for each new paper.
