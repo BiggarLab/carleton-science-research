@@ -120,7 +120,13 @@ def nserc_holders(years=6):
     rows, total = [], None
     for pg in range(1, 200):
         url = SIG.NSERC_SEARCH.format(y0=y1 - years, y1=y1, name="") + f"&page={pg}"
-        r, total = SIG.parse_search(get(url).decode("utf-8", "replace"))
+        try:
+            r, total = SIG.parse_search(get(url).decode("utf-8", "replace"))
+        except Exception as e:
+            if rows:
+                log(f"NSERC: stopped at page {pg} ({e})")
+                break
+            raise
         seen = {(y["id"], y["year"], y["name"]) for y in rows[-60:]}
         new = [x for x in r if (x["id"], x["year"], x["name"]) not in seen]
         rows += new
@@ -226,7 +232,8 @@ def fetch_works(y0):
             if unit:
                 A["units"][unit] += 1
         if na >= 100:  # keep memory down: big collaborations only need the Carleton authorships
-            w["authorships"] = [a for a in au if (a.get("author") or {}).get("id", "").split("/")[-1] in {c[0] for c in car}]
+            keep = {c[0] for c in car}
+            w["authorships"] = [a for a in au if ((a.get("author") or {}).get("id") or "").split("/")[-1] in keep]
         w["_na"] = na
         works[wid] = {"raw": w, "car": car}
         if n % 2000 == 0:
