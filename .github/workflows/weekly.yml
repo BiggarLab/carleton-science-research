@@ -1,0 +1,55 @@
+name: Weekly research update
+
+on:
+  schedule:
+    - cron: "0 10 * * 1"   # Mondays 10:00 UTC (6 am Ottawa in summer, 5 am in winter)
+  workflow_dispatch:
+    inputs:
+      send_email:
+        description: "Send the email"
+        type: boolean
+        default: true
+      force:
+        description: "Rebuild this week's issue even if it was already made"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build dashboard data and digest
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          DIGEST_TO: ${{ secrets.DIGEST_TO }}
+          DIGEST_FROM: ${{ secrets.DIGEST_FROM }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+        run: |
+          ARGS=""
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.send_email }}" != "true" ]; then ARGS="$ARGS --no-email"; fi
+          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
+          python scripts/update.py $ARGS
+      - name: Save results
+        run: |
+          git config user.name "research-digest-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs state config
+          git diff --cached --quiet || git commit -m "Weekly update $(date -u +%Y-%m-%d)"
+          git push
