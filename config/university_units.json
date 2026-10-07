@@ -1,65 +1,378 @@
 {
-  "_note": "Faculties and units for the university-wide view. 'sites' are carleton.ca sub-sites whose people listings are read (carleton.ca/<site>/wp-json/wp/v2/cu_people). 'match' is a regular expression tested against the affiliation text on papers. Science people come from config/roster.csv. Edit freely; unknown sites are skipped.",
-  "faculties": [
-    {"name": "Science", "short": "Science"},
-    {"name": "Engineering and Design", "short": "FED"},
-    {"name": "Arts and Social Sciences", "short": "FASS"},
-    {"name": "Public and Global Affairs", "short": "FPGA"},
-    {"name": "Sprott School of Business", "short": "Sprott"}
-  ],
-  "units": [
-    {"unit": "Biochemistry", "faculty": "Science", "match": "biochem"},
-    {"unit": "Biology", "faculty": "Science", "match": "(department|dept\\.?) of biology|biology department"},
-    {"unit": "Chemistry", "faculty": "Science", "match": "(department|dept\\.?) of chemistry|chemistry department|food science"},
-    {"unit": "Computer Science", "faculty": "Science", "match": "school of computer science"},
-    {"unit": "Earth Sciences", "faculty": "Science", "match": "earth sciences"},
-    {"unit": "Environmental & Interdisciplinary Sci", "faculty": "Science", "match": "environmental science|interdisciplinary science"},
-    {"unit": "Health Sciences", "faculty": "Science", "match": "health sciences"},
-    {"unit": "Mathematics & Statistics", "faculty": "Science", "match": "mathematics|statistics"},
-    {"unit": "Neuroscience", "faculty": "Science", "match": "neuroscience"},
-    {"unit": "Nursing", "faculty": "Science", "match": "nursing"},
-    {"unit": "Physics", "faculty": "Science", "match": "physics"},
-    {"unit": "TSE", "faculty": "Science", "match": "technology, society|technology society"},
-
-    {"unit": "Systems and Computer Engineering", "faculty": "Engineering and Design", "sites": ["sce"], "match": "systems and computer engineering|systems & computer engineering"},
-    {"unit": "Electronics", "faculty": "Engineering and Design", "sites": ["doe"], "match": "department of electronics|electronics department"},
-    {"unit": "Mechanical and Aerospace Engineering", "faculty": "Engineering and Design", "sites": ["mae"], "match": "mechanical (and|&) aerospace"},
-    {"unit": "Civil and Environmental Engineering", "faculty": "Engineering and Design", "sites": ["cee"], "match": "civil (and|&) environmental engineering|civil engineering"},
-    {"unit": "Architecture and Urbanism", "faculty": "Engineering and Design", "sites": ["architecture"], "match": "azrieli|architecture"},
-    {"unit": "Industrial Design", "faculty": "Engineering and Design", "match": "industrial design"},
-    {"unit": "Information Technology", "faculty": "Engineering and Design", "match": "information technology"},
-    {"unit": "Biomedical Engineering", "faculty": "Engineering and Design", "match": "biomedical engineering"},
-    {"unit": "Engineering and Design (other)", "faculty": "Engineering and Design", "sites": ["engineering"], "match": "faculty of engineering"},
-
-    {"unit": "Cognitive Science", "faculty": "Arts and Social Sciences", "sites": ["cognitivescience"], "match": "cognitive science"},
-    {"unit": "English", "faculty": "Arts and Social Sciences", "sites": ["english"], "match": "department of english|english language and literature"},
-    {"unit": "French", "faculty": "Arts and Social Sciences", "sites": ["french"], "match": "department of french|d[ée]partement de fran[cç]ais"},
-    {"unit": "Geography and Environmental Studies", "faculty": "Arts and Social Sciences", "sites": ["geography"], "match": "geography"},
-    {"unit": "History", "faculty": "Arts and Social Sciences", "sites": ["history"], "match": "department of history|history department"},
-    {"unit": "Humanities", "faculty": "Arts and Social Sciences", "sites": ["chum"], "match": "college of the humanities|religion|greek and roman"},
-    {"unit": "Comparative Literature, Art and Culture", "faculty": "Arts and Social Sciences", "sites": ["icslac"], "match": "comparative studies in literature"},
-    {"unit": "Art History, Film and Music", "faculty": "Arts and Social Sciences", "sites": ["arthistory", "filmstudies", "music", "ssac"], "match": "art history|film studies|school of music|studies in art and culture"},
-    {"unit": "Feminist Institute of Social Transformation", "faculty": "Arts and Social Sciences", "sites": ["fist"], "match": "feminist|women'?s and gender"},
-    {"unit": "Linguistics and Language Studies", "faculty": "Arts and Social Sciences", "sites": ["slals"], "match": "linguistics|language studies"},
-    {"unit": "Philosophy", "faculty": "Arts and Social Sciences", "sites": ["philosophy"], "match": "philosophy"},
-    {"unit": "Psychology", "faculty": "Arts and Social Sciences", "sites": ["psychology"], "match": "psychology"},
-    {"unit": "Sociology and Anthropology", "faculty": "Arts and Social Sciences", "sites": ["socanth"], "match": "sociology|anthropology"},
-    {"unit": "Indigenous and Canadian Studies", "faculty": "Arts and Social Sciences", "match": "indigenous and canadian studies|canadian studies"},
-    {"unit": "Interdisciplinary Studies", "faculty": "Arts and Social Sciences", "match": "interdisciplinary studies|child studies|human rights"},
-
-    {"unit": "Economics", "faculty": "Public and Global Affairs", "sites": ["economics"], "match": "economics"},
-    {"unit": "Political Science", "faculty": "Public and Global Affairs", "sites": ["polisci"], "match": "political science"},
-    {"unit": "International Affairs (NPSIA)", "faculty": "Public and Global Affairs", "sites": ["npsia"], "match": "international affairs|norman paterson"},
-    {"unit": "Public Policy and Administration", "faculty": "Public and Global Affairs", "sites": ["sppa", "spa"], "match": "public policy|public administration"},
-    {"unit": "Social Work", "faculty": "Public and Global Affairs", "sites": ["socialwork"], "match": "social work"},
-    {"unit": "Journalism and Communication", "faculty": "Public and Global Affairs", "match": "journalism|communication studies|school of journalism and communication"},
-    {"unit": "Law and Legal Studies", "faculty": "Public and Global Affairs", "sites": ["law"], "match": "law and legal studies|legal studies"},
-    {"unit": "Criminology and Criminal Justice", "faculty": "Public and Global Affairs", "sites": ["criminology"], "match": "criminology"},
-    {"unit": "Political Economy", "faculty": "Public and Global Affairs", "sites": ["politicaleconomy"], "match": "political economy"},
-    {"unit": "European, Russian and Eurasian Studies", "faculty": "Public and Global Affairs", "sites": ["eurus"], "match": "european, russian|eurasian"},
-    {"unit": "Global and International Studies", "faculty": "Public and Global Affairs", "sites": ["globalstudies"], "match": "global and international studies"},
-    {"unit": "Arthur Kroeger College", "faculty": "Public and Global Affairs", "sites": ["akcollege"], "match": "kroeger"},
-
-    {"unit": "Sprott School of Business", "faculty": "Sprott School of Business", "sites": ["sprott"], "match": "sprott|school of business"}
-  ]
+ "_note": "Faculties and units for the university-wide view. 'sites' are carleton.ca sub-sites whose people listings are read (carleton.ca/<site>/wp-json/wp/v2/cu_people). 'match' is a regular expression tested against the affiliation text on papers. Science people come from config/roster.csv. Edit freely; unknown sites are skipped. 'secondary' units are institutes with cross-appointed members: a person also listed in a home department is assigned to the home department only.",
+ "faculties": [
+  {
+   "name": "Science",
+   "short": "Science"
+  },
+  {
+   "name": "Engineering and Design",
+   "short": "FED"
+  },
+  {
+   "name": "Arts and Social Sciences",
+   "short": "FASS"
+  },
+  {
+   "name": "Public and Global Affairs",
+   "short": "FPGA"
+  },
+  {
+   "name": "Sprott School of Business",
+   "short": "Sprott"
+  }
+ ],
+ "units": [
+  {
+   "unit": "Biochemistry",
+   "faculty": "Science",
+   "match": "biochem"
+  },
+  {
+   "unit": "Biology",
+   "faculty": "Science",
+   "match": "(department|dept\\.?) of biology|biology department"
+  },
+  {
+   "unit": "Chemistry",
+   "faculty": "Science",
+   "match": "(department|dept\\.?) of chemistry|chemistry department|food science"
+  },
+  {
+   "unit": "Computer Science",
+   "faculty": "Science",
+   "match": "school of computer science"
+  },
+  {
+   "unit": "Earth Sciences",
+   "faculty": "Science",
+   "match": "earth sciences"
+  },
+  {
+   "unit": "Environmental & Interdisciplinary Sci",
+   "faculty": "Science",
+   "match": "environmental science|interdisciplinary science"
+  },
+  {
+   "unit": "Health Sciences",
+   "faculty": "Science",
+   "match": "health sciences"
+  },
+  {
+   "unit": "Mathematics & Statistics",
+   "faculty": "Science",
+   "match": "mathematics|statistics"
+  },
+  {
+   "unit": "Neuroscience",
+   "faculty": "Science",
+   "match": "neuroscience"
+  },
+  {
+   "unit": "Nursing",
+   "faculty": "Science",
+   "match": "nursing"
+  },
+  {
+   "unit": "Physics",
+   "faculty": "Science",
+   "match": "physics"
+  },
+  {
+   "unit": "TSE",
+   "faculty": "Science",
+   "match": "technology, society|technology society"
+  },
+  {
+   "unit": "Systems and Computer Engineering",
+   "faculty": "Engineering and Design",
+   "sites": [
+    "sce"
+   ],
+   "match": "systems and computer engineering|systems & computer engineering"
+  },
+  {
+   "unit": "Electronics",
+   "faculty": "Engineering and Design",
+   "sites": [
+    "doe"
+   ],
+   "match": "department of electronics|electronics department"
+  },
+  {
+   "unit": "Mechanical and Aerospace Engineering",
+   "faculty": "Engineering and Design",
+   "sites": [
+    "mae"
+   ],
+   "match": "mechanical (and|&) aerospace"
+  },
+  {
+   "unit": "Civil and Environmental Engineering",
+   "faculty": "Engineering and Design",
+   "sites": [
+    "cee"
+   ],
+   "match": "civil (and|&) environmental engineering|civil engineering"
+  },
+  {
+   "unit": "Architecture and Urbanism",
+   "faculty": "Engineering and Design",
+   "sites": [
+    "architecture"
+   ],
+   "match": "azrieli|architecture"
+  },
+  {
+   "unit": "Industrial Design",
+   "faculty": "Engineering and Design",
+   "match": "industrial design"
+  },
+  {
+   "unit": "Information Technology",
+   "faculty": "Engineering and Design",
+   "match": "information technology"
+  },
+  {
+   "unit": "Biomedical Engineering",
+   "faculty": "Engineering and Design",
+   "match": "biomedical engineering"
+  },
+  {
+   "unit": "Engineering and Design (other)",
+   "faculty": "Engineering and Design",
+   "sites": [
+    "engineering"
+   ],
+   "match": "faculty of engineering",
+   "secondary": true
+  },
+  {
+   "unit": "Cognitive Science",
+   "faculty": "Arts and Social Sciences",
+   "sites": [
+    "cognitivescience"
+   ],
+   "match": "cognitive science",
+   "secondary": true
+  },
+  {
+   "unit": "English",
+   "faculty": "Arts and Social Sciences",
+   "sites": [
+    "english"
+   ],
+   "match": "department of english|english language and literature"
+  },
+  {
+   "unit": "French",
+   "faculty": "Arts and Social Sciences",
+   "sites": [
+    "french"
+   ],
+   "match": "department of french|d[ée]partement de fran[cç]ais"
+  },
+  {
+   "unit": "Geography and Environmental Studies",
+   "faculty": "Arts and Social Sciences",
+   "sites": [
+    "geography"
+   ],
+   "match": "geography"
+  },
+  {
+   "unit": "History",
+   "faculty": "Arts and Social Sciences",
+   "sites": [
+    "history"
+   ],
+   "match": "department of history|history department"
+  },
+  {
+   "unit": "Humanities",
+   "faculty": "Arts and Social Sciences",
+   "sites": [
+    "chum"
+   ],
+   "match": "college of the humanities|religion|greek and roman"
+  },
+  {
+   "unit": "Comparative Literature, Art and Culture",
+   "faculty": "Arts and Social Sciences",
+   "sites": [
+    "icslac"
+   ],
+   "match": "comparative studies in literature",
+   "secondary": true
+  },
+  {
+   "unit": "Art History, Film and Music",
+   "faculty": "Arts and Social Sciences",
+   "sites": [
+    "arthistory",
+    "filmstudies",
+    "music",
+    "ssac"
+   ],
+   "match": "art history|film studies|school of music|studies in art and culture"
+  },
+  {
+   "unit": "Feminist Institute of Social Transformation",
+   "faculty": "Arts and Social Sciences",
+   "sites": [
+    "fist"
+   ],
+   "match": "feminist|women'?s and gender",
+   "secondary": true
+  },
+  {
+   "unit": "Linguistics and Language Studies",
+   "faculty": "Arts and Social Sciences",
+   "sites": [
+    "slals"
+   ],
+   "match": "linguistics|language studies"
+  },
+  {
+   "unit": "Philosophy",
+   "faculty": "Arts and Social Sciences",
+   "sites": [
+    "philosophy"
+   ],
+   "match": "philosophy"
+  },
+  {
+   "unit": "Psychology",
+   "faculty": "Arts and Social Sciences",
+   "sites": [
+    "psychology"
+   ],
+   "match": "psychology"
+  },
+  {
+   "unit": "Sociology and Anthropology",
+   "faculty": "Arts and Social Sciences",
+   "sites": [
+    "socanth"
+   ],
+   "match": "sociology|anthropology"
+  },
+  {
+   "unit": "Indigenous and Canadian Studies",
+   "faculty": "Arts and Social Sciences",
+   "match": "indigenous and canadian studies|canadian studies"
+  },
+  {
+   "unit": "Interdisciplinary Studies",
+   "faculty": "Arts and Social Sciences",
+   "match": "interdisciplinary studies|child studies|human rights",
+   "secondary": true
+  },
+  {
+   "unit": "Economics",
+   "faculty": "Public and Global Affairs",
+   "sites": [
+    "economics"
+   ],
+   "match": "economics"
+  },
+  {
+   "unit": "Political Science",
+   "faculty": "Public and Global Affairs",
+   "sites": [
+    "polisci"
+   ],
+   "match": "political science"
+  },
+  {
+   "unit": "International Affairs (NPSIA)",
+   "faculty": "Public and Global Affairs",
+   "sites": [
+    "npsia"
+   ],
+   "match": "international affairs|norman paterson"
+  },
+  {
+   "unit": "Public Policy and Administration",
+   "faculty": "Public and Global Affairs",
+   "sites": [
+    "sppa",
+    "spa"
+   ],
+   "match": "public policy|public administration"
+  },
+  {
+   "unit": "Social Work",
+   "faculty": "Public and Global Affairs",
+   "sites": [
+    "socialwork"
+   ],
+   "match": "social work"
+  },
+  {
+   "unit": "Journalism and Communication",
+   "faculty": "Public and Global Affairs",
+   "match": "journalism|communication studies|school of journalism and communication"
+  },
+  {
+   "unit": "Law and Legal Studies",
+   "faculty": "Public and Global Affairs",
+   "sites": [
+    "law"
+   ],
+   "match": "law and legal studies|legal studies"
+  },
+  {
+   "unit": "Criminology and Criminal Justice",
+   "faculty": "Public and Global Affairs",
+   "sites": [
+    "criminology"
+   ],
+   "match": "criminology"
+  },
+  {
+   "unit": "Political Economy",
+   "faculty": "Public and Global Affairs",
+   "sites": [
+    "politicaleconomy"
+   ],
+   "match": "political economy",
+   "secondary": true
+  },
+  {
+   "unit": "European, Russian and Eurasian Studies",
+   "faculty": "Public and Global Affairs",
+   "sites": [
+    "eurus"
+   ],
+   "match": "european, russian|eurasian",
+   "secondary": true
+  },
+  {
+   "unit": "Global and International Studies",
+   "faculty": "Public and Global Affairs",
+   "sites": [
+    "globalstudies"
+   ],
+   "match": "global and international studies",
+   "secondary": true
+  },
+  {
+   "unit": "Arthur Kroeger College",
+   "faculty": "Public and Global Affairs",
+   "sites": [
+    "akcollege"
+   ],
+   "match": "kroeger",
+   "secondary": true
+  },
+  {
+   "unit": "Sprott School of Business",
+   "faculty": "Sprott School of Business",
+   "sites": [
+    "sprott"
+   ],
+   "match": "sprott|school of business"
+  }
+ ]
 }

@@ -109,6 +109,11 @@ def directory():
                 break
             time.sleep(0.3)
         log(f"directory: {site}: {n_site} faculty listings")
+    sec = {u["unit"] for u in CFG["units"] if u.get("secondary")}
+    for p in people.values():
+        home = [u for u in p["units"] if u not in sec]
+        if home:
+            p["units"] = home
     out = list(people.values())
     log(f"directory: {len(out)} faculty across {len(site_unit)} department sites")
     return out
