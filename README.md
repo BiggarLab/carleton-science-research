@@ -51,17 +51,22 @@ To send from an Outlook or Gmail account instead of Resend, skip `RESEND_API_KEY
 3. **Settings → Limits:** set a monthly spend limit, for example US$20.
 4. **API Keys → Create Key**, name it `carleton-science-digest`, copy it once, and paste it into the GitHub secret above.
 
-Expected cost: the weekly digest is a few cents a week, plus about one cent per web search in the innovation screen. Ask AI on the public site is about 5 to 10 cents a question if you turn it on.
+Expected cost: the weekly digest is a few cents a week, plus about one cent per web search in the innovation screen. The Assistant tab is about 5 to 15 cents a question.
 
 ## Keeping the roster current
 Edit `config/roster.csv` on GitHub (click the file, then the pencil). To add someone, add a row with name, `sort_name` as "Last, First", units separated by semicolons, rank, stream and roles. Leave `openalex_ids` blank; the next run looks them up and writes a note saying "please check". Adding their ORCID makes the match exact. To remove someone, delete the row.
 
-## Optional: Ask AI on the public site
-Inside Claude the dashboard's Ask AI uses each viewer's own Claude account. On the public site it needs a small relay so your API key stays hidden:
-1. Create a free Cloudflare account, then **Workers → Create → Hello World**, and replace its code with `worker/worker.js`.
-2. In the Worker's **Settings → Variables**, add the secret `ANTHROPIC_API_KEY` and the variable `ALLOWED_ORIGIN` = `https://biggarlab.github.io`.
-3. Optional daily cap: create a KV namespace, bind it as `LIMITS`, and set `DAILY_LIMIT` (default 300).
-4. Put the Worker's URL in `docs/index.html` on the line `const AI_ENDPOINT = "";` and commit.
+## The research assistant (AI chat)
+The **Assistant** tab is a chat that searches the Faculty publication data and, when you allow it, the web. Use it to match researchers to an industry partner, build a team for a grant call, prep for a meeting, or find committee members. Follow-up questions keep the conversation's context.
+
+On the public site it uses **your own Claude API key, saved in your browser only**:
+1. Open the dashboard, go to **Assistant**, paste your key (from platform.claude.com → API Keys) and click **Save key**.
+2. The key is sent only to Anthropic. It is never in this repo, the website code, or GitHub. Other visitors see a "connect your key" box and can't use yours.
+3. Untick *Remember on this device* on a shared computer; the key is then forgotten when the tab closes. **Forget key** removes it at any time.
+
+Each question costs roughly 5 to 15 cents (Sonnet, with a few web searches). The spending limit you set on platform.claude.com caps the total.
+
+Optional alternative: to let colleagues use the assistant without their own key, deploy `worker/worker.js` as a Cloudflare Worker holding the key, then put its URL in `docs/index.html` on the line `const AI_ENDPOINT = "";`.
 
 ## Running it yourself
 ```

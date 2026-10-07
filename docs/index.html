@@ -193,7 +193,27 @@ td small,.muted{color:var(--muted)}
 .examples{display:flex;flex-wrap:wrap;gap:6px}
 .ex-q{border:1px dashed var(--line);background:none;border-radius:4px;padding:5px 9px;font-size:12.5px;cursor:pointer;text-align:left;color:var(--ink-2)}
 .ex-q:hover{border-color:var(--accent);color:var(--ink)}
-.toolog{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+.toolog{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);min-height:1em}
+.chat{min-height:560px}
+.chat-log{display:flex;flex-direction:column;gap:14px;flex:1;overflow-y:auto;max-height:62vh;padding-right:4px}
+.msg{max-width:88%;font-size:14px;line-height:1.55}
+.msg.user{align-self:flex-end;background:var(--ink);color:var(--surface);padding:9px 13px;border-radius:10px 10px 2px 10px;white-space:pre-wrap}
+.msg.bot{align-self:flex-start;max-width:100%}
+.msg.bot p{margin:0 0 .65em}.msg.bot ul,.msg.bot ol{margin:0 0 .65em;padding-left:1.3em}.msg.bot li{margin:0 0 .3em}
+.msg.bot h4{font-size:14px;margin:.9em 0 .35em;font-family:var(--f-display);letter-spacing:.02em}
+.msg.bot a{color:var(--accent)}
+.msg .mtools{display:flex;gap:10px;margin-top:4px}
+.msg .mtools button{border:0;background:none;padding:0;font-size:11.5px;color:var(--muted);cursor:pointer;text-decoration:underline}
+.chat-empty{color:var(--muted);font-size:13px;padding:24px 4px}
+.chat-form{display:flex;gap:8px;align-items:flex-end;border-top:1px solid var(--line-2);padding-top:12px}
+.chat-form textarea{flex:1;resize:vertical;min-height:52px}
+.chat-actions{display:flex;flex-direction:column;gap:6px}
+.keybox{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:4px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;font-size:13px;background:var(--bg)}
+.keybox p{margin:0}
+.starters{display:flex;flex-direction:column;gap:6px}
+.starter{border:1px solid var(--line);background:var(--surface);border-radius:4px;padding:8px 10px;text-align:left;cursor:pointer;font-size:12.5px;color:var(--ink-2)}
+.starter b{display:block;color:var(--ink);font-size:13px;margin-bottom:2px}
+.starter:hover{border-color:var(--accent)}
 .note{font-size:12px;color:var(--muted)}
 .qnote{font-size:11.5px;color:var(--muted);font-style:italic}
 .qnote:empty{display:none}
@@ -268,7 +288,7 @@ td small,.muted{color:var(--muted)}
       <button class="tab" role="tab" data-t="people">People</button>
       <button class="tab" role="tab" data-t="expertise">Find expertise</button>
       <button class="tab" role="tab" data-t="pubs">Publications</button>
-      <button class="tab" role="tab" data-t="ask" id="tab-ask">Ask<span class="ai">AI</span></button>
+      <button class="tab" role="tab" data-t="ask" id="tab-ask">Assistant<span class="ai">AI</span></button>
     </nav>
 
     <div id="loading" class="loading">Loading publication data…</div>
@@ -356,16 +376,35 @@ td small,.muted{color:var(--muted)}
     </section>
 
     <section data-p="ask" hidden>
-      <div class="panel">
-        <h2>Ask about Faculty research</h2>
-        <p class="sub">Claude answers by searching the publication data behind this page. Inside Claude it runs on your own Claude account and asks your permission the first time. Check answers against the papers before relying on them.</p>
-        <textarea class="inp" id="ask-q" rows="3" placeholder="e.g. Who in Biology and Chemistry works on antimicrobial resistance, and have they published together?"></textarea>
-        <div class="examples" id="ask-ex"></div>
-        <div style="display:flex;gap:8px"><button class="btn pri" id="ask-go">Ask</button><button class="btn" id="ask-stop" hidden>Stop</button></div>
-        <div class="toolog" id="ask-log"></div>
-        <div class="ask-out" id="ask-out"></div>
+      <div class="grid g3">
+        <div class="panel chat">
+          <div class="ph"><h2>Research assistant</h2><div style="display:flex;gap:8px;align-items:center"><span class="note" id="ai-mode"></span><button class="btn" id="chat-new">New chat</button></div></div>
+          <div id="keybox" class="keybox" hidden>
+            <p><b>Connect your Claude API key.</b> It is stored only in this browser and sent only to Anthropic, never to this website or GitHub. Other visitors can't see or use it.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap"><input class="inp" id="key-in" type="password" autocomplete="off" placeholder="sk-ant-..." style="flex:1;min-width:220px"><button class="btn pri" id="key-save">Save key</button></div>
+            <label class="tog"><input type="checkbox" id="key-remember" checked>Remember on this device</label>
+            <p class="note">Create a key at platform.claude.com under API Keys. Each question costs roughly 5 to 15 cents.</p>
+          </div>
+          <div id="chat-log" class="chat-log" aria-live="polite"></div>
+          <div class="toolog" id="ask-log"></div>
+          <form id="chat-form" class="chat-form">
+            <textarea class="inp" id="ask-q" rows="3" placeholder="Ask about researchers, a company, a grant call or a meeting. Shift+Enter for a new line."></textarea>
+            <div class="chat-actions"><button class="btn pri" id="ask-go" type="submit">Send</button><button class="btn" id="ask-stop" type="button" hidden>Stop</button></div>
+          </form>
+        </div>
+        <div class="panel">
+          <h2>Start from a task</h2>
+          <p class="sub">Click one, fill in the bracket, and send.</p>
+          <div class="starters" id="ask-ex"></div>
+          <div class="dsec">
+            <h3>Settings</h3>
+            <label class="tog">Model <select class="inp" id="ai-model" style="width:auto;padding:3px 6px"><option value="claude-sonnet-5-5">Sonnet 5.5 (fast, default)</option><option value="claude-opus-5-5">Opus 5.5 (deeper, about 2x cost)</option></select></label>
+            <label class="tog"><input type="checkbox" id="ai-web" checked>Let it search the web for companies and grant programs</label>
+            <div class="note" id="key-status"></div>
+          </div>
+          <p class="note">Answers come from the publication data behind this page plus any web pages it reads. Check names and papers before acting on them.</p>
+        </div>
       </div>
-      <div class="panel" id="ask-off" hidden><p class="note">AI answers are not available in this view. Open the dashboard inside Claude to use them.</p></div>
     </section>
   </main>
 </div>
@@ -806,28 +845,48 @@ function openProfile(i){
   dr.onclick = e => { const b = e.target.closest("[data-p]"); if (b){ openProfile(+b.dataset.p); return; } const c = e.target.closest(".chip[data-q]"); if (c){ closeDrawer(); setTopic(c.dataset.q.toLowerCase()); } };
   $("#dr-x").onclick = closeDrawer;
   $("#dr-filter").onclick = () => { S.person = i; $("#f-person").value = p.n; closeDrawer(); update(); };
-  if (sample || AI_ENDPOINT){ $("#dr-ai-sec").hidden = false; $("#dr-ai").onclick = () => summarizePerson(i, st); }
+  $("#dr-ai-sec").hidden = aiMode() === "none"; $("#dr-ai").onclick = () => summarizePerson(i, st);
 }
 function closeDrawer(){ $("#drawer").classList.remove("on"); $("#drawer").setAttribute("aria-hidden","true"); $("#scrim").classList.remove("on"); }
 $("#scrim").onclick = closeDrawer; document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(); });
 
 /* ---------- AI ---------- */
+/* Three ways to reach Claude:
+   1. inside claude.ai: the sample capability (viewer's own Claude account)
+   2. on GitHub Pages with the owner's API key saved in this browser: direct calls to api.anthropic.com
+   3. optional Worker relay at AI_ENDPOINT (see README) */
 let sample = null;
-/* aiCall: Claude inside claude.ai (sample capability), or the Worker relay on GitHub Pages. Same tools either way. */
-async function aiCall(prompt, { tools, onText, signal } = {}){
-  if (sample) return sample(prompt, { tools, onText, signal, cache: !tools });
-  if (!AI_ENDPOINT) throw { code: "sampling_disabled" };
-  const msgs = [{ role: "user", content: prompt }];
-  const spec = (tools || []).map(t => ({ name: t.name, description: t.description, input_schema: t.inputSchema || { type: "object", properties: {} } }));
-  for (let round = 0; round < 8; round++){
-    let r;
-    try { r = await fetch(AI_ENDPOINT, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ messages: msgs, tools: spec }), signal }); }
-    catch (e) { throw { code: signal && signal.aborted ? "cancelled" : "upstream_error" }; }
-    if (!r.ok) throw { code: r.status === 429 ? "rate_limited" : "upstream_error" };
-    const resp = await r.json();
-    msgs.push({ role: "assistant", content: resp.content });
-    const text = resp.content.filter(b => b.type === "text").map(b => b.text).join("");
-    if (text && onText) onText({ text, delta: text });
+const KEY_SLOT = "cs-research-claude-key";
+let memKey = "";
+function getKey(){ if (memKey) return memKey; try { return localStorage.getItem(KEY_SLOT) || sessionStorage.getItem(KEY_SLOT) || ""; } catch { return ""; } }
+function setKey(k, remember){ memKey = k; try { localStorage.removeItem(KEY_SLOT); sessionStorage.removeItem(KEY_SLOT); (remember ? localStorage : sessionStorage).setItem(KEY_SLOT, k); } catch {} }
+function forgetKey(){ memKey = ""; try { localStorage.removeItem(KEY_SLOT); sessionStorage.removeItem(KEY_SLOT); } catch {} }
+const aiMode = () => sample ? "claude" : getKey() ? "key" : AI_ENDPOINT ? "relay" : "none";
+const toolSpec = tools => (tools || []).map(t => ({ name: t.name, description: t.description, input_schema: t.inputSchema || { type: "object", properties: {} } }));
+const WEB_TOOL = { type: "web_search_20250305", name: "web_search", max_uses: 5, user_location: { type: "approximate", city: "Ottawa", region: "Ontario", country: "CA", timezone: "America/Toronto" } };
+
+async function apiTurn(body, signal){
+  const mode = aiMode(); let r;
+  try {
+    if (mode === "key") r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", signal, body: JSON.stringify(body),
+      headers: { "content-type": "application/json", "x-api-key": getKey(), "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" } });
+    else r = await fetch(AI_ENDPOINT, { method: "POST", signal, headers: { "content-type": "application/json" }, body: JSON.stringify({ messages: body.messages, tools: body.tools }) });
+  } catch (e) { throw { code: signal && signal.aborted ? "cancelled" : "network" }; }
+  if (!r.ok){ let m = ""; try { m = (await r.json()).error?.message || ""; } catch {} throw { code: r.status === 401 ? "bad_key" : r.status === 429 ? "rate_limited" : r.status === 529 ? "overloaded" : "upstream_error", message: m }; }
+  return r.json();
+}
+/* Runs a tool loop on `messages` (mutated in place, so a chat keeps its history). */
+async function apiLoop(messages, { system, tools, web, model, signal, onStatus } = {}){
+  const spec = toolSpec(tools); if (web && aiMode() === "key") spec.push(WEB_TOOL);
+  let text = "";
+  for (let round = 0; round < 12; round++){
+    const body = { model: model || "claude-sonnet-5-5", max_tokens: 4000, messages };
+    if (system) body.system = system; if (spec.length) body.tools = spec;
+    const resp = await apiTurn(body, signal);
+    messages.push({ role: "assistant", content: resp.content });
+    resp.content.forEach(b => { if (b.type === "server_tool_use" && b.name === "web_search" && onStatus) onStatus(`searching the web for “${(b.input || {}).query || ""}”`); });
+    text = resp.content.filter(b => b.type === "text").map(b => b.text).join("");
+    if (resp.stop_reason === "pause_turn") continue;
     if (resp.stop_reason !== "tool_use") return { text, truncated: resp.stop_reason === "max_tokens" };
     const results = [];
     for (const b of resp.content.filter(b => b.type === "tool_use")){
@@ -835,17 +894,43 @@ async function aiCall(prompt, { tools, onText, signal } = {}){
       try { out = t ? await t.execute(b.input || {}, { signal }) : "Unknown tool"; } catch (e) { out = "Error: " + (e.message || e); }
       results.push({ type: "tool_result", tool_use_id: b.id, content: (typeof out === "string" ? out : JSON.stringify(out)).slice(0, 30000) });
     }
-    msgs.push({ role: "user", content: results });
+    messages.push({ role: "user", content: results });
   }
-  throw { code: "upstream_error" };
+  return { text, truncated: true };
 }
-const mdLite = t => esc(t).split(/\n{2,}/).map(b => /^\s*[-*] /m.test(b) ? `<ul>${b.split(/\n/).filter(l => l.trim()).map(l => `<li>${l.replace(/^\s*[-*]\s+/, "")}</li>`).join("")}</ul>` : `<p>${b.replace(/\n/g, "<br>")}</p>`).join("").replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
-function errCopy(c){ return ({ not_granted:"You declined AI access for this page.", rate_limited:"Too many requests just now. Try again in a minute.", sampling_disabled:"AI answers are turned off for your account.", prompt_too_large:"That request was too large. Narrow the filters and try again.", refused:"Claude declined to answer that.", session_expired:"Your session expired. Reload the page." })[c] || "Something went wrong getting an answer. Try again."; }
+/* One-shot call used by the profile summary button. */
+async function aiCall(prompt, { tools, onText, signal } = {}){
+  if (sample) return sample(prompt, { tools, onText, signal, cache: !tools });
+  if (aiMode() === "none") throw { code: "no_key" };
+  const r = await apiLoop([{ role: "user", content: prompt }], { tools, signal, model: $("#ai-model").value });
+  if (onText) onText({ text: r.text, delta: r.text }); return r;
+}
+
+function md(t){
+  const inline = x => esc(x).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  const out = []; let list = null;
+  const close = () => { if (list){ out.push(`<${list.t}>${list.items.map(i => `<li>${i}</li>`).join("")}</${list.t}>`); list = null; } };
+  let para = [];
+  const flush = () => { if (para.length){ out.push(`<p>${para.join("<br>")}</p>`); para = []; } };
+  for (const raw of String(t).split("\n")){
+    const l = raw.trimEnd();
+    let m;
+    if (!l.trim()){ flush(); close(); continue; }
+    if ((m = l.match(/^#{1,4}\s+(.*)/))){ flush(); close(); out.push(`<h4>${inline(m[1])}</h4>`); continue; }
+    if ((m = l.match(/^\s*[-*•]\s+(.*)/))){ flush(); if (!list || list.t !== "ul"){ close(); list = { t: "ul", items: [] }; } list.items.push(inline(m[1])); continue; }
+    if ((m = l.match(/^\s*\d+[.)]\s+(.*)/))){ flush(); if (!list || list.t !== "ol"){ close(); list = { t: "ol", items: [] }; } list.items.push(inline(m[1])); continue; }
+    close(); para.push(inline(l));
+  }
+  flush(); close(); return out.join("");
+}
+const mdLite = md;
+function errCopy(c, m){ return ({ not_granted:"You declined AI access for this page.", rate_limited:"Too many requests just now. Wait a minute and try again.", overloaded:"Claude is busy right now. Try again in a minute.", sampling_disabled:"AI answers are turned off for your account.", prompt_too_large:"That conversation got too long. Start a new chat.", refused:"Claude declined to answer that.", session_expired:"Your session expired. Reload the page.", bad_key:"Your API key was rejected. Check it in Settings or paste a new one.", no_key:"Add your Claude API key to use the assistant.", network:"Could not reach Claude. Check your connection and try again." })[c] || ("Something went wrong getting an answer." + (m ? " " + m : "")); }
+
 async function summarizePerson(i, st){
   const out = $("#dr-ai-out"), b = $("#dr-ai"); b.disabled = true; out.innerHTML = `<p class="think">Thinking…</p>`;
   const p = P[i]; const titles = [...st.mine].sort((a,b)=>b.d.localeCompare(a.d)).slice(0, 40).map(w => `- ${w.y}: ${w.t} (${w.v || "n/a"}; topic: ${w.T ? w.T[0] : "n/a"})`).join("\n");
-  try { await aiCall(`You are helping an Associate Dean of Research at Carleton University's Faculty of Science get to know a colleague's work. Using only the publication list below, write a plain-language summary of ${p.n}'s research (${p.u.join(", ")}, ${p.rk}) in 3 short paragraphs: the main research themes, the methods or systems they use, and what kinds of committees, partnerships or cross-unit collaborations their expertise could suit. Do not invent facts beyond the titles. Plain prose, no headings, no em dashes.\n\nPublications ${S.y0}-${S.y1}:\n${titles}`, { onText: ({ text }) => out.innerHTML = mdLite(text) }); }
-  catch (e) { out.innerHTML = e.text ? mdLite(e.text) : ""; out.insertAdjacentHTML("beforeend", `<p class="note">${esc(errCopy(e.code))}</p>`); }
+  try { await aiCall(`You are helping an Associate Dean of Research at Carleton University's Faculty of Science get to know a colleague's work. Using only the publication list below, write a plain-language summary of ${p.n}'s research (${p.u.join(", ")}, ${p.rk}) in 3 short paragraphs: the main research themes, the methods or systems they use, and what kinds of committees, partnerships or cross-unit collaborations their expertise could suit. Do not invent facts beyond the titles. Plain prose, no headings, no em dashes.\n\nPublications ${S.y0}-${S.y1}:\n${titles}`, { onText: ({ text }) => out.innerHTML = md(text) }); }
+  catch (e) { out.innerHTML = e.text ? md(e.text) : ""; out.insertAdjacentHTML("beforeend", `<p class="note">${esc(errCopy(e.code, e.message))}</p>`); }
   finally { b.disabled = false; }
 }
 const TOOLS = [
@@ -878,26 +963,85 @@ const TOOLS = [
         most_active: Object.entries(who).sort((a,b) => b[1]-a[1]).slice(0, 12), countries: Object.entries(ct).sort((a,b) => b[1]-a[1]).slice(0, 10),
         most_cited: [...ws].sort((a,b) => b.c - a.c).slice(0, 8).map(w => ({ title: w.t, year: w.y, citations: w.c, authors: w.f.map(i => P[i].n) })) }; } }
 ];
-function log(s){ $("#ask-log").textContent = "… " + s; }
+function log(s){ $("#ask-log").textContent = s ? "… " + s : ""; }
+
+/* ---------- chat ---------- */
+let chatMsgs = [];      // full API history (key / relay modes)
+let chatTurns = [];     // plain text turns (inside Claude)
 let askCtl = null;
-async function ask(q){
-  if (!q.trim() || !(sample || AI_ENDPOINT)) return;
-  const out = $("#ask-out"); out.innerHTML = `<p class="think">Thinking…</p>`; $("#ask-log").textContent = ""; $("#ask-go").disabled = true; $("#ask-stop").hidden = false;
-  askCtl = new AbortController();
-  const ctx = `Unit list: ${UNITS.join(", ")}. Faculty roster: ${P.length} people. Data: OpenAlex, ${Y0} to ${GEN}; large collaborations (100+ authors) and preprints are excluded from searches unless noted.`;
-  try {
-    await aiCall(`You answer questions for the Associate Dean of Research in Carleton University's Faculty of Science about what Faculty members publish. Use the tools to look things up; do not rely on memory about these people. ${ctx}\nWrite plainly and briefly, in prose or a short list. Name people with their unit. Say when the data is thin or a name match may be wrong. No em dashes.\n\nQuestion: ${q}`,
-      { tools: TOOLS, signal: askCtl.signal, onText: ({ text }) => { out.innerHTML = mdLite(text); } });
-    $("#ask-log").textContent = "";
-  } catch (e) { out.innerHTML = e.text ? mdLite(e.text) : ""; if (e.code !== "cancelled") out.insertAdjacentHTML("beforeend", `<p class="note">${esc(errCopy(e.code))}</p>`); $("#ask-log").textContent = ""; }
-  finally { $("#ask-go").disabled = false; $("#ask-stop").hidden = true; }
+function chatSystem(){
+  return `You are the research assistant for the Associate Dean of Research, International and Innovation in Carleton University's Faculty of Science (Ottawa, Canada). You help with matching researchers to industry partners and grant opportunities, preparing for meetings at short notice, and finding expertise for committees.
+
+Faculty data: ${P.length} faculty in these units: ${UNITS.join(", ")}. Publications from OpenAlex, ${Y0} to ${GEN}. Large collaborations (100+ authors) and preprints are excluded from searches. Use the tools for anything about Carleton people or papers; never rely on memory about them, and never invent names, papers or numbers.
+${aiMode() === "key" ? "You can search the web. Use it to learn what a company does (products, R&D focus, Canadian presence) or what a grant program requires (eligibility, partner rules, team size, deadlines) before matching researchers to it. Say where facts came from." : "Web search is not available in this view; say so if a question needs current outside information."}
+
+How to work:
+- Industry partner: understand the company first, then run find_experts on several different keyword angles (their products, the underlying science, the methods), then read profiles of the strongest candidates. Give a ranked shortlist with why each fits, two or three supporting paper titles with years, and a suggested opening angle. Say plainly if the fit is weak.
+- Grant opportunity: check the program rules, then propose a team that covers the required expertise across units and ranks, name the gaps, and note any partner or eligibility requirements. Do not guess anyone's demographics.
+- Meeting prep: give a short brief: who they are, links to our Faculty (people, papers, shared topics), and three things worth raising.
+- Committees: respect any exclusions asked for (for example skip chairs and directors) and aim for a mix of units and ranks.
+Style: plain, direct Canadian English for a busy dean. Short paragraphs and short lists. Name each Carleton person with their unit. Flag thin evidence or possible name-matching errors. No em dashes, no hype.`;
 }
-const EXAMPLES = ["Who in Biology and Chemistry works on antimicrobial resistance, and have they published together?", "Summarize what Earth Sciences published in 2025 in plain language.", "Suggest four people from different units with machine learning experience for a data-science working group. Skip chairs.", "Which of our researchers publish with partners in Germany, and on what?"];
-$("#ask-ex").innerHTML = EXAMPLES.map(e => `<button class="ex-q">${esc(e)}</button>`).join("");
-$("#ask-ex").onclick = e => { const b = e.target.closest(".ex-q"); if (b){ $("#ask-q").value = b.textContent; ask(b.textContent); } };
-$("#ask-go").onclick = () => ask($("#ask-q").value);
+function renderChat(){
+  const log_ = $("#chat-log");
+  if (!chatTurns.length){ log_.innerHTML = `<div class="chat-empty">Ask anything about Faculty research, or start from a task on the right. Follow-up questions keep the context of the conversation.</div>`; return; }
+  log_.innerHTML = chatTurns.map((t, k) => t.role === "user" ? `<div class="msg user">${esc(t.content)}</div>`
+    : `<div class="msg bot">${t.pending ? `<p class="think">${esc(t.content || "Thinking…")}</p>` : md(t.content)}${!t.pending && t.content ? `<div class="mtools"><button data-copy="${k}">Copy</button></div>` : ""}${t.error ? `<p class="note">${esc(t.error)}</p>` : ""}</div>`).join("");
+  log_.scrollTop = log_.scrollHeight;
+}
+$("#chat-log").onclick = async e => { const b = e.target.closest("[data-copy]"); if (!b) return; const t = chatTurns[+b.dataset.copy];
+  try { await navigator.clipboard.writeText(t.content); b.textContent = "Copied"; } catch { b.textContent = "Copy blocked"; } setTimeout(() => b.textContent = "Copy", 1500); };
+async function ask(q){
+  q = q.trim(); if (!q) return;
+  const mode = aiMode();
+  if (mode === "none"){ $("#keybox").hidden = false; $("#key-in").focus(); return; }
+  $("#ask-q").value = "";
+  chatTurns.push({ role: "user", content: q }); const bot = { role: "assistant", content: "", pending: true }; chatTurns.push(bot); renderChat();
+  $("#ask-go").disabled = true; $("#ask-stop").hidden = false; askCtl = new AbortController();
+  try {
+    if (mode === "claude"){
+      const turns = [{ role: "user", content: chatSystem() + "\n\nReply 'Ready.' and wait for the question." }, { role: "assistant", content: "Ready." }]
+        .concat(chatTurns.filter(t => t !== bot && !t.error).map(t => ({ role: t.role, content: t.content })));
+      const r = await sample(turns, { tools: TOOLS, signal: askCtl.signal, cache: false, onText: ({ text }) => { bot.content = text; bot.pending = false; renderChat(); } });
+      bot.content = r.text;
+    } else {
+      chatMsgs.push({ role: "user", content: q });
+      const r = await apiLoop(chatMsgs, { system: chatSystem(), tools: TOOLS, web: $("#ai-web").checked, model: $("#ai-model").value, signal: askCtl.signal, onStatus: log });
+      bot.content = r.text || "(No answer came back.)"; if (r.truncated) bot.error = "The answer was cut short. Ask it to continue.";
+    }
+  } catch (e) {
+    bot.content = e.text || bot.content || ""; if (e.code !== "cancelled") bot.error = errCopy(e.code, e.message); else bot.error = "Stopped.";
+    if (e.code === "bad_key"){ $("#keybox").hidden = false; }
+    if (mode !== "claude" && chatMsgs.length && chatMsgs[chatMsgs.length - 1].role === "user" && typeof chatMsgs[chatMsgs.length - 1].content === "string") chatMsgs.pop();
+  } finally { bot.pending = false; log(""); renderChat(); $("#ask-go").disabled = false; $("#ask-stop").hidden = true; updateAiUi(); }
+}
+const STARTERS = [
+  ["Industry partner fit", "I'm meeting [company name]. Look up what they do, then tell me which Carleton Science researchers are the best fit to partner with them. Rank the top five with evidence and an opening angle for each."],
+  ["Grant team", "Help me build a team for [grant program, e.g. NSERC Alliance Missions]. Check the program requirements, then suggest researchers across units, and name any gaps."],
+  ["Meeting prep", "I have a meeting with [person or organization] shortly. Give me a one-page brief: who they are, our Faculty's links to them, and three things worth raising."],
+  ["Committee", "Suggest five people for a [topic] committee from different units, skipping chairs and directors, with a mix of ranks. Explain each pick in one line."],
+  ["Unit snapshot", "Summarize what [unit] has published this year in plain language, and point out its emerging strengths."],
+];
+$("#ask-ex").innerHTML = STARTERS.map(([h, t], k) => `<button class="starter" data-k="${k}"><b>${esc(h)}</b>${esc(t)}</button>`).join("");
+$("#ask-ex").onclick = e => { const b = e.target.closest(".starter"); if (!b) return; const t = STARTERS[+b.dataset.k][1]; const ta = $("#ask-q"); ta.value = t; ta.focus();
+  const i = t.indexOf("["), j = t.indexOf("]"); if (i >= 0) ta.setSelectionRange(i, j + 1); };
+$("#chat-form").onsubmit = e => { e.preventDefault(); ask($("#ask-q").value); };
+$("#ask-q").onkeydown = e => { if (e.key === "Enter" && !e.shiftKey){ e.preventDefault(); ask($("#ask-q").value); } };
 $("#ask-stop").onclick = () => askCtl && askCtl.abort();
-$("#ask-q").onkeydown = e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) ask($("#ask-q").value); };
+$("#chat-new").onclick = () => { if (askCtl) askCtl.abort(); chatMsgs = []; chatTurns = []; log(""); renderChat(); };
+$("#key-save").onclick = () => { const k = $("#key-in").value.trim(); if (!/^sk-ant-/.test(k)){ $("#key-in").setCustomValidity("Claude API keys start with sk-ant-"); $("#key-in").reportValidity(); return; }
+  $("#key-in").setCustomValidity(""); setKey(k, $("#key-remember").checked); $("#key-in").value = ""; updateAiUi(); };
+function updateAiUi(){
+  const mode = aiMode();
+  $("#ai-mode").textContent = { claude: "Using your Claude account", key: "Using your API key", relay: "Using the Faculty relay", none: "" }[mode];
+  $("#keybox").hidden = mode !== "none";
+  $("#ai-web").disabled = mode !== "key"; $("#ai-model").disabled = mode === "claude";
+  $("#key-status").innerHTML = mode === "key" ? `API key saved in this browser. <button class="btn" id="key-forget" style="padding:2px 8px;font-size:11.5px">Forget key</button>`
+    : mode === "claude" ? "Running inside Claude on your own account." : mode === "relay" ? "" : "No API key saved yet.";
+  const f = $("#key-forget"); if (f) f.onclick = () => { forgetKey(); updateAiUi(); };
+  const dr = $("#dr-ai-sec"); if (dr) dr.hidden = mode === "none";
+}
+renderChat();
 
 /* ---------- boot ---------- */
 (async function(){
@@ -915,8 +1059,9 @@ $("#ask-q").onkeydown = e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)
   let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { if (["overview","network","world"].includes(S.tab)) render(); }, 200); });
 })();
 (async function(){
-  if (!window.claude || !claude.use) { if (!AI_ENDPOINT) $("#tab-ask").hidden = true; return; }
-  claude.use("sample").then(s => { sample = s; if (!s && !AI_ENDPOINT){ $("#tab-ask").hidden = true; } });
+  updateAiUi();
+  if (!window.claude || !claude.use) return;
+  claude.use("sample").then(s => { sample = s; updateAiUi(); });
   claude.use("downloads").then(d => { downloads = d; });
 })();
 </script>
