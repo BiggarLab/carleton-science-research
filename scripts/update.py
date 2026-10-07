@@ -379,16 +379,19 @@ def send_email(issue, web_url, dash_url):
     subject = f"Carleton Science research digest: {week_label(issue)}"
     html_body, text_body = render_email(issue, web_url, dash_url, f"{dash_url}logo.png" if dash_url else ""), render_text(issue, dash_url)
     if os.environ.get("RESEND_API_KEY"):
-        body = {"from": os.environ.get("DIGEST_FROM", "Carleton Science Digest <onboarding@resend.dev>"), "to": [x.strip() for x in to.split(",")],
+        body = {"from": os.environ.get("DIGEST_FROM") or "Carleton Science Digest <onboarding@resend.dev>", "to": [x.strip() for x in to.split(",") if x.strip()],
                 "subject": subject, "html": html_body, "text": text_body}
         req = urllib.request.Request("https://api.resend.com/emails", data=json.dumps(body).encode(),
                                      headers={"Authorization": f"Bearer {os.environ['RESEND_API_KEY']}", "Content-Type": "application/json", "User-Agent": "carleton-science-digest"})
-        with urllib.request.urlopen(req, timeout=60) as r:
-            log("email sent via Resend:", r.read().decode()[:200])
+        try:
+            with urllib.request.urlopen(req, timeout=60) as r:
+                log("email sent via Resend:", r.read().decode()[:200])
+        except urllib.error.HTTPError as e:
+            raise RuntimeError(f"Resend refused the email ({e.code}): {e.read().decode()[:500]}")
         return
     if os.environ.get("SMTP_HOST"):
         msg = MIMEMultipart("alternative")
-        msg["Subject"], msg["From"], msg["To"] = subject, os.environ.get("DIGEST_FROM", os.environ["SMTP_USER"]), to
+        msg["Subject"], msg["From"], msg["To"] = subject, os.environ.get("DIGEST_FROM") or os.environ["SMTP_USER"], to
         msg.attach(MIMEText(text_body, "plain", "utf-8"))
         msg.attach(MIMEText(html_body, "html", "utf-8"))
         with smtplib.SMTP(os.environ["SMTP_HOST"], int(os.environ.get("SMTP_PORT", "587"))) as s:
