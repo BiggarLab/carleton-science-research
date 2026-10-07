@@ -90,11 +90,12 @@ function toOpenAIInput(messages) {
 }
 
 async function openaiCall(env, payload) {
-  const base = (env.OPENAI_BASE_URL || "https://api.openai.com/v1").replace(/\/+$/, "");
+  const base = (env.OPENAI_BASE_URL || "https://api.openai.com/v1").trim().replace(/\/+$/, "");
+  const key = (env.OPENAI_API_KEY || "").trim();
   const azure = /azure\.com/i.test(base);
   const r = await fetch(`${base}/responses`, {
     method: "POST",
-    headers: { ...(azure ? { "api-key": env.OPENAI_API_KEY } : { "Authorization": `Bearer ${env.OPENAI_API_KEY}` }), "content-type": "application/json" },
+    headers: { ...(azure ? { "api-key": key } : { "Authorization": `Bearer ${key}` }), "content-type": "application/json" },
     body: JSON.stringify(payload),
   });
   let d = {};
