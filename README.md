@@ -19,7 +19,11 @@ This is a tool for discovery, not assessment. Counts come from OpenAlex and miss
 | `docs/data.json` | Publication data, rebuilt weekly |
 | `docs/digest/` | Latest digest, plus `issues/` archive |
 | `config/roster.csv` | Faculty list: edit this when people join or leave |
-| `config/innovation_criteria.md` | Rules for the innovation and partnering section |
+| `config/innovation_criteria.md` | Rules for the innovation section and the quarterly brief |
+| `config/cv_signals.example.csv` | Format for adding CV data (grants, theses, patents) |
+| `scripts/signals.py` | Partnership and IP signals |
+| `docs/signals.json` | Ranked research lines, rebuilt weekly |
+| `docs/brief/` | Quarterly partnership briefs |
 | `config/settings.json` | Site address and Claude model |
 | `scripts/update.py` | The weekly job |
 | `state/` | Which papers have already been in a digest, and each issue's content |
@@ -55,6 +59,23 @@ Expected cost: the weekly digest is a few cents a week, plus about one cent per 
 
 ## Keeping the roster current
 Edit `config/roster.csv` on GitHub (click the file, then the pencil). To add someone, add a row with name, `sort_name` as "Last, First", units separated by semicolons, rank, stream and roles. Leave `openalex_ids` blank; the next run looks them up and writes a note saying "please check". Adding their ORCID makes the match exact. To remove someone, delete the row.
+
+## Partnership signals and the quarterly brief
+The **Partnership signals** tab ranks *research lines* (one researcher working on one topic, two or more papers in three years) by evidence that industry already cares:
+
+| Signal | Source | Needs |
+|---|---|---|
+| Companies on the author list | OpenAlex | nothing extra |
+| Companies whose papers cite our work | OpenAlex | nothing extra |
+| Industry funding (Mitacs, NSERC Alliance/CRD/Engage, OCI, company funders) | OpenAlex funders and award IDs | nothing extra |
+| Preprints in the last 12 months (patent grace period still open) | OpenAlex | nothing extra |
+| Partner organizations on the researcher's NSERC grants | NSERC open data | used automatically when NSERC's files are reachable; otherwise drop the yearly `*_Expenditures.csv` and `*_PARTNER.csv` files from open.canada.ca into `config/nserc/` |
+| Carleton patents, and companies patenting in a topic | Lens.org | free token: request one at lens.org (Account → API access), then add the secret `LENS_API_TOKEN` |
+| Grants, theses, patents from CVs | `config/cv_signals.csv` | your CV dataset, in the format of `config/cv_signals.example.csv` |
+
+Industry pull drives the ranking; paper volume only breaks ties, so prolific publishers don't crowd out real signals. The weekly innovation screen also sees these signals for each new paper.
+
+**Quarterly brief.** On the first Monday of January, April, July and October the job takes the 12 strongest lines, has Claude run the same four checks (market, verified partner, Carleton-led, enough evidence) with web search, keeps only lines that pass all four (at most three), and emails a short brief. It's also at `/brief/` on the site. To make one now: **Actions → Weekly research update → Run workflow**, tick *Also make the quarterly partnership brief now*. Cost is roughly 50 cents to a dollar per brief.
 
 ## The research assistant (AI chat)
 The **Assistant** tab is a chat that searches the Faculty publication data and, when you allow it, the web. Use it to match researchers to an industry partner, build a team for a grant call, prep for a meeting, or find committee members. Follow-up questions keep the conversation's context.

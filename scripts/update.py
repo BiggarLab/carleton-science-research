@@ -35,7 +35,8 @@ from email.mime.text import MIMEText
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from render_digest import render_email, render_text, render_web, week_label  # noqa: E402
+from render_digest import render_brief_email, render_brief_web, render_email, render_text, render_web, week_label  # noqa: E402
+import signals as SIG  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 CFG = json.loads((ROOT / "config/settings.json").read_text())
@@ -43,7 +44,7 @@ CARLETON = "https://openalex.org/I67031392"
 OA = "https://api.openalex.org"
 DROP_TYPES = {"dataset", "erratum", "supplementary-materials", "paratext", "peer-review", "retraction", "other", "reference-entry", "software"}
 TYPES = ["article", "review", "preprint", "conference-paper", "book-chapter", "book", "editorial", "letter", "report", "conference-abstract", "data-paper", "book-review"]
-SELECT = "id,doi,title,publication_year,publication_date,created_date,type,primary_location,cited_by_count,fwci,primary_topic,keywords,authorships,open_access"
+SELECT = "id,doi,title,publication_year,publication_date,created_date,type,primary_location,cited_by_count,fwci,primary_topic,keywords,authorships,open_access,funders,awards"
 
 
 def log(*a):
@@ -292,10 +293,14 @@ def innovation(items):
     """Screen papers with a fixed checklist. Claude answers each check with evidence; this code decides the tier."""
     crit = (ROOT / "config/innovation_criteria.md").read_text()
     payload = [{"id": it["id"], "title": it["title"], "venue": it["venue"], "carleton_authors": [f"{n} ({u})" for n, u in it["who"]],
-                "author_order": it.get("author_order", ""), "doi_url": it.get("url"), "abstract": it.get("abstract", "")[:2500]}
+                "author_order": it.get("author_order", ""), "doi_url": it.get("url"), "abstract": it.get("abstract", "")[:2500],
+                "signals": it.get("signals", {})}
                for it in items if not it.get("big")]
     prompt = (f"{STYLE}\n\nYou screen this week's Carleton Faculty of Science publications for innovation, partnering or licensing opportunities "
               f"for the Associate Dean of Research, International and Innovation. The rules:\n\n{crit}\n\n"
+              "Each paper carries 'signals' from our data: companies on the author list, industry funding, whether it is a preprint (patent grace "
+              "period open), and the researcher's wider research line on this topic (paper count, momentum, companies citing that line). Use them as "
+              "evidence for the market and partner checks; a company that already co-authors or cites the work is the strongest partner evidence. "
               "Step 1. Skip papers with no plausible commercial or partnering angle at all (pure theory, reviews, large collaborations). "
               "Step 2. For every remaining paper, answer each check with pass true/false and one sentence of evidence. Use web search to verify partner "
               "companies are real and currently active (prefer Ottawa or Canadian), and to check whether code or methods are already public. "
@@ -362,8 +367,9 @@ def abstract_of(wid):
     return " ".join(pos[k] for k in sorted(pos))
 
 
-def make_issue(data, works, state, week_start, week_end, use_ai=True):
+def make_issue(data, works, state, week_start, week_end, use_ai=True, lines=None, citers=None):
     people = data["people"]
+    line_ix = {(L["person"], L["topic"]): L for L in (lines or [])}
     seen = set(state.get("seen", []))
     recent_floor = (week_end - dt.timedelta(days=60)).isoformat()
     cands = []
@@ -395,6 +401,17 @@ def make_issue(data, works, state, week_start, week_end, use_ai=True):
                       "venue": ((w.get("primary_location") or {}).get("source") or {}).get("display_name") or "", "date": w.get("publication_date"),
                       "oa": bool((w.get("open_access") or {}).get("is_oa")), "big": big, "cross": len(first_units) > 1,
                       "unit": sorted(first_units)[0] if first_units else "Other", "preprint": w.get("type") == "preprint", "author_order": author_order})
+    for it, (wid, rec) in zip(items, cands):
+        w = rec["raw"]
+        sig = SIG.work_signals(w)
+        topic = (w.get("primary_topic") or {}).get("display_name")
+        ln = [line_ix.get((i, topic)) for i in rec["f"]]
+        ln = [x for x in ln if x]
+        it["signals"] = {"company_coauthors": sig["companies"], "industry_funding": sig["industry"], "funders": sig["funders"][:5],
+                         "companies_citing": sorted((citers or {}).get(wid, set()))[:6],
+                         "preprint_grace_until": (dt.date.fromisoformat(w["publication_date"]) + dt.timedelta(days=365)).isoformat() if it["preprint"] and w.get("publication_date") else "",
+                         "research_line": [{"researcher": x["name"], "topic": x["topic"], "papers_3y": x["n"], "recent_2y": x["recent"], "lead_share": x["lead_share"],
+                                            "companies_citing_line": x["citers"][:5], "companies_coauthoring_line": x["companies"][:5]} for x in ln]}
     log(f"{len(items)} new outputs for {week_label({'week_start': week_start.isoformat(), 'week_end': week_end.isoformat()})}")
     for it in items:
         it["abstract"] = abstract_of(it["id"])
@@ -413,7 +430,7 @@ def make_issue(data, works, state, week_start, week_end, use_ai=True):
     pre = [it for it in items if it["preprint"]]
     by_unit = {}
     for it in sorted(main, key=lambda x: x["date"], reverse=True):
-        by_unit.setdefault(it["unit"], []).append({k: v for k, v in it.items() if k not in ("abstract", "unit", "preprint", "author_order")})
+        by_unit.setdefault(it["unit"], []).append({k: v for k, v in it.items() if k not in ("abstract", "unit", "preprint", "author_order", "signals")})
     issue = {"issue": state.get("last_issue", 0) + 1, "week_start": week_start.isoformat(), "week_end": week_end.isoformat(),
              "lead": lead or ("A quiet week: no new Faculty of Science outputs were indexed." if not items else f"{len(items)} new outputs this week."),
              "units": [{"unit": u, "items": by_unit[u]} for u in sorted(by_unit)], "innovation": inn}
@@ -423,14 +440,98 @@ def make_issue(data, works, state, week_start, week_end, use_ai=True):
     return issue, [it["id"] for it in items]
 
 
+
+# ---------------------------------------------------------------- quarterly partnership brief
+def quarter_label(d):
+    return f"{d.year}-Q{(d.month - 1) // 3 + 1}"
+
+
+def quarterly_brief(lines, n_screen=12):
+    """Screen the strongest research lines with the four fixed checks; keep only lines that pass all four."""
+    crit = (ROOT / "config/innovation_criteria.md").read_text()
+    short = [L for L in lines if L.get("pull", 0) > 0][:n_screen]
+    if not short:
+        return {"picks": [], "near_misses": [], "screened": 0}
+    for L in short:
+        L["patent_landscape"] = SIG.lens_landscape([L["topic"]] + L["titles"][:1])
+    payload = [{"id": f"L{k}", "researcher": f"{L['name']} ({', '.join(L['units'])}, {L['rank']})", "topic": L["topic"],
+                "papers_last_3y": L["n"], "recent_2y": L["recent"], "earlier": L["prior"], "share_as_lead_author": L["lead_share"],
+                "recent_titles": L["titles"], "companies_coauthoring": L["companies"], "companies_citing": L["citers"],
+                "industry_funding": L["industry"], "main_funders": L["funders"], "nserc_partners": L["nserc_partners"],
+                "carleton_patents": L["patents"], "open_preprints": L["preprints"], "cv_items": L["cv"],
+                "companies_patenting_in_topic": L.get("patent_landscape", [])} for k, L in enumerate(short)]
+    prompt = (f"{STYLE}\n\nOnce a quarter you pick the best partnership or IP opportunities in Carleton University's Faculty of Science "
+              f"for the Associate Dean of Research, International and Innovation. Below are the {len(short)} research lines with the strongest "
+              "industry signals: one researcher's sustained work on one topic, with companies that co-author, cite or fund it. "
+              f"Rules:\n\n{crit}\n\nFor 'carleton_role', use share_as_lead_author (0.5 or more passes) plus the titles. For 'evidence', judge the "
+              "line as a whole, not one paper. For 'partner', prefer companies already in the signals; verify with web search that they are real and "
+              "active, preferring Ottawa and Canadian ones, and add at most one new company you find. Note open preprints as an IP clock. "
+              "Be strict and consistent: most lines will not pass every check.\n\n"
+              "Return only JSON in a ```json block:\n"
+              "{\"assessments\": [{\"id\": str, \"title\": str (researcher and topic),\n"
+              "  \"checks\": {\"market\": {\"pass\": bool, \"evidence\": str}, \"partner\": {\"pass\": bool, \"evidence\": str},\n"
+              "              \"carleton_role\": {\"pass\": bool, \"evidence\": str}, \"evidence\": {\"pass\": bool, \"evidence\": str}},\n"
+              "  \"route\": \"licence\" | \"partnership\" | \"unclear\", \"route_reason\": str,\n"
+              "  \"heading\": str, \"what\": str, \"market_fit\": str, \"partners\": [{\"name\": str, \"location\": str, \"why\": str}],\n"
+              "  \"next_step\": str}],\n \"skipped_note\": str}\n\n" + json.dumps(payload, ensure_ascii=False))
+    tools = [{"type": "web_search_20250305", "name": "web_search", "max_uses": 15, "user_location": {"type": "approximate", "city": "Ottawa", "region": "Ontario", "country": "CA"}}]
+    raw = parse_json(claude([{"role": "user", "content": prompt}], max_tokens=20000, tools=tools))
+    tiers = tier_assessments(raw)
+    byid = {f"L{k}": L for k, L in enumerate(short)}
+    picks = []
+    for o in tiers["opportunities"]:
+        L = byid.get(o.get("id"), {})
+        o["signals"] = {k: L.get(k) for k in ("name", "units", "topic", "n", "recent", "lead_share", "companies", "citers", "industry", "preprints", "patents")}
+        o["score"] = L.get("score", 0)
+        picks.append(o)
+    picks.sort(key=lambda o: o["score"], reverse=True)
+    return {"picks": picks[:3], "near_misses": tiers.get("near_misses", []), "screened": len(short)}
+
+
+def run_brief(lines, today, send=True, force=False):
+    st_p = ROOT / "state/brief_state.json"
+    st = json.loads(st_p.read_text()) if st_p.exists() else {}
+    q = quarter_label(today)
+    if st.get("last_quarter") == q and not force:
+        log(f"Quarterly brief for {q} already made.")
+        return
+    brief = quarterly_brief(lines)
+    brief.update({"quarter": q, "date": today.isoformat()})
+    d = ROOT / "state/briefs"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / f"{q}.json").write_text(json.dumps(brief, ensure_ascii=False, indent=1), encoding="utf-8")
+    render_briefs()
+    st["last_quarter"] = q
+    st_p.write_text(json.dumps(st, indent=1))
+    site = CFG.get("site_url", "").rstrip("/")
+    if send:
+        send_mail(f"Carleton Science quarterly partnership brief: {q}", render_brief_email(brief, f"{site}/brief/" if site else "", f"{site}/logo.png" if site else ""),
+                  f"Quarterly partnership brief {q}. Read it at {site}/brief/")
+
+
+def render_briefs():
+    files = sorted((ROOT / "state/briefs").glob("*.json")) if (ROOT / "state/briefs").exists() else []
+    out = ROOT / "docs/brief"
+    out.mkdir(parents=True, exist_ok=True)
+    qs = [f.stem for f in files][::-1]
+    for f in files:
+        b = json.loads(f.read_text(encoding="utf-8"))
+        (out / f"{f.stem}.html").write_text(render_brief_web(b, qs, "../logo.png", ""), encoding="utf-8")
+    if files:
+        (out / "index.html").write_text(render_brief_web(json.loads(files[-1].read_text(encoding="utf-8")), qs, "../logo.png", ""), encoding="utf-8")
+
+
 # ---------------------------------------------------------------- email
 def send_email(issue, web_url, dash_url):
+    subject = f"Carleton Science research digest: {week_label(issue)}"
+    send_mail(subject, render_email(issue, web_url, dash_url, f"{dash_url}logo.png" if dash_url else ""), render_text(issue, dash_url))
+
+
+def send_mail(subject, html_body, text_body):
     to = os.environ.get("DIGEST_TO")
     if not to:
         log("DIGEST_TO not set; skipping email")
         return
-    subject = f"Carleton Science research digest: {week_label(issue)}"
-    html_body, text_body = render_email(issue, web_url, dash_url, f"{dash_url}logo.png" if dash_url else ""), render_text(issue, dash_url)
     if os.environ.get("RESEND_API_KEY"):
         body = {"from": os.environ.get("DIGEST_FROM") or "Carleton Science Digest <onboarding@resend.dev>", "to": [x.strip() for x in to.split(",") if x.strip()],
                 "subject": subject, "html": html_body, "text": text_body}
@@ -488,9 +589,11 @@ def main():
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--week-end")
     ap.add_argument("--render-only", action="store_true", help="re-render pages from saved issues, no network")
+    ap.add_argument("--brief", action="store_true", help="make the quarterly partnership brief now")
     a = ap.parse_args()
     if a.render_only:
         render_all()
+        render_briefs()
         log("rendered")
         return
     today = dt.date.today()
@@ -498,9 +601,11 @@ def main():
     week_start = week_end - dt.timedelta(days=6)
     state_p = ROOT / "state/digest_state.json"
     state = json.loads(state_p.read_text())
-    if state.get("last_week_end") == week_end.isoformat() and not a.force:
+    done_already = state.get("last_week_end") == week_end.isoformat()
+    if done_already and not a.force and not a.brief:
         log("This week's digest was already made. Use --force to rebuild it.")
         return
+    skip_digest = done_already and not a.force  # brief-only run
     if a.force and state.get("last_week_end") == week_end.isoformat():
         state["last_issue"] = state.get("last_issue", 1) - 1
         prev = ROOT / f"state/issues/{week_end.isoformat()}.json"
@@ -516,14 +621,26 @@ def main():
     (ROOT / "docs/data.json").write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     log(f"data.json: {len(data['works'])} outputs")
 
-    issue, new_ids = make_issue(data, works, state, week_start, week_end, use_ai=not a.no_ai)
-    write_digest(issue)
-    log_innovation(issue)
-    state.update({"last_week_end": week_end.isoformat(), "last_issue": issue["issue"], "seen": sorted(set(state.get("seen", [])) | set(new_ids))})
-    state_p.write_text(json.dumps(state, indent=1))
+    try:
+        lines, citers = SIG.compute(data, works, y0, oa_pages)
+    except Exception as e:
+        log("signals failed, continuing without them:", e)
+        lines, citers = [], {}
     site = CFG.get("site_url", "").rstrip("/")
-    if not a.no_email:
-        send_email(issue, f"{site}/digest/" if site else "", f"{site}/" if site else "")
+    if not skip_digest:
+        issue, new_ids = make_issue(data, works, state, week_start, week_end, use_ai=not a.no_ai, lines=lines, citers=citers)
+        write_digest(issue)
+        log_innovation(issue)
+        state.update({"last_week_end": week_end.isoformat(), "last_issue": issue["issue"], "seen": sorted(set(state.get("seen", [])) | set(new_ids))})
+        state_p.write_text(json.dumps(state, indent=1))
+        if not a.no_email:
+            send_email(issue, f"{site}/digest/" if site else "", f"{site}/" if site else "")
+    quarter_start = today.month in (1, 4, 7, 10) and today.day <= 7
+    if (a.brief or quarter_start) and lines and not a.no_ai:
+        try:
+            run_brief(lines, today, send=not a.no_email, force=a.brief)
+        except Exception as e:
+            log("quarterly brief failed:", e)
 
 
 if __name__ == "__main__":

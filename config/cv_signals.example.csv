@@ -1,0 +1,3 @@
+name,type,title,year,funder,partner,notes
+Kyle Biggar,grant,Example: Alliance grant on peptide inhibitors,2026,NSERC,Example Company Inc.,type is one of grant / thesis / patent / disclosure_public / award / other
+Kyle Biggar,thesis,Example: PhD thesis on KDM5 substrates (student name optional),2027,,,expected completion year signals upcoming work

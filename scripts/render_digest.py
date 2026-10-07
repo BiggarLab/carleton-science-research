@@ -294,3 +294,95 @@ def render_email(issue, web_url="", dashboard_url="", logo_url=""):
 if __name__ == "__main__":
     iss = json.load(open(sys.argv[1], encoding="utf-8"))
     open(sys.argv[2], "w", encoding="utf-8").write(render_web(iss))
+
+
+# ---------------------------------------------------------------- quarterly partnership brief
+BRIEF_FOOT = ("Each quarter the research lines with the strongest industry signals (companies that co-author, cite or fund the work, recent momentum, "
+              "preprints with an open patent clock) are screened on four fixed checks: real market, verified partner, Carleton-led, and enough evidence. "
+              "Only lines that pass all four are listed. Written by Claude from OpenAlex and public company information; verify before acting.")
+
+
+def _chips(sig):
+    out = []
+    if sig.get("citers"):
+        out.append(f"cited by {', '.join(sig['citers'][:3])}")
+    if sig.get("companies"):
+        out.append(f"co-authored with {', '.join(sig['companies'][:3])}")
+    if sig.get("industry"):
+        out.append(", ".join(sig["industry"][:2]))
+    for p in (sig.get("preprints") or [])[:1]:
+        out.append(f"preprint, patent clock to {p['grace_until']}")
+    if sig.get("patents"):
+        out.append(f"{len(sig['patents'])} Carleton patent(s)")
+    if sig.get("n"):
+        out.append(f"{sig['n']} papers in 3 years, {sig.get('recent', 0)} in the last 2")
+    return out
+
+
+def render_brief_web(b, quarters, logo_src="../logo.png", prefix=""):
+    picks = b.get("picks") or []
+    cards = []
+    for o in picks:
+        sig = o.get("signals") or {}
+        chips = "".join(f'<span class="tag">{E(c)}</span> ' for c in _chips(sig))
+        partners = "".join(f"<li><b>{E(p['name'])}</b> ({E(p['location'])}). {E(p['why'])}</li>" for p in o.get("partners") or [])
+        cards.append(f'''<div class="item"><div class="who">{E(sig.get("name", ""))} <small>{E(", ".join(sig.get("units") or []))}</small></div>
+<h3>{E(o["heading"])}</h3><div class="src" style="margin:0 0 8px">{chips}</div>
+<p><b>What.</b> {E(o["what"])}</p><p><b>Market.</b> {E(o["market_fit"])}</p>
+{f"<p><b>Who to approach.</b></p><ul class='pl'>{partners}</ul>" if partners else ""}
+<p><b>Next step.</b> {E(o["next_step"])}</p>{f"<p><b>Route.</b> {E(o['licensing_note'])}</p>" if o.get("licensing_note") else ""}</div>''')
+    near = b.get("near_misses") or []
+    near_html = ("<h2>Near misses</h2><div class='also'><ul>" + "".join(f"<li><b>{E(n['title'])}</b>: {E(n['why'])}</li>" for n in near[:9]) + "</ul></div>") if near else ""
+    arch = ('<div class="arch">All briefs: ' + " · ".join(f'<a href="{prefix}{E(q)}.html">{E(q)}</a>' for q in quarters) + "</div>") if quarters else ""
+    lead = (f"Screened the {b.get('screened', 0)} research lines with the strongest industry signals this quarter. "
+            + (f"{len(picks)} passed all four checks." if picks else "None passed all four checks, so there is nothing to act on this quarter."))
+    return f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Partnership Brief</title>{FONTS}<style>{CSS}.item ul.pl{{font-family:var(--f-body);font-size:14px;padding-left:1.1em;margin:4px 0 8px}}.item p{{font-size:15px;margin:0 0 8px}}.tag{{margin:0 4px 4px 0}}</style></head><body>
+<div class="col"><article class="sheet">
+<img class="logo" src="{E(logo_src)}" alt="Carleton University, Faculty of Science" width="800" height="297">
+<div class="eyebrow"><i></i>Quarterly partnership brief</div>
+<h1>Partnership and IP opportunities</h1>
+<div class="dates">{E(b.get('quarter', ''))} · prepared {E(b.get('date', ''))}</div>
+<div class="prep">{PREPARED}</div>
+<p class="lead">{E(lead)}</p>
+{"<h2>Top opportunities <span>" + str(len(picks)) + "</span></h2>" if picks else ""}
+{"".join(cards)}
+{near_html}
+<div class="foot">{BRIEF_FOOT}</div>{arch}
+</article></div></body></html>"""
+
+
+def render_brief_email(b, web_url="", logo_url=""):
+    ink, muted, accent = "#15171c", "#6e7380", "#b0162b"
+    font = "font-family:Helvetica,Arial,sans-serif;"
+    picks = b.get("picks") or []
+    rows = []
+    for o in picks:
+        sig = o.get("signals") or {}
+        partners = "".join(f"<li style='margin:0 0 6px'><b>{E(p['name'])}</b> ({E(p['location'])}). {E(p['why'])}</li>" for p in o.get("partners") or [])
+        rows.append(f"""<tr><td style="padding:16px 0;border-bottom:1px solid #e3e5e8;{font}font-size:14px;line-height:1.55;color:{ink}">
+<div style="font-size:13px;font-weight:bold;color:{accent}">{E(sig.get('name', ''))} <span style="color:{muted};font-weight:normal">{E(', '.join(sig.get('units') or []))}</span></div>
+<div style="font-size:16px;font-weight:bold;margin:4px 0 6px">{E(o['heading'])}</div>
+<div style="font-size:12px;color:{muted};margin-bottom:8px">{E(' · '.join(_chips(sig)))}</div>
+<p style="margin:0 0 8px"><b>What.</b> {E(o['what'])}</p><p style="margin:0 0 8px"><b>Market.</b> {E(o['market_fit'])}</p>
+{f"<p style='margin:0 0 4px'><b>Who to approach.</b></p><ul style='margin:0 0 8px;padding-left:18px'>{partners}</ul>" if partners else ""}
+<p style="margin:0 0 8px"><b>Next step.</b> {E(o['next_step'])}</p>{f"<p style='margin:0'><b>Route.</b> {E(o['licensing_note'])}</p>" if o.get('licensing_note') else ""}</td></tr>""")
+    near = b.get("near_misses") or []
+    if near:
+        rows.append(f"<tr><td style=\"{font}font-size:13px;color:{ink};padding-top:18px\"><b>Near misses</b><ul style='padding-left:18px;margin:6px 0 0'>"
+                    + "".join(f"<li style='margin:0 0 6px'><b>{E(n['title'])}</b>: {E(n['why'])}</li>" for n in near[:9]) + "</ul></td></tr>")
+    lead = (f"Screened the {b.get('screened', 0)} research lines with the strongest industry signals. "
+            + (f"{len(picks)} passed all four checks." if picks else "None passed all four checks this quarter."))
+    return f"""<!doctype html><html><body style="margin:0;background:#f3f4f6"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:20px 10px">
+<table role="presentation" width="640" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:#fff;border:1px solid #d9dce1"><tr><td style="padding:28px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+{f'<tr><td style="padding:0 0 14px"><img src="{E(logo_url)}" width="200" alt="Carleton University, Faculty of Science" style="display:block;width:200px;height:auto"></td></tr>' if logo_url else ''}
+<tr><td style="{font}font-size:11px;letter-spacing:1px;text-transform:uppercase;color:{muted}">Quarterly partnership brief</td></tr>
+<tr><td style="{font}font-size:28px;font-weight:bold;color:{ink};padding:6px 0 4px">Partnership and IP opportunities</td></tr>
+<tr><td style="{font}font-size:13px;color:#4a4f5a">{E(b.get('quarter', ''))}<br>{PREPARED}</td></tr>
+<tr><td style="font-family:Georgia,serif;font-size:16px;line-height:1.6;color:{ink};padding:14px 0 0">{E(lead)}</td></tr>
+{f'<tr><td style="{font}font-size:13px;padding:10px 0 0"><a href="{E(web_url)}" style="color:{accent}">Read on the web</a></td></tr>' if web_url else ''}
+{''.join(rows)}
+<tr><td style="{font}font-size:12px;color:{muted};padding:20px 0 0">{BRIEF_FOOT}</td></tr>
+</table></td></tr></table></td></tr></table></body></html>"""

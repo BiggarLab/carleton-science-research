@@ -216,6 +216,17 @@ td small,.muted{color:var(--muted)}
 .starter:hover{border-color:var(--accent)}
 .note{font-size:12px;color:var(--muted)}
 .qnote{font-size:11.5px;color:var(--muted);font-style:italic}
+.oline{border-top:1px solid var(--line-2);padding:11px 0;display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:12px}
+.oline:first-child{border-top:0}
+.oline .rk{font-family:var(--f-mono);font-size:12px;color:var(--muted);padding-top:2px}
+.oline .nm{border:0;background:none;padding:0;font:inherit;font-weight:600;cursor:pointer;text-align:left}
+.oline .nm:hover{color:var(--accent)}
+.oline .tp{font-size:13px;color:var(--ink-2)}
+.oline .ev{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.oline .sc{text-align:right;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);white-space:nowrap}
+.oline details{margin-top:6px;font-size:12.5px;color:var(--ink-2)}
+.oline summary{cursor:pointer;color:var(--muted)}
+.oline details ul{margin:6px 0 0;padding-left:1.1em}
 .qnote:empty{display:none}
 
 /* drawer */
@@ -287,6 +298,7 @@ td small,.muted{color:var(--muted)}
       <button class="tab" role="tab" data-t="world">International</button>
       <button class="tab" role="tab" data-t="people">People</button>
       <button class="tab" role="tab" data-t="expertise">Find expertise</button>
+      <button class="tab" role="tab" data-t="opps">Partnership signals</button>
       <button class="tab" role="tab" data-t="pubs">Publications</button>
       <button class="tab" role="tab" data-t="ask" id="tab-ask">Assistant<span class="ai">AI</span></button>
     </nav>
@@ -362,6 +374,15 @@ td small,.muted{color:var(--muted)}
       </div>
     </section>
 
+    <section data-p="opps" hidden>
+      <div class="panel">
+        <div class="ph"><h2>Where industry already shows interest</h2><a class="note" id="brief-link" href="brief/" target="_blank" rel="noopener" hidden style="color:var(--accent);font-weight:500">Latest quarterly brief →</a></div>
+        <p class="sub" id="opp-sub">Research lines (one researcher, one topic, two or more papers in three years) ranked by industry pull: companies that co-author, cite or fund the work, NSERC partners, patents and open preprints. Uses the unit and researcher filters.</p>
+        <div id="opp-list"></div>
+        <p class="note" id="opp-src"></p>
+      </div>
+    </section>
+
     <section data-p="pubs" hidden>
       <div class="panel">
         <div class="ph"><h2 id="pub-h">Publications</h2>
@@ -426,7 +447,7 @@ const tip = $("#tip");
 function showTip(e, html){ tip.innerHTML = html; tip.style.opacity = 1; const x = Math.min(e.clientX + 14, innerWidth - 290); tip.style.left = x + "px"; tip.style.top = (e.clientY + 14) + "px"; }
 function hideTip(){ tip.style.opacity = 0; }
 
-let D, WORLD, P, WK, TOP, UNITS;
+let D, WORLD, P, WK, TOP, UNITS, SG = null;
 let Y0 = 2021, Y1 = 2026, GEN = "", GENL = "", PARTIAL = true;
 const S = { units: new Set(), person: null, topic: "", y0: 2021, y1: 2026, pre: false, big: false, tab: "overview", pair: null, pubSort: "new", page: 0, country: null };
 const AI_ENDPOINT = ""; // GitHub version: URL of the Cloudflare Worker that relays questions to Claude (see README). Leave empty to hide AI there.
@@ -560,7 +581,7 @@ $("#tabs").onclick = e => { const b = e.target.closest(".tab"); if (!b) return; 
 function render(){
   document.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-selected", b.dataset.t === S.tab));
   document.querySelectorAll("main section").forEach(s => s.hidden = s.dataset.p !== S.tab);
-  ({ overview, network, world, people, expertise, pubs, ask: () => {} })[S.tab]();
+  ({ overview, network, world, people, expertise, opps, pubs, ask: () => {} })[S.tab]();
 }
 function update(){ S.page = 0; syncFilterUI(); render(); }
 
@@ -717,6 +738,35 @@ function world(){
 
 /* ---------- people ---------- */
 let pplSort = { k: "n", dir: -1 };
+/* ---------- partnership signals ---------- */
+function lineChips(L){
+  const c = [];
+  if (L.citers && L.citers.length) c.push(`<span class="tag a">cited by ${esc(L.citers.slice(0,3).join(", "))}${L.citers.length > 3 ? ` +${L.citers.length-3}` : ""}</span>`);
+  if (L.companies && L.companies.length) c.push(`<span class="tag a">co-authored with ${esc(L.companies.slice(0,3).join(", "))}</span>`);
+  (L.industry || []).slice(0,2).forEach(x => c.push(`<span class="tag a">${esc(x)}</span>`));
+  if (L.nserc_partners && L.nserc_partners.length) c.push(`<span class="tag">NSERC partners: ${esc(L.nserc_partners.slice(0,2).join(", "))}</span>`);
+  (L.preprints || []).slice(0,1).forEach(p => c.push(`<span class="tag">preprint, patent clock to ${esc(p.grace_until)}</span>`));
+  if (L.patents && L.patents.length) c.push(`<span class="tag">${L.patents.length} Carleton patent${L.patents.length>1?"s":""}</span>`);
+  if (L.cv && L.cv.length) c.push(`<span class="tag">${L.cv.length} CV item${L.cv.length>1?"s":""}</span>`);
+  return c.join("");
+}
+function opps(){
+  const box = $("#opp-list");
+  if (!SG){ box.innerHTML = `<div class="empty">Partnership signals appear after the next weekly update runs on GitHub.</div>`; $("#opp-src").textContent = ""; return; }
+  $("#brief-link").hidden = !/github\.io/.test(location.hostname);
+  let ls = SG.lines.filter(L => L.pull > 0 && inScopePerson(L.person) && (S.person == null || L.person === S.person));
+  if (S.topic){ const cq = compileQuery(S.topic); ls = ls.filter(L => { const tok = new Set(toks(L.topic + " " + L.subfield + " " + L.titles.join(" "))); return cq.alts.some(sl => sl.every(set => [...set].some(t => tok.has(t)))); }); }
+  ls = ls.slice(0, 25);
+  box.innerHTML = ls.length ? ls.map((L, k) => `<div class="oline"><span class="rk">${k+1}</span><div><button class="nm" data-p="${L.person}">${esc(L.name)}</button> <small class="muted">${esc(L.units.map(unitLabel).join(", "))}</small>
+      <div class="tp">${esc(L.topic)}</div><div class="ev">${lineChips(L)}</div>
+      <details><summary>Recent papers and funders</summary><ul>${L.titles.map(t => `<li>${esc(t)}</li>`).join("")}</ul>${L.funders.length ? `<div style="margin-top:4px">Funders: ${esc(L.funders.join(", "))}</div>` : ""}${(L.cv||[]).length ? `<div>CV: ${esc(L.cv.map(c => `${c.type}: ${c.title} ${c.year}`).join("; "))}</div>` : ""}</details></div>
+      <div class="sc">${L.n} papers · ${L.recent} recent<br>${Math.round(L.lead_share*100)}% as lead</div></div>`).join("")
+    : `<div class="empty">No research lines with industry signals match these filters.</div>`;
+  box.onclick = e => { const b = e.target.closest(".nm[data-p]"); if (b) openProfile(+b.dataset.p); };
+  const src = SG.sources || {}; const on = [["OpenAlex co-authors and funders", src.openalex], ["companies citing our work", src.company_citers], ["NSERC partners", src.nserc], ["patents (Lens.org)", src.patents], ["CV data", src.cv]];
+  $("#opp-src").textContent = `Signals updated ${SG.gen}. Sources in use: ${on.filter(x => x[1]).map(x => x[0]).join(", ")}.` + (on.some(x => !x[1]) ? ` Not yet connected: ${on.filter(x => !x[1]).map(x => x[0]).join(", ")}.` : "");
+}
+
 function personStats(i, ws){
   const mine = ws.filter(w => w.f.includes(i)); const small = mine.filter(w => !w.big);
   const fws = mine.map(w => w.fw).filter(v => v != null);
@@ -835,6 +885,7 @@ function openProfile(i){
     ${p.oa.length ? "" : `<p class="note">No OpenAlex profile was matched for this person. Their outputs may be listed under a different name.</p>`}
     ${st.big ? `<p class="note">${st.big} of these outputs are large collaborations (100+ authors).</p>` : ""}
     <div class="dsec"><h3>Outputs per year</h3><svg width="100%" height="56" viewBox="0 0 ${yrs.length*40} 56" style="max-width:${yrs.length*56}px">${yrs.map((n,k) => `<rect x="${k*40+8}" y="${44 - 38*n/ym}" width="24" height="${Math.max(38*n/ym, n?2:0)}" rx="2" fill="var(--seq-4)"><title>${S.y0+k}: ${n}</title></rect><text x="${k*40+20}" y="55" text-anchor="middle" style="font-size:9px">${String(S.y0+k).slice(2)}</text>`).join("")}</svg></div>
+    ${SG && SG.lines.some(L => L.person === i && L.pull > 0) ? `<div class="dsec"><h3>Industry signals</h3>${SG.lines.filter(L => L.person === i && L.pull > 0).slice(0,3).map(L => `<div style="font-size:13px"><b>${esc(L.topic)}</b><div class="chips" style="margin-top:4px">${lineChips(L)}</div></div>`).join("")}</div>` : ""}
     <div class="dsec"><h3>Topics</h3><div class="chips">${st.top.map(t => `<button class="chip" data-q="${esc(t)}">${esc(t)}</button>`).join("") || `<span class="muted">None in this period</span>`}</div></div>
     <div class="dsec"><h3>Carleton Science co-authors</h3><div class="dlist">${Object.entries(coll).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([j,n]) => `<button data-p="${j}"><span>${esc(P[j].n)} <small class="muted">${esc(P[j].u.map(unitLabel).join(", "))}</small></span><span class="num muted">${n}</span></button>`).join("") || `<span class="muted">None in this period</span>`}</div></div>
     <div class="dsec"><h3>Partner countries</h3><div class="muted" style="font-size:13px">${Object.entries(ctry).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([c,n]) => `${esc((WORLD.cc[c]||[c])[0])} <span class="num">${n}</span>`).join(" · ") || "None recorded"}</div></div>
@@ -953,6 +1004,15 @@ const TOOLS = [
       return { name: p.n, units: p.u, rank: p.rk, stream: p.st, roles: p.ro, lifetime_works: p.lw, h_index: p.h, outputs_last_five_years: ws.length, large_collaboration_outputs: ws.filter(w => w.big).length,
         top_topics: d3.rollups(ws.filter(w => w.T), v => v.length, w => w.T[0]).sort((a,b) => b[1]-a[1]).slice(0, 6), coauthors: Object.entries(coll).sort((a,b) => b[1]-a[1]).slice(0, 8), countries: Object.entries(ct).sort((a,b) => b[1]-a[1]).slice(0, 8),
         recent: [...ws].sort((a,b) => b.d.localeCompare(a.d)).slice(0, 15).map(w => `${w.d} ${w.t} (${w.v})`) }; } },
+  { name: "partnership_signals", description: "Research lines (one researcher, one topic) ranked by industry pull: companies co-authoring or citing the work, industry funding (Mitacs, NSERC Alliance etc.), NSERC partner organizations, patents, preprints with an open patent clock, and CV items. Filter by keywords, researcher name or unit. Use this first for partnership, licensing or industry-fit questions.",
+    inputSchema: { type:"object", properties: { query: { type:"string", description:"topic keywords, optional" }, researcher: { type:"string" }, unit: { type:"string" }, limit: { type:"integer" } } },
+    execute(inp){ if (!SG) return "Partnership signals are not available yet (they are built by the weekly update)."; log("checking partnership signals");
+      let ls = SG.lines.filter(L => L.pull > 0);
+      if (inp.researcher){ const n = String(inp.researcher).toLowerCase(); ls = ls.filter(L => L.name.toLowerCase().includes(n)); }
+      if (inp.unit){ const u = String(inp.unit).toLowerCase(); ls = ls.filter(L => L.units.some(x => x.toLowerCase().includes(u))); }
+      if (inp.query){ const cq = compileQuery(String(inp.query)); ls = ls.filter(L => { const tok = new Set(toks(L.topic + " " + L.subfield + " " + L.titles.join(" "))); return cq.alts.some(sl => sl.every(set => [...set].some(t => tok.has(t)))); }); }
+      return { updated: SG.gen, sources: SG.sources, lines: ls.slice(0, Math.min(Number(inp.limit) || 12, 25)).map(L => ({ researcher: L.name, units: L.units, rank: L.rank, topic: L.topic, papers_3y: L.n, recent_2y: L.recent, lead_share: L.lead_share,
+        companies_coauthoring: L.companies, companies_citing: L.citers, industry_funding: L.industry, funders: L.funders, nserc_partners: L.nserc_partners, patents: L.patents, open_preprints: L.preprints, cv: L.cv, recent_titles: L.titles })) }; } },
   { name: "unit_overview", description: "Summary for one Faculty unit (or all units if omitted) over a year range: output counts by year, top topics, most active researchers, top partner countries and most-cited outputs.",
     inputSchema: { type:"object", properties: { unit: { type:"string" }, year_from: { type:"integer" }, year_to: { type:"integer" } } },
     execute(inp){ const u = inp.unit ? String(inp.unit).toLowerCase() : null; const y0 = Number(inp.year_from)||Y0, y1 = Number(inp.year_to)||Y1; log(`summarizing ${inp.unit || "the Faculty"}`);
@@ -976,7 +1036,7 @@ Faculty data: ${P.length} faculty in these units: ${UNITS.join(", ")}. Publicati
 ${aiMode() === "key" ? "You can search the web. Use it to learn what a company does (products, R&D focus, Canadian presence) or what a grant program requires (eligibility, partner rules, team size, deadlines) before matching researchers to it. Say where facts came from." : "Web search is not available in this view; say so if a question needs current outside information."}
 
 How to work:
-- Industry partner: understand the company first, then run find_experts on several different keyword angles (their products, the underlying science, the methods), then read profiles of the strongest candidates. Give a ranked shortlist with why each fits, two or three supporting paper titles with years, and a suggested opening angle. Say plainly if the fit is weak.
+- Industry partner: understand the company first, check partnership_signals for lines where that company (or its competitors) already co-authors, cites or funds our work, then run find_experts on several different keyword angles (their products, the underlying science, the methods), then read profiles of the strongest candidates. Give a ranked shortlist with why each fits, two or three supporting paper titles with years, and a suggested opening angle. Say plainly if the fit is weak.
 - Grant opportunity: check the program rules, then propose a team that covers the required expertise across units and ranks, name the gaps, and note any partner or eligibility requirements. Do not guess anyone's demographics.
 - Meeting prep: give a short brief: who they are, links to our Faculty (people, papers, shared topics), and three things worth raising.
 - Committees: respect any exclusions asked for (for example skip chairs and directors) and aim for a mix of units and ranks.
@@ -1048,6 +1108,7 @@ renderChat();
   try {
     const [d, w] = await Promise.all([fetch("data.json").then(r => r.json()), fetch("world.json").then(r => r.json())]);
     D = d; WORLD = w;
+    try { const r = await fetch("signals.json"); if (r.ok) SG = await r.json(); } catch {}
   } catch (e) { $("#loading").textContent = "The publication data could not be loaded. Reload the page to try again."; return; }
   prep(); buildSearch();
   Y0 = d3.min(WK, w => w.y); Y1 = d3.max(WK, w => w.y); GEN = D.gen; GENL = d3.timeFormat("%b %-d")(new Date(GEN + "T12:00")); PARTIAL = +GEN.slice(0,4) === Y1 && GEN.slice(5) < "12-31"; S.y0 = Y0; S.y1 = Y1;
