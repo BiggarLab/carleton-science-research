@@ -1,5 +1,9 @@
-NSERC: stopped at page 11 (HTTP Error 404: Not Found)
-NSERC: 250 Carleton awards listed (2285 reported), 196 research grants
+NSERC FY2020: 445 awards but only the first 250 can be listed
+NSERC FY2021: 457 awards but only the first 250 can be listed
+NSERC FY2022: 486 awards but only the first 250 can be listed
+NSERC FY2023: 451 awards but only the first 250 can be listed
+NSERC FY2024: 446 awards but only the first 250 can be listed
+NSERC: 1250 Carleton awards listed, 916 research grants
 works: 2000 read
 works: 4000 read
 works: 6000 read
@@ -11,9 +15,9 @@ works: 16000 read
 works: 18000 read
 works: 20035 Carleton outputs since 2021, 8236 Carleton-affiliated author profiles
 people: 769 so far; 337 web-listed faculty had no Carleton outputs in OpenAlex for these years
-people: 45 more found through NSERC/SSHRC grants; 814 in total
+people: 62 more found through NSERC/SSHRC grants; 831 in total
 world baseline: 2326 topics, 92,838,524 works worldwide 2021-2026
-university data.json: 814 people, 20035 outputs, 6.4 MB
-company citers: 2435 company links across 1208 papers (212 batches)
+university data.json: 831 people, 20035 outputs, 6.4 MB
+company citers: 2526 company links across 1259 papers (220 batches)
 No patent keys set (PATENTSVIEW_API_KEY or EPO_OPS_KEY/SECRET); skipping patents
-university signals.json: 1329 research lines
+university signals.json: 1375 research lines
