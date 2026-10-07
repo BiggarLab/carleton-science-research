@@ -82,7 +82,7 @@ h2 span{font-family:var(--f-mono);font-weight:400;letter-spacing:0;text-transfor
 .opp h4:first-of-type{margin-top:0}
 .opp p,.opp li{font-size:14px;line-height:1.55;margin:0 0 8px;max-width:66ch}
 .opp ul{padding-left:1.1em;margin:4px 0 8px}
-.opp .k{font-weight:600}
+.opp .k{font-weight:600}\n.tier{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:3px;margin-right:6px;vertical-align:2px;letter-spacing:.02em}\n.tier.act{background:var(--accent);color:#fff}\n.tier.conversation{background:var(--accent-soft);color:var(--ink)}
 .opp .screened{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line-2);padding-top:10px;margin-top:10px}
 .also{font-size:14px}
 .also ul{padding-left:1.1em;margin:10px 0 0}
@@ -119,14 +119,20 @@ def src_line(it):
     return " · ".join(bits)
 
 
+TIER = {"act": "Act on", "conversation": "Worth a conversation"}
+
+
 def opp_html(inn):
     ops = inn.get("opportunities") or []
-    n = len(ops)
-    out = [f'<section class="opp" id="opp"><h2>Innovation and partnering <span>{n if n else "no"} opportunit{"y" if n == 1 else "ies"} this week</span></h2>']
+    act = sum(1 for o in ops if o.get("tier", "act") == "act")
+    conv = len(ops) - act
+    count = ", ".join(x for x in [f"{act} to act on" if act else "", f"{conv} worth a conversation" if conv else ""] if x) or "nothing this week"
+    out = [f'<section class="opp" id="opp"><h2>Innovation and partnering <span>{count}</span></h2>']
     if not ops:
-        out.append("<p>Nothing this week cleared the bar for a real licensing or partnership opportunity.</p>")
+        out.append("<p>Nothing this week cleared the bar for a licensing or partnership conversation.</p>")
     for o in ops:
-        out.append(f"<h4>{E(o['heading'])}</h4>")
+        tier = o.get("tier", "act")
+        out.append(f'<h4><span class="tier {tier}">{TIER.get(tier, "")}</span> {E(o["heading"])}</h4>')
         out.append(f'<p><span class="k">What.</span> {E(o["what"])}</p>')
         out.append(f'<p><span class="k">Why there is market fit.</span> {E(o["market_fit"])}</p>')
         if o.get("partners"):
@@ -134,11 +140,14 @@ def opp_html(inn):
             for p in o["partners"]:
                 out.append(f"<li><b>{E(p['name'])}</b> ({E(p['location'])}). {E(p['why'])}</li>")
             out.append("</ul>")
+        if o.get("blocker"):
+            out.append(f'<p><span class="k">What holds it back.</span> {E(o["blocker"])}</p>')
         out.append(f'<p><span class="k">Suggested next step.</span> {E(o["next_step"])}</p>')
         if o.get("licensing_note"):
-            out.append(f'<p><span class="k">Licensing note.</span> {E(o["licensing_note"])}</p>')
+            out.append(f'<p><span class="k">Route.</span> {E(o["licensing_note"])}</p>')
     if inn.get("screened"):
         out.append(f'<p class="screened">{E(inn["screened"])}</p>')
+    out.append('<p class="screened">Act on: market, verified partner, Carleton-led and enough evidence all check out. Worth a conversation: real market and partner, but one of the other checks fails.</p>')
     out.append("</section>")
     return "\n".join(out)
 
@@ -205,9 +214,11 @@ def render_text(issue, dashboard_url=""):
         if not inn.get("opportunities"):
             L.append("Nothing this week cleared the bar.")
         for o in inn.get("opportunities") or []:
-            L += [o["heading"], "What: " + o["what"], "Market fit: " + o["market_fit"]]
+            L += [f"[{TIER.get(o.get('tier', 'act'), '')}] " + o["heading"], "What: " + o["what"], "Market fit: " + o["market_fit"]]
+            if o.get("blocker"):
+                L.append("What holds it back: " + o["blocker"])
             L += [f"- {p['name']} ({p['location']}): {p['why']}" for p in o.get("partners", [])]
-            L += ["Next step: " + o["next_step"]] + (["Licensing: " + o["licensing_note"]] if o.get("licensing_note") else []) + [""]
+            L += ["Next step: " + o["next_step"]] + (["Route: " + o["licensing_note"]] if o.get("licensing_note") else []) + [""]
         if inn.get("screened"):
             L += [inn["screened"], ""]
     for x in issue.get("also") or []:
@@ -244,14 +255,18 @@ def render_email(issue, web_url="", dashboard_url="", logo_url=""):
         if not ops:
             body.append("<p style='margin:0'>Nothing this week cleared the bar for a real licensing or partnership opportunity.</p>")
         for o in ops:
-            body.append(f"<p style='margin:0 0 6px;font-weight:bold;font-size:15px'>{E(o['heading'])}</p>")
+            tier = o.get("tier", "act")
+            pill = f"<span style='display:inline-block;font-size:11px;padding:1px 6px;border-radius:3px;margin-right:6px;{'background:#b0162b;color:#fff' if tier == 'act' else 'background:#f7e3e6;color:#15171c'}'>{TIER.get(tier, '')}</span>"
+            body.append(f"<p style='margin:0 0 6px;font-weight:bold;font-size:15px'>{pill}{E(o['heading'])}</p>")
+            if o.get("blocker"):
+                body.append(f"<p style='margin:0 0 8px'><b>What holds it back.</b> {E(o['blocker'])}</p>")
             for k, lab in (("what", "What."), ("market_fit", "Why there is market fit.")):
                 body.append(f"<p style='margin:0 0 8px'><b>{lab}</b> {E(o[k])}</p>")
             if o.get("partners"):
                 body.append("<p style='margin:0 0 4px'><b>Who to approach.</b></p><ul style='margin:0 0 8px;padding-left:18px'>" + "".join(f"<li style='margin:0 0 6px'><b>{E(p['name'])}</b> ({E(p['location'])}). {E(p['why'])}</li>" for p in o["partners"]) + "</ul>")
             body.append(f"<p style='margin:0 0 8px'><b>Suggested next step.</b> {E(o['next_step'])}</p>")
             if o.get("licensing_note"):
-                body.append(f"<p style='margin:0 0 8px'><b>Licensing note.</b> {E(o['licensing_note'])}</p>")
+                body.append(f"<p style='margin:0 0 8px'><b>Route.</b> {E(o['licensing_note'])}</p>")
         if inn.get("screened"):
             body.append(f"<p style='margin:10px 0 0;color:{muted};font-size:12.5px'>{E(inn['screened'])}</p>")
         rows.append(f'<tr><td style="padding:24px 0 0"><div style="{font}font-size:14px;line-height:1.55;color:{ink};background:#f3f4f6;border-left:3px solid {accent};padding:14px 16px">'

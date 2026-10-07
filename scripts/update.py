@@ -285,21 +285,67 @@ def summarize(items):
     return parse_json(claude([{"role": "user", "content": prompt}]))
 
 
+CHECKS = ("market", "partner", "carleton_role", "evidence")
+
+
 def innovation(items):
+    """Screen papers with a fixed checklist. Claude answers each check with evidence; this code decides the tier."""
     crit = (ROOT / "config/innovation_criteria.md").read_text()
-    payload = [{"id": it["id"], "title": it["title"], "venue": it["venue"], "authors": [f"{n} ({u})" for n, u in it["who"]],
-                "doi_url": it.get("url"), "abstract": it.get("abstract", "")[:2500]} for it in items if not it.get("big")]
-    prompt = (f"{STYLE}\n\nYou screen this week's Carleton Faculty of Science publications for real innovation, partnering or licensing opportunities "
-              f"for the Associate Dean of Research, International and Innovation. Follow these criteria exactly:\n\n{crit}\n\n"
-              "Use web search to (a) confirm each partner company exists and is currently active in the space, preferring Ottawa or Canadian companies, "
-              "and (b) check whether the method or code is already public (GitHub, preprint), which changes licensing into partnership. "
-              "Most weeks have nothing that qualifies; returning no opportunities is the expected outcome. Never pad.\n\n"
-              "Return only JSON in a ```json block: {\"opportunities\": [{\"heading\": str, \"what\": str, \"market_fit\": str, "
-              "\"partners\": [{\"name\": str, \"location\": str, \"why\": str}], \"next_step\": str, \"licensing_note\": str}], "
-              "\"screened\": str (one or two sentences naming near-misses and why they are not actionable yet, or empty)}\n\n"
-              + json.dumps(payload, ensure_ascii=False))
-    tools = [{"type": "web_search_20250305", "name": "web_search", "max_uses": 8, "user_location": {"type": "approximate", "city": "Ottawa", "region": "Ontario", "country": "CA"}}]
-    return parse_json(claude([{"role": "user", "content": prompt}], max_tokens=12000, tools=tools))
+    payload = [{"id": it["id"], "title": it["title"], "venue": it["venue"], "carleton_authors": [f"{n} ({u})" for n, u in it["who"]],
+                "author_order": it.get("author_order", ""), "doi_url": it.get("url"), "abstract": it.get("abstract", "")[:2500]}
+               for it in items if not it.get("big")]
+    prompt = (f"{STYLE}\n\nYou screen this week's Carleton Faculty of Science publications for innovation, partnering or licensing opportunities "
+              f"for the Associate Dean of Research, International and Innovation. The rules:\n\n{crit}\n\n"
+              "Step 1. Skip papers with no plausible commercial or partnering angle at all (pure theory, reviews, large collaborations). "
+              "Step 2. For every remaining paper, answer each check with pass true/false and one sentence of evidence. Use web search to verify partner "
+              "companies are real and currently active (prefer Ottawa or Canadian), and to check whether code or methods are already public. "
+              "Judge each check on its own; do not let one check decide another. Be consistent: the same facts must always give the same answers.\n\n"
+              "Return only JSON in a ```json block:\n"
+              "{\"assessments\": [{\"id\": str, \"title\": str,\n"
+              "  \"checks\": {\"market\": {\"pass\": bool, \"evidence\": str}, \"partner\": {\"pass\": bool, \"evidence\": str},\n"
+              "              \"carleton_role\": {\"pass\": bool, \"evidence\": str}, \"evidence\": {\"pass\": bool, \"evidence\": str}},\n"
+              "  \"route\": \"licence\" | \"partnership\" | \"unclear\", \"route_reason\": str,\n"
+              "  \"heading\": str, \"what\": str, \"market_fit\": str, \"partners\": [{\"name\": str, \"location\": str, \"why\": str}],\n"
+              "  \"next_step\": str}],\n"
+              " \"skipped_note\": str}\n\n" + json.dumps(payload, ensure_ascii=False))
+    tools = [{"type": "web_search_20250305", "name": "web_search", "max_uses": 10, "user_location": {"type": "approximate", "city": "Ottawa", "region": "Ontario", "country": "CA"}}]
+    raw = parse_json(claude([{"role": "user", "content": prompt}], max_tokens=16000, tools=tools))
+    return tier_assessments(raw)
+
+
+def tier_assessments(raw):
+    """Fixed rule: all four checks pass -> act; market and partner pass but something else fails -> conversation; otherwise not yet."""
+    labels = {"carleton_role": "Carleton's role", "evidence": "evidence", "market": "market", "partner": "partner"}
+    ops, notyet = [], []
+    for a in raw.get("assessments", []):
+        ch = a.get("checks", {})
+        ok = {k: bool((ch.get(k) or {}).get("pass")) for k in CHECKS}
+        failed = [k for k in CHECKS if not ok[k]]
+        if ok["market"] and ok["partner"]:
+            tier = "act" if not failed else "conversation"
+            blocker = " ".join(f"{labels[k].capitalize()}: {(ch.get(k) or {}).get('evidence', '')}" for k in failed)
+            route = a.get("route", "unclear")
+            ops.append({"tier": tier, "id": a.get("id"), "heading": a.get("heading") or a.get("title", ""), "what": a.get("what", ""),
+                        "market_fit": a.get("market_fit", ""), "partners": a.get("partners", []), "next_step": a.get("next_step", ""),
+                        "licensing_note": f"{'Licence' if route == 'licence' else 'Partnership' if route == 'partnership' else 'Route unclear'}. {a.get('route_reason', '')}".strip(),
+                        "blocker": blocker, "checks": {k: ok[k] for k in CHECKS}})
+        else:
+            why = "; ".join(f"{labels[k]}: {(ch.get(k) or {}).get('evidence', '').rstrip('.')}" for k in failed[:2])
+            notyet.append(f"{a.get('title', a.get('id'))} ({why})")
+    ops.sort(key=lambda o: o["tier"] != "act")
+    screened = ("Not yet: " + " | ".join(notyet)) if notyet else ""
+    if raw.get("skipped_note"):
+        screened = (screened + " " if screened else "") + raw["skipped_note"]
+    return {"opportunities": ops, "screened": screened}
+
+
+def log_innovation(issue):
+    p = ROOT / "state/innovation_log.json"
+    log_ = json.loads(p.read_text()) if p.exists() else {}
+    for o in (issue.get("innovation") or {}).get("opportunities", []):
+        if o.get("id"):
+            log_[o["id"]] = {"week_end": issue["week_end"], "tier": o.get("tier"), "heading": o.get("heading"), "checks": o.get("checks")}
+    p.write_text(json.dumps(log_, indent=1, ensure_ascii=False))
 
 
 # ---------------------------------------------------------------- digest
@@ -337,11 +383,18 @@ def make_issue(data, works, state, week_start, week_end, use_ai=True):
         units = {u for i in rec["f"] for u in people[i]["u"]}
         first_units = {people[i]["u"][0] for i in rec["f"] if people[i]["u"]}
         big = len(w.get("authorships") or []) >= 100
+        au = w.get("authorships") or []
+        def _who(x):
+            n = ((x.get("author") or {}).get("display_name")) or "?"
+            inst = ", ".join(i.get("display_name", "") for i in (x.get("institutions") or [])[:1])
+            return f"{n} ({inst})" if inst else n
+        car_pos = [k + 1 for k, x in enumerate(au) if CARLETON in [i.get("id") for i in x.get("institutions") or []]]
+        author_order = (f"{len(au)} authors; first: {_who(au[0])}; last: {_who(au[-1])}; Carleton authors at positions {car_pos}") if au and not big else ""
         items.append({"id": wid, "who": who, "who_note": "with a large collaboration" if big else "", "title": re.sub(r"<[^>]+>", "", w["title"]),
                       "url": f"https://doi.org/{w['doi'].replace('https://doi.org/', '')}" if w.get("doi") else f"https://openalex.org/{wid}",
                       "venue": ((w.get("primary_location") or {}).get("source") or {}).get("display_name") or "", "date": w.get("publication_date"),
                       "oa": bool((w.get("open_access") or {}).get("is_oa")), "big": big, "cross": len(first_units) > 1,
-                      "unit": sorted(first_units)[0] if first_units else "Other", "preprint": w.get("type") == "preprint"})
+                      "unit": sorted(first_units)[0] if first_units else "Other", "preprint": w.get("type") == "preprint", "author_order": author_order})
     log(f"{len(items)} new outputs for {week_label({'week_start': week_start.isoformat(), 'week_end': week_end.isoformat()})}")
     for it in items:
         it["abstract"] = abstract_of(it["id"])
@@ -360,7 +413,7 @@ def make_issue(data, works, state, week_start, week_end, use_ai=True):
     pre = [it for it in items if it["preprint"]]
     by_unit = {}
     for it in sorted(main, key=lambda x: x["date"], reverse=True):
-        by_unit.setdefault(it["unit"], []).append({k: v for k, v in it.items() if k not in ("abstract", "unit", "preprint")})
+        by_unit.setdefault(it["unit"], []).append({k: v for k, v in it.items() if k not in ("abstract", "unit", "preprint", "author_order")})
     issue = {"issue": state.get("last_issue", 0) + 1, "week_start": week_start.isoformat(), "week_end": week_end.isoformat(),
              "lead": lead or ("A quiet week: no new Faculty of Science outputs were indexed." if not items else f"{len(items)} new outputs this week."),
              "units": [{"unit": u, "items": by_unit[u]} for u in sorted(by_unit)], "innovation": inn}
@@ -465,6 +518,7 @@ def main():
 
     issue, new_ids = make_issue(data, works, state, week_start, week_end, use_ai=not a.no_ai)
     write_digest(issue)
+    log_innovation(issue)
     state.update({"last_week_end": week_end.isoformat(), "last_issue": issue["issue"], "seen": sorted(set(state.get("seen", [])) | set(new_ids))})
     state_p.write_text(json.dumps(state, indent=1))
     site = CFG.get("site_url", "").rstrip("/")
