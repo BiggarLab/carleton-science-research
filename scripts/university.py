@@ -116,25 +116,30 @@ def directory():
 
 # ---------------------------------------------------------------- 2. grant holders
 def nserc_holders(years=6):
+    """The awards database shows at most 10 pages of 25, so ask one fiscal year at a time."""
     y1 = dt.date.today().year
-    rows, total = [], None
-    for pg in range(1, 200):
-        url = SIG.NSERC_SEARCH.format(y0=y1 - years, y1=y1, name="") + f"&page={pg}"
-        try:
-            r, total = SIG.parse_search(get(url).decode("utf-8", "replace"))
-        except Exception as e:
-            if rows:
-                log(f"NSERC: stopped at page {pg} ({e})")
+    rows = []
+    for fy in range(y1 - years, y1 + 1):
+        got, total = [], 0
+        for pg in range(1, 11):
+            url = SIG.NSERC_SEARCH.format(y0=fy, y1=fy, name="") + f"&page={pg}"
+            try:
+                r, total = SIG.parse_search(get(url).decode("utf-8", "replace"))
+            except Exception as e:
+                if got:
+                    break
+                raise
+            seen = {(y["id"], y["name"]) for y in got}
+            new = [x for x in r if (x["id"], x["name"]) not in seen]
+            got += new
+            time.sleep(1.0)
+            if len(got) >= total or not new:
                 break
-            raise
-        seen = {(y["id"], y["year"], y["name"]) for y in rows[-60:]}
-        new = [x for x in r if (x["id"], x["year"], x["name"]) not in seen]
-        rows += new
-        time.sleep(1.0)
-        if len(rows) >= total or not new:
-            break
+        if total > 250:
+            log(f"NSERC FY{fy}: {total} awards but only the first 250 can be listed")
+        rows += got
     keep = [x for x in rows if not NO_GRANT.search(x["program"])]
-    log(f"NSERC: {len(rows)} Carleton awards listed ({total} reported), {len(keep)} research grants")
+    log(f"NSERC: {len(rows)} Carleton awards listed, {len(keep)} research grants")
     return keep
 
 
