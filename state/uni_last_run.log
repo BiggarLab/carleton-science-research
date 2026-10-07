@@ -1,11 +1,19 @@
-nserc: failed (HTTP Error 404: Not Found); using the last saved copy if there is one
-Traceback (most recent call last):
-  File "/home/runner/work/carleton-science-research/carleton-science-research/scripts/university.py", line 446, in <module>
-    main()
-  File "/home/runner/work/carleton-science-research/carleton-science-research/scripts/university.py", line 368, in main
-    works, authors = fetch_works(y0)
-                     ^^^^^^^^^^^^^^^
-  File "/home/runner/work/carleton-science-research/carleton-science-research/scripts/university.py", line 229, in fetch_works
-    w["authorships"] = [a for a in au if (a.get("author") or {}).get("id", "").split("/")[-1] in {c[0] for c in car}]
-                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'NoneType' object has no attribute 'split'
+NSERC: stopped at page 11 (HTTP Error 404: Not Found)
+NSERC: 250 Carleton awards listed (2285 reported), 196 research grants
+works: 2000 read
+works: 4000 read
+works: 6000 read
+works: 8000 read
+works: 10000 read
+works: 12000 read
+works: 14000 read
+works: 16000 read
+works: 18000 read
+works: 20035 Carleton outputs since 2021, 8236 Carleton-affiliated author profiles
+people: 769 so far; 337 web-listed faculty had no Carleton outputs in OpenAlex for these years
+people: 45 more found through NSERC/SSHRC grants; 814 in total
+world baseline: 2326 topics, 92,838,524 works worldwide 2021-2026
+university data.json: 814 people, 20035 outputs, 6.4 MB
+company citers: 2435 company links across 1208 papers (212 batches)
+No patent keys set (PATENTSVIEW_API_KEY or EPO_OPS_KEY/SECRET); skipping patents
+university signals.json: 1329 research lines
