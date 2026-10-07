@@ -302,7 +302,9 @@ def innovation(items):
               "period open), and the researcher's wider research line on this topic (paper count, momentum, companies citing that line). Use them as "
               "evidence for the market and partner checks; a company that already co-authors or cites the work is the strongest partner evidence. "
               "Step 1. Skip papers with no plausible commercial or partnering angle at all (pure theory, reviews, large collaborations). "
-              "Step 2. For every remaining paper, answer each check with pass true/false and one sentence of evidence. Use web search to verify partner "
+              "Step 2. For every remaining paper, answer each check with pass true/false and evidence of at most 20 words (a plain fact, no hedging). "
+              "Also give 'would_change': at most 15 words on the one concrete thing that would flip the failed checks (for example 'a Carleton-led prototype "
+              "with field data'), or an empty string if nothing realistic would. Use web search to verify partner "
               "companies are real and currently active (prefer Ottawa or Canadian), and to check whether code or methods are already public. "
               "Judge each check on its own; do not let one check decide another. Be consistent: the same facts must always give the same answers.\n\n"
               "Return only JSON in a ```json block:\n"
@@ -311,11 +313,15 @@ def innovation(items):
               "              \"carleton_role\": {\"pass\": bool, \"evidence\": str}, \"evidence\": {\"pass\": bool, \"evidence\": str}},\n"
               "  \"route\": \"licence\" | \"partnership\" | \"unclear\", \"route_reason\": str,\n"
               "  \"heading\": str, \"what\": str, \"market_fit\": str, \"partners\": [{\"name\": str, \"location\": str, \"why\": str}],\n"
-              "  \"next_step\": str}],\n"
-              " \"skipped_note\": str}\n\n" + json.dumps(payload, ensure_ascii=False))
+              "  \"next_step\": str, \"would_change\": str}],\n"
+              " \"skipped\": [{\"id\": str, \"reason\": str (at most 8 words, e.g. 'review article' or 'basic evolutionary biology')}]}\n\n"
+              + json.dumps(payload, ensure_ascii=False))
     tools = [{"type": "web_search_20250305", "name": "web_search", "max_uses": 10, "user_location": {"type": "approximate", "city": "Ottawa", "region": "Ontario", "country": "CA"}}]
     raw = parse_json(claude([{"role": "user", "content": prompt}], max_tokens=16000, tools=tools))
-    return tier_assessments(raw)
+    out = tier_assessments(raw)
+    out["counts"] = {"papers": len(items), "large_collaborations": sum(1 for it in items if it.get("big")),
+                     "screened": len(out["opportunities"]) + len(out["near_misses"]), "skipped": len(out.get("skipped", []))}
+    return out
 
 
 def tier_assessments(raw):
@@ -331,13 +337,15 @@ def tier_assessments(raw):
                         "market_fit": a.get("market_fit", ""), "partners": a.get("partners", []), "next_step": a.get("next_step", ""),
                         "licensing_note": f"{'Licence' if route == 'licence' else 'Partnership' if route == 'partnership' else 'Route unclear'}. {a.get('route_reason', '')}".strip(),
                         "checks": {k: True for k in CHECKS}})
+            ops[-1]["evidence"] = {k: (ch.get(k) or {}).get("evidence", "") for k in CHECKS}
         else:
             why = "; ".join(f"{labels[k]}: {(ch.get(k) or {}).get('evidence', '').rstrip('.')}" for k in failed)
-            near.append({"id": a.get("id"), "title": a.get("title", a.get("id")), "why": why})
-    screened = ("Screened, nothing to act on yet: " + " | ".join(f"{n['title']} ({n['why']})" for n in near)) if near else ""
-    if raw.get("skipped_note"):
-        screened = (screened + " " if screened else "") + raw["skipped_note"]
-    return {"opportunities": ops, "screened": screened, "near_misses": near}
+            near.append({"id": a.get("id"), "title": a.get("title", a.get("id")), "why": why,
+                         "checks": {k: {"pass": bool((ch.get(k) or {}).get("pass")), "note": (ch.get(k) or {}).get("evidence", "")} for k in CHECKS},
+                         "would_change": a.get("would_change", "")})
+    near.sort(key=lambda n: -sum(c["pass"] for c in n["checks"].values()))
+    skipped = [{"id": x.get("id"), "reason": x.get("reason", "")} for x in raw.get("skipped", []) if isinstance(x, dict)]
+    return {"opportunities": ops, "near_misses": near, "skipped": skipped, "screened": raw.get("skipped_note", "")}
 
 
 def log_innovation(issue):

@@ -83,6 +83,25 @@ h2 span{font-family:var(--f-mono);font-weight:400;letter-spacing:0;text-transfor
 .opp p,.opp li{font-size:14px;line-height:1.55;margin:0 0 8px;max-width:66ch}
 .opp ul{padding-left:1.1em;margin:4px 0 8px}
 .opp .k{font-weight:600}\n.tier{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:3px;margin-right:6px;vertical-align:2px;letter-spacing:.02em}\n.tier.act{background:var(--accent);color:#fff}\n.tier.conversation{background:var(--accent-soft);color:var(--ink)}
+.opp .tally{font-family:var(--f-mono);font-size:12px;color:var(--ink-2);margin:0 0 6px}
+.opp .rule{font-size:12.5px;color:var(--muted);margin:0 0 4px}
+.opp h4.sub{font-family:var(--f-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin:16px 0 6px;font-weight:600}
+.opp h4.sub span{font-family:var(--f-body);text-transform:none;letter-spacing:0;font-weight:400;color:var(--muted)}
+.opp .none{color:var(--ink-2)}
+.opp .rec{border:1px solid var(--line);border-radius:4px;padding:12px 14px;background:var(--paper);margin:0 0 10px}
+.opp .rec h5{font-size:15px;margin:0 0 4px}.opp .rec h5 a{color:inherit}
+.opp dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 12px;margin:8px 0 0;font-size:13.5px}
+.opp dt{font-weight:600}.opp dd{margin:0}
+.opp .nm{padding:10px 0;border-top:1px solid var(--line-2)}
+.opp .nt{font-size:14px;font-weight:600;line-height:1.35}.opp .nt a{color:inherit}
+.opp .nw{font-size:12.5px;color:var(--muted);margin:2px 0 6px}
+.opp .chips{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px}
+.opp .chk{font-size:11.5px;padding:1px 7px;border-radius:3px;border:1px solid var(--line)}
+.opp .chk.y{color:#1d6b3a;border-color:#b9dcc6;background:#eef7f1}
+.opp .chk.n{color:var(--accent);border-color:#f0c2c9;background:#fbeef0}
+.opp .nm ul{margin:0;padding-left:1.1em}.opp .nm li{font-size:13.5px;margin:0 0 3px}
+.opp .wc{font-size:13px;margin:4px 0 0;color:var(--ink-2)}
+.opp .more{font-size:12.5px;color:var(--muted);margin:10px 0 0}
 .opp .screened{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line-2);padding-top:10px;margin-top:10px}
 .also{font-size:14px}
 .also ul{padding-left:1.1em;margin:10px 0 0}
@@ -96,8 +115,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap">'
 
 FOOT = ("Summaries and the innovation section were written by Claude from each paper's abstract and public company information, "
-        "so check the paper and the company before acting. The innovation section only appears when a paper has a plausible market "
-        "and a named partner; most weeks it will be empty. Papers are matched to the Faculty list using OpenAlex, which can miss outputs "
+        "so check the paper and the company before acting. The innovation section screens every paper on the same four checks and "
+        "recommends one only when all four pass, so most weeks nothing is recommended. Papers are matched to the Faculty list using OpenAlex, which can miss outputs "
         "or lag a few weeks behind publication.")
 
 
@@ -119,34 +138,104 @@ def src_line(it):
     return " · ".join(bits)
 
 
-TIER = {"act": "Act on", "conversation": "Worth a conversation"}
+CHECK_ORDER = ("market", "partner", "carleton_role", "evidence")
+CHECK_NAME = {"market": "Market", "partner": "Partner", "carleton_role": "Carleton-led", "evidence": "Evidence"}
+CHECK_RULE = ("Four checks: <b>Market</b> (someone buys this today), <b>Partner</b> (a named, active company, Canadian preferred), "
+              "<b>Carleton-led</b> (first, last or corresponding author), <b>Evidence</b> (a working result, not just an idea). "
+              "A paper is recommended only when all four pass.")
+LEGACY_LABELS = {"market": "market", "partner": "partner", "Carleton's role": "carleton_role", "evidence": "evidence"}
+MAX_NEAR = 5
 
 
-def opp_html(inn):
-    ops = inn.get("opportunities") or []
-    act = sum(1 for o in ops if o.get("tier", "act") == "act")
-    conv = len(ops) - act
-    count = f"{act} opportunit{'y' if act == 1 else 'ies'} this week" if act else "nothing this week"
-    out = [f'<section class="opp" id="opp"><h2>Innovation and partnering <span>{count}</span></h2>']
-    if not ops:
-        out.append("<p>Nothing this week cleared the bar for a licensing or partnership conversation.</p>")
-    for o in ops:
-        tier = o.get("tier", "act")
-        out.append(f'<h4>{E(o["heading"])}</h4>')
-        out.append(f'<p><span class="k">What.</span> {E(o["what"])}</p>')
-        out.append(f'<p><span class="k">Why there is market fit.</span> {E(o["market_fit"])}</p>')
-        if o.get("partners"):
-            out.append('<p><span class="k">Who to approach.</span></p><ul>')
-            for p in o["partners"]:
-                out.append(f"<li><b>{E(p['name'])}</b> ({E(p['location'])}). {E(p['why'])}</li>")
-            out.append("</ul>")
-        if o.get("blocker"):
-            out.append(f'<p><span class="k">What holds it back.</span> {E(o["blocker"])}</p>')
-        out.append(f'<p><span class="k">Suggested next step.</span> {E(o["next_step"])}</p>')
-        if o.get("licensing_note"):
-            out.append(f'<p><span class="k">Route.</span> {E(o["licensing_note"])}</p>')
-    if inn.get("screened"):
-        out.append(f'<p class="screened">{E(inn["screened"])}</p>')
+def _parse_why(why):
+    """Older issues stored only the failed checks as 'label: text; label: text'."""
+    checks = {k: {"pass": True, "note": ""} for k in CHECK_ORDER}
+    for part in (why or "").split("; "):
+        lab, _, txt = part.partition(": ")
+        k = LEGACY_LABELS.get(lab.strip())
+        if k:
+            checks[k] = {"pass": False, "note": txt.strip()}
+    return checks
+
+
+def innov_model(issue):
+    """One structure for every renderer, built the same way every week."""
+    inn = issue.get("innovation") or {}
+    items = {it["id"]: it for u in issue.get("units", []) for it in u["items"] if it.get("id")}
+    def person(i):
+        it = items.get(i)
+        return ", ".join(f"{n} ({u})" for n, u in it["who"]) if it else ""
+    rec = [dict(o, who=person(o.get("id")), url=(items.get(o.get("id")) or {}).get("url", "")) for o in inn.get("opportunities") or []]
+    near = []
+    for n in inn.get("near_misses") or []:
+        checks = n.get("checks") or _parse_why(n.get("why"))
+        near.append({"title": n.get("title", ""), "url": (items.get(n.get("id")) or {}).get("url", ""), "who": person(n.get("id")),
+                     "checks": checks, "passed": sum(1 for k in CHECK_ORDER if checks[k]["pass"]), "would_change": n.get("would_change", "")})
+    near.sort(key=lambda x: -x["passed"])
+    skipped = [{"title": (items.get(x["id"]) or {}).get("title", ""), "who": person(x["id"]), "reason": x.get("reason", "")}
+               for x in inn.get("skipped") or [] if x.get("id")]
+    skipped_text = ""
+    if not skipped and inn.get("screened"):  # older issues: free text after the near-miss list
+        t = inn["screened"]
+        k = t.find("Skipped")
+        skipped_text = t[k:] if k >= 0 else ("" if t.startswith("Screened, nothing") else t)
+    c = inn.get("counts") or {}
+    counts = {"papers": c.get("papers", sum(len(u["items"]) for u in issue.get("units", []))), "screened": len(rec) + len(near),
+              "recommended": len(rec), "near": len(near), "skipped": len(skipped) if skipped else c.get("skipped"),
+              "big": c.get("large_collaborations", 0)}
+    return {"rec": rec, "near": near, "skipped": skipped, "skipped_text": skipped_text, "counts": counts}
+
+
+def tally(m):
+    c = m["counts"]
+    bits = [f"Screened {c['screened']} of {c['papers']} papers", f"{c['recommended']} recommended", f"{c['near']} near miss{'es' if c['near'] != 1 else ''}"]
+    if c.get("skipped"):
+        bits.append(f"{c['skipped']} with no commercial angle")
+    if c.get("big"):
+        bits.append(f"{c['big']} large collaboration{'s' if c['big'] != 1 else ''} not screened")
+    return " · ".join(bits)
+
+
+def gap_of(n):
+    fails = [k for k in CHECK_ORDER if not n["checks"][k]["pass"]]
+    return [(CHECK_NAME[k], n["checks"][k]["note"]) for k in fails]
+
+
+def rec_rows(o):
+    ev = o.get("evidence") or {}
+    rows = [("Route", o.get("licensing_note", "")), ("Market", o.get("market_fit", "")),
+            ("Partners", "; ".join(f"{p['name']} ({p['location']}): {p['why']}" for p in o.get("partners", []))),
+            ("Carleton lead", (o.get("who") or "") + (f". {ev.get('carleton_role')}" if ev.get("carleton_role") else "")),
+            ("Evidence", ev.get("evidence", "")), ("Next step", o.get("next_step", ""))]
+    return [(k, v) for k, v in rows if v]
+
+
+def opp_html(inn_unused=None, issue=None):
+    m = innov_model(issue)
+    out = [f'<section class="opp" id="opp"><h2>Innovation and partnering <span>{m["counts"]["recommended"] or "nothing"} to act on</span></h2>',
+           f'<p class="tally">{E(tally(m))}</p>', f'<p class="rule">{CHECK_RULE}</p>']
+    out.append('<h4 class="sub">Recommended</h4>')
+    if not m["rec"]:
+        out.append('<p class="none">Nothing this week. No paper passed all four checks.</p>')
+    for o in m["rec"]:
+        t = f'<a href="{E(o["url"])}" target="_blank" rel="noopener">{E(o["heading"])}</a>' if o.get("url") else E(o["heading"])
+        out.append(f'<div class="rec"><h5>{t}</h5><p>{E(o.get("what", ""))}</p><dl>'
+                   + "".join(f"<dt>{E(k)}</dt><dd>{E(v)}</dd>" for k, v in rec_rows(o)) + "</dl></div>")
+    if m["near"]:
+        out.append(f'<h4 class="sub">Near misses <span>closest first</span></h4>')
+        for n in m["near"][:MAX_NEAR]:
+            t = f'<a href="{E(n["url"])}" target="_blank" rel="noopener">{E(n["title"])}</a>' if n.get("url") else E(n["title"])
+            chips = "".join(f'<span class="chk {"y" if n["checks"][k]["pass"] else "n"}">{"✓" if n["checks"][k]["pass"] else "✗"} {CHECK_NAME[k]}</span>' for k in CHECK_ORDER)
+            gaps = "".join(f"<li><b>{E(k)}:</b> {E(v)}</li>" for k, v in gap_of(n))
+            wc = f'<p class="wc"><b>Would change the call:</b> {E(n["would_change"])}</p>' if n.get("would_change") else ""
+            out.append(f'<div class="nm"><div class="nt">{t}</div><div class="nw">{E(n["who"])}</div><div class="chips">{chips}</div><ul>{gaps}</ul>{wc}</div>')
+        if len(m["near"]) > MAX_NEAR:
+            rest = m["near"][MAX_NEAR:]
+            out.append(f'<p class="more">Also screened: {E("; ".join(f"{x['title']} ({x['passed']}/4)" for x in rest))}.</p>')
+    if m["skipped"]:
+        out.append('<p class="more"><b>No commercial angle:</b> ' + E("; ".join(f"{x['title']} ({x['reason']})" for x in m["skipped"])) + ".</p>")
+    elif m["skipped_text"]:
+        out.append(f'<p class="more">{E(m["skipped_text"])}</p>')
     out.append("</section>")
     return "\n".join(out)
 
@@ -162,7 +251,7 @@ def render_web(issue, dashboard_url="", archive=None, logo_src="logo.png", archi
             title = f'<a href="{E(it["url"])}" target="_blank" rel="noopener">{E(it["title"])}</a>' if it.get("url") else E(it["title"])
             parts.append(f'<div class="item"><div class="who">{who_html(it)}</div><h3>{title}</h3><p>{E(it["summary"])}</p><div class="src">{src_line(it)}</div></div>')
     if issue.get("innovation") is not None:
-        parts.append(opp_html(issue["innovation"]))
+        parts.append(opp_html(issue=issue))
     if issue.get("also"):
         parts.append(f'<h2>{E(issue.get("also_title") or "Also published")}</h2><div class="also"><ul>' + "".join(f"<li>{E(x)}</li>" for x in issue["also"]) + "</ul></div>")
     arch = ""
@@ -207,19 +296,27 @@ def render_text(issue, dashboard_url=""):
         for it in u["items"]:
             L += [it["title"], ", ".join(f"{n} ({x})" for n, x in it["who"]) + (f" {it['who_note']}" if it.get("who_note") else ""),
                   it["summary"], f"{it.get('url', '')}  {it.get('venue', '')}, {fmt_day(it['date'])}".strip(), ""]
-    inn = issue.get("innovation")
-    if inn is not None:
-        L.append("INNOVATION AND PARTNERING")
-        if not inn.get("opportunities"):
-            L.append("Nothing this week cleared the bar.")
-        for o in inn.get("opportunities") or []:
-            L += [o["heading"], "What: " + o["what"], "Market fit: " + o["market_fit"]]
-            if o.get("blocker"):
-                L.append("What holds it back: " + o["blocker"])
-            L += [f"- {p['name']} ({p['location']}): {p['why']}" for p in o.get("partners", [])]
-            L += ["Next step: " + o["next_step"]] + (["Route: " + o["licensing_note"]] if o.get("licensing_note") else []) + [""]
-        if inn.get("screened"):
-            L += [inn["screened"], ""]
+    if issue.get("innovation") is not None:
+        m = innov_model(issue)
+        L += ["INNOVATION AND PARTNERING", tally(m), "", "RECOMMENDED"]
+        if not m["rec"]:
+            L.append("Nothing this week. No paper passed all four checks.")
+        for o in m["rec"]:
+            L += [o["heading"], o.get("what", "")] + [f"{k}: {v}" for k, v in rec_rows(o)] + [""]
+        if m["near"]:
+            L += ["", "NEAR MISSES (closest first)"]
+            for n in m["near"][:MAX_NEAR]:
+                L += [n["title"], n["who"], "   ".join(f"{'✓' if n['checks'][k]['pass'] else '✗'} {CHECK_NAME[k]}" for k in CHECK_ORDER)]
+                L += [f"- {k}: {v}" for k, v in gap_of(n)]
+                if n.get("would_change"):
+                    L.append("Would change the call: " + n["would_change"])
+                L.append("")
+            if len(m["near"]) > MAX_NEAR:
+                L += ["Also screened: " + "; ".join(f"{x['title']} ({x['passed']}/4)" for x in m["near"][MAX_NEAR:]), ""]
+        if m["skipped"]:
+            L += ["No commercial angle: " + "; ".join(f"{x['title']} ({x['reason']})" for x in m["skipped"]), ""]
+        elif m["skipped_text"]:
+            L += [m["skipped_text"], ""]
     for x in issue.get("also") or []:
         L.append("- " + x)
     if dashboard_url:
@@ -247,27 +344,36 @@ def render_email(issue, web_url="", dashboard_url="", logo_url=""):
                         f'<div style="{font}font-size:16px;font-weight:bold;color:{ink};margin:4px 0 6px;line-height:1.35">{t}</div>'
                         f'<div style="font-family:Georgia,serif;font-size:15px;line-height:1.55;color:{ink}">{E(it["summary"])}</div>'
                         f'<div style="{font}font-size:12px;color:{muted};margin-top:6px">{src_line(it)}</div></td></tr>')
-    inn = issue.get("innovation")
-    if inn is not None:
-        body = []
-        ops = inn.get("opportunities") or []
-        if not ops:
-            body.append("<p style='margin:0'>Nothing this week cleared the bar for a real licensing or partnership opportunity.</p>")
-        for o in ops:
-            tier = o.get("tier", "act")
-            pill = f"<span style='display:inline-block;font-size:11px;padding:1px 6px;border-radius:3px;margin-right:6px;{'background:#b0162b;color:#fff' if tier == 'act' else 'background:#f7e3e6;color:#15171c'}'>{TIER.get(tier, '')}</span>"
-            body.append(f"<p style='margin:0 0 6px;font-weight:bold;font-size:15px'>{E(o['heading'])}</p>")
-            if o.get("blocker"):
-                body.append(f"<p style='margin:0 0 8px'><b>What holds it back.</b> {E(o['blocker'])}</p>")
-            for k, lab in (("what", "What."), ("market_fit", "Why there is market fit.")):
-                body.append(f"<p style='margin:0 0 8px'><b>{lab}</b> {E(o[k])}</p>")
-            if o.get("partners"):
-                body.append("<p style='margin:0 0 4px'><b>Who to approach.</b></p><ul style='margin:0 0 8px;padding-left:18px'>" + "".join(f"<li style='margin:0 0 6px'><b>{E(p['name'])}</b> ({E(p['location'])}). {E(p['why'])}</li>" for p in o["partners"]) + "</ul>")
-            body.append(f"<p style='margin:0 0 8px'><b>Suggested next step.</b> {E(o['next_step'])}</p>")
-            if o.get("licensing_note"):
-                body.append(f"<p style='margin:0 0 8px'><b>Route.</b> {E(o['licensing_note'])}</p>")
-        if inn.get("screened"):
-            body.append(f"<p style='margin:10px 0 0;color:{muted};font-size:12.5px'>{E(inn['screened'])}</p>")
+    if issue.get("innovation") is not None:
+        m = innov_model(issue)
+        green = "#1d6b3a"
+        body = [f"<div style='font-family:Menlo,Consolas,monospace;font-size:12px;color:#4a4f5a;margin:0 0 6px'>{E(tally(m))}</div>",
+                f"<div style='font-size:12.5px;color:{muted};margin:0 0 12px'>{CHECK_RULE}</div>",
+                f"<div style='font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#4a4f5a;font-weight:bold;margin:0 0 6px'>Recommended</div>"]
+        if not m["rec"]:
+            body.append("<p style='margin:0 0 6px'>Nothing this week. No paper passed all four checks.</p>")
+        for o in m["rec"]:
+            body.append(f"<div style='background:#fff;border:1px solid {line};padding:10px 12px;margin:0 0 10px'><p style='margin:0 0 4px;font-weight:bold;font-size:15px'>{E(o['heading'])}</p>"
+                        f"<p style='margin:0 0 8px'>{E(o.get('what', ''))}</p><table role='presentation' cellpadding='0' cellspacing='0' style='font-size:13.5px'>"
+                        + "".join(f"<tr><td style='font-weight:bold;padding:2px 12px 2px 0;vertical-align:top;white-space:nowrap'>{E(k)}</td><td style='padding:2px 0'>{E(v)}</td></tr>" for k, v in rec_rows(o))
+                        + "</table></div>")
+        if m["near"]:
+            body.append(f"<div style='font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#4a4f5a;font-weight:bold;margin:14px 0 4px'>Near misses <span style='text-transform:none;letter-spacing:0;font-weight:normal;color:{muted}'>closest first</span></div>")
+            for n in m["near"][:MAX_NEAR]:
+                chips = " ".join(f"<span style='display:inline-block;font-size:11.5px;padding:1px 6px;border:1px solid {'#b9dcc6' if n['checks'][k]['pass'] else '#f0c2c9'};"
+                                 f"color:{green if n['checks'][k]['pass'] else accent};background:{'#eef7f1' if n['checks'][k]['pass'] else '#fbeef0'}'>{'&#10003;' if n['checks'][k]['pass'] else '&#10007;'} {CHECK_NAME[k]}</span>" for k in CHECK_ORDER)
+                gaps = "".join(f"<li style='margin:0 0 3px'><b>{E(k)}:</b> {E(v)}</li>" for k, v in gap_of(n))
+                wc = f"<p style='margin:4px 0 0;font-size:13px'><b>Would change the call:</b> {E(n['would_change'])}</p>" if n.get("would_change") else ""
+                body.append(f"<div style='border-top:1px solid {line};padding:9px 0'><div style='font-weight:bold;font-size:14px'>{E(n['title'])}</div>"
+                            f"<div style='font-size:12.5px;color:{muted};margin:2px 0 6px'>{E(n['who'])}</div><div>{chips}</div>"
+                            f"<ul style='margin:6px 0 0;padding-left:18px;font-size:13.5px'>{gaps}</ul>{wc}</div>")
+            if len(m["near"]) > MAX_NEAR:
+                rest = "; ".join(f"{x['title']} ({x['passed']}/4)" for x in m["near"][MAX_NEAR:])
+                body.append(f"<p style='margin:8px 0 0;color:{muted};font-size:12.5px'>Also screened: {E(rest)}.</p>")
+        if m["skipped"]:
+            body.append(f"<p style='margin:10px 0 0;color:{muted};font-size:12.5px'><b>No commercial angle:</b> {E('; '.join(x['title'] + ' (' + x['reason'] + ')' for x in m['skipped']))}.</p>")
+        elif m["skipped_text"]:
+            body.append(f"<p style='margin:10px 0 0;color:{muted};font-size:12.5px'>{E(m['skipped_text'])}</p>")
         rows.append(f'<tr><td style="padding:24px 0 0"><div style="{font}font-size:14px;line-height:1.55;color:{ink};background:#f3f4f6;border-left:3px solid {accent};padding:14px 16px">'
                     f'<div style="font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#4a4f5a;font-weight:bold;margin-bottom:8px">Innovation and partnering</div>{"".join(body)}</div></td></tr>')
     if issue.get("also"):
