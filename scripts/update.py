@@ -447,6 +447,10 @@ def main():
         return
     if a.force and state.get("last_week_end") == week_end.isoformat():
         state["last_issue"] = state.get("last_issue", 1) - 1
+        prev = ROOT / f"state/issues/{week_end.isoformat()}.json"
+        if prev.exists():  # let this week's papers be summarized again
+            done = {it.get("id") for u in json.loads(prev.read_text(encoding="utf-8"))["units"] for it in u["items"]}
+            state["seen"] = [x for x in state.get("seen", []) if x not in done]
 
     rows = load_roster()
     if match_new_people(rows):
