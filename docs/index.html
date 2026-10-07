@@ -406,6 +406,11 @@ td small,.muted{color:var(--muted)}
             <label class="tog"><input type="checkbox" id="key-remember" checked>Remember on this device</label>
             <p class="note">Create a key at platform.claude.com under API Keys. Each question costs roughly 5 to 15 cents.</p>
           </div>
+          <div id="passbox" class="keybox" hidden>
+            <p><b>Enter the Faculty passcode.</b> The assistant runs on a shared Faculty account. Ask the Associate Dean's office for the passcode.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap"><input class="inp" id="pass-in" type="password" autocomplete="off" placeholder="Passcode" style="flex:1;min-width:180px"><button class="btn pri" id="pass-save">Continue</button></div>
+            <label class="tog"><input type="checkbox" id="pass-remember" checked>Remember on this device</label>
+          </div>
           <div id="chat-log" class="chat-log" aria-live="polite"></div>
           <div class="toolog" id="ask-log"></div>
           <form id="chat-form" class="chat-form">
@@ -450,7 +455,7 @@ function hideTip(){ tip.style.opacity = 0; }
 let D, WORLD, P, WK, TOP, UNITS, SG = null;
 let Y0 = 2021, Y1 = 2026, GEN = "", GENL = "", PARTIAL = true;
 const S = { units: new Set(), person: null, topic: "", y0: 2021, y1: 2026, pre: false, big: false, tab: "overview", pair: null, pubSort: "new", page: 0, country: null };
-const AI_ENDPOINT = ""; // GitHub version: URL of the Cloudflare Worker that relays questions to Claude (see README). Leave empty to hide AI there.
+let AI_ENDPOINT = ""; // GitHub version: read at startup from ai.json ({"endpoint": "<Cloudflare Worker URL>"}), see README.
 
 
 /* ---------- search matching: stems, spelling variants, synonyms, small typos ---------- */
@@ -913,7 +918,12 @@ let memKey = "";
 function getKey(){ if (memKey) return memKey; try { return localStorage.getItem(KEY_SLOT) || sessionStorage.getItem(KEY_SLOT) || ""; } catch { return ""; } }
 function setKey(k, remember){ memKey = k; try { localStorage.removeItem(KEY_SLOT); sessionStorage.removeItem(KEY_SLOT); (remember ? localStorage : sessionStorage).setItem(KEY_SLOT, k); } catch {} }
 function forgetKey(){ memKey = ""; try { localStorage.removeItem(KEY_SLOT); sessionStorage.removeItem(KEY_SLOT); } catch {} }
-const aiMode = () => sample ? "claude" : getKey() ? "key" : AI_ENDPOINT ? "relay" : "none";
+const PASS_SLOT = "cs-research-passcode";
+let memPass = "";
+function getPass(){ if (memPass) return memPass; try { return localStorage.getItem(PASS_SLOT) || sessionStorage.getItem(PASS_SLOT) || ""; } catch { return ""; } }
+function setPass(k, remember){ memPass = k; try { localStorage.removeItem(PASS_SLOT); sessionStorage.removeItem(PASS_SLOT); if (k) (remember ? localStorage : sessionStorage).setItem(PASS_SLOT, k); } catch {} }
+const aiMode = () => sample ? "claude" : AI_ENDPOINT ? "relay" : getKey() ? "key" : "none";
+const webOn = () => (aiMode() === "key" || aiMode() === "relay") && $("#ai-web").checked;
 const toolSpec = tools => (tools || []).map(t => ({ name: t.name, description: t.description, input_schema: t.inputSchema || { type: "object", properties: {} } }));
 const WEB_TOOL = { type: "web_search_20250305", name: "web_search", max_uses: 5, user_location: { type: "approximate", city: "Ottawa", region: "Ontario", country: "CA", timezone: "America/Toronto" } };
 
@@ -922,9 +932,13 @@ async function apiTurn(body, signal){
   try {
     if (mode === "key") r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", signal, body: JSON.stringify(body),
       headers: { "content-type": "application/json", "x-api-key": getKey(), "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" } });
-    else r = await fetch(AI_ENDPOINT, { method: "POST", signal, headers: { "content-type": "application/json" }, body: JSON.stringify({ messages: body.messages, tools: body.tools }) });
+    else r = await fetch(AI_ENDPOINT, { method: "POST", signal, headers: { "content-type": "application/json", "x-passcode": getPass() },
+      body: JSON.stringify({ messages: body.messages, tools: body.tools, system: body.system, web: !!body.web }) });
   } catch (e) { throw { code: signal && signal.aborted ? "cancelled" : "network" }; }
-  if (!r.ok){ let m = ""; try { m = (await r.json()).error?.message || ""; } catch {} throw { code: r.status === 401 ? "bad_key" : r.status === 429 ? "rate_limited" : r.status === 529 ? "overloaded" : "upstream_error", message: m }; }
+  if (!r.ok){ let m = "", t = ""; try { const j = await r.json(); m = j.error?.message || ""; t = j.error?.type || ""; } catch {}
+    if (mode === "relay" && t === "passcode"){ setPass("", false); throw { code: "passcode" }; }
+    if (mode === "relay" && r.status === 429) throw { code: /daily/i.test(m) ? "daily_limit" : "rate_limited", message: m };
+    throw { code: r.status === 401 ? "bad_key" : r.status === 429 ? "rate_limited" : r.status === 529 ? "overloaded" : "upstream_error", message: m }; }
   return r.json();
 }
 /* Runs a tool loop on `messages` (mutated in place, so a chat keeps its history). */
@@ -933,7 +947,7 @@ async function apiLoop(messages, { system, tools, web, model, signal, onStatus }
   let text = "";
   for (let round = 0; round < 12; round++){
     const body = { model: model || "claude-sonnet-5-5", max_tokens: 4000, messages };
-    if (system) body.system = system; if (spec.length) body.tools = spec;
+    if (system) body.system = system; if (spec.length) body.tools = spec; if (web && aiMode() === "relay") body.web = true;
     const resp = await apiTurn(body, signal);
     messages.push({ role: "assistant", content: resp.content });
     resp.content.forEach(b => { if (b.type === "server_tool_use" && b.name === "web_search" && onStatus) onStatus(`searching the web for “${(b.input || {}).query || ""}”`); });
@@ -976,7 +990,7 @@ function md(t){
   flush(); close(); return out.join("");
 }
 const mdLite = md;
-function errCopy(c, m){ return ({ not_granted:"You declined AI access for this page.", rate_limited:"Too many requests just now. Wait a minute and try again.", overloaded:"Claude is busy right now. Try again in a minute.", sampling_disabled:"AI answers are turned off for your account.", prompt_too_large:"That conversation got too long. Start a new chat.", refused:"Claude declined to answer that.", session_expired:"Your session expired. Reload the page.", bad_key:"Your API key was rejected. Check it in Settings or paste a new one.", no_key:"Add your Claude API key to use the assistant.", network:"Could not reach Claude. Check your connection and try again." })[c] || ("Something went wrong getting an answer." + (m ? " " + m : "")); }
+function errCopy(c, m){ return ({ not_granted:"You declined AI access for this page.", rate_limited:"Too many requests just now. Wait a minute and try again.", overloaded:"Claude is busy right now. Try again in a minute.", sampling_disabled:"AI answers are turned off for your account.", prompt_too_large:"That conversation got too long. Start a new chat.", refused:"Claude declined to answer that.", session_expired:"Your session expired. Reload the page.", passcode:"That passcode wasn't accepted. Enter it again above.", daily_limit:"The shared assistant has reached today's question limit. Try again tomorrow.", bad_key:"Your API key was rejected. Check it in Settings or paste a new one.", no_key:"Add your Claude API key to use the assistant.", network:"Could not reach Claude. Check your connection and try again." })[c] || ("Something went wrong getting an answer." + (m ? " " + m : "")); }
 
 async function summarizePerson(i, st){
   const out = $("#dr-ai-out"), b = $("#dr-ai"); b.disabled = true; out.innerHTML = `<p class="think">Thinking…</p>`;
@@ -1030,12 +1044,12 @@ function log(s){ $("#ask-log").textContent = s ? "… " + s : ""; }
 /* ---------- chat ---------- */
 let chatMsgs = [];      // full API history (key / relay modes)
 let chatTurns = [];     // plain text turns (inside Claude)
-let askCtl = null;
+let askCtl = null, pendingQ = "";
 function chatSystem(){
   return `You are the research assistant for the Associate Dean of Research, International and Innovation in Carleton University's Faculty of Science (Ottawa, Canada). You help with matching researchers to industry partners and grant opportunities, preparing for meetings at short notice, and finding expertise for committees.
 
 Faculty data: ${P.length} faculty in these units: ${UNITS.join(", ")}. Publications from OpenAlex, ${Y0} to ${GEN}. Large collaborations (100+ authors) and preprints are excluded from searches. Use the tools for anything about Carleton people or papers; never rely on memory about them, and never invent names, papers or numbers.
-${aiMode() === "key" ? "You can search the web. Use it to learn what a company does (products, R&D focus, Canadian presence) or what a grant program requires (eligibility, partner rules, team size, deadlines) before matching researchers to it. Say where facts came from." : "Web search is not available in this view; say so if a question needs current outside information."}
+${webOn() ? "You can search the web. Use it to learn what a company does (products, R&D focus, Canadian presence) or what a grant program requires (eligibility, partner rules, team size, deadlines) before matching researchers to it. Say where facts came from." : "Web search is not available in this view; say so if a question needs current outside information."}
 
 How to work:
 - Industry partner: understand the company first, check partnership_signals for lines where that company (or its competitors) already co-authors, cites or funds our work, then run find_experts on several different keyword angles (their products, the underlying science, the methods), then read profiles of the strongest candidates. Give a ranked shortlist with why each fits, two or three supporting paper titles with years, and a suggested opening angle. Say plainly if the fit is weak.
@@ -1057,6 +1071,7 @@ async function ask(q){
   q = q.trim(); if (!q) return;
   const mode = aiMode();
   if (mode === "none"){ $("#keybox").hidden = false; $("#key-in").focus(); return; }
+  if (mode === "relay" && !getPass()){ pendingQ = q; $("#passbox").hidden = false; $("#pass-in").focus(); return; }
   $("#ask-q").value = "";
   chatTurns.push({ role: "user", content: q }); const bot = { role: "assistant", content: "", pending: true }; chatTurns.push(bot); renderChat();
   $("#ask-go").disabled = true; $("#ask-stop").hidden = false; askCtl = new AbortController();
@@ -1073,7 +1088,8 @@ async function ask(q){
     }
   } catch (e) {
     bot.content = e.text || bot.content || ""; if (e.code !== "cancelled") bot.error = errCopy(e.code, e.message); else bot.error = "Stopped.";
-    if (e.code === "bad_key"){ $("#keybox").hidden = false; }
+    if (e.code === "bad_key" && mode === "key"){ $("#keybox").hidden = false; }
+    if (e.code === "passcode"){ pendingQ = q; $("#passbox").hidden = false; chatTurns.splice(chatTurns.length - 2, 2); bot.error = ""; $("#pass-in").setCustomValidity("That passcode wasn't accepted."); $("#pass-in").reportValidity(); }
     if (mode !== "claude" && chatMsgs.length && chatMsgs[chatMsgs.length - 1].role === "user" && typeof chatMsgs[chatMsgs.length - 1].content === "string") chatMsgs.pop();
   } finally { bot.pending = false; log(""); renderChat(); $("#ask-go").disabled = false; $("#ask-stop").hidden = true; updateAiUi(); }
 }
@@ -1093,13 +1109,19 @@ $("#ask-stop").onclick = () => askCtl && askCtl.abort();
 $("#chat-new").onclick = () => { if (askCtl) askCtl.abort(); chatMsgs = []; chatTurns = []; log(""); renderChat(); };
 $("#key-save").onclick = () => { const k = $("#key-in").value.trim(); if (!/^sk-ant-/.test(k)){ $("#key-in").setCustomValidity("Claude API keys start with sk-ant-"); $("#key-in").reportValidity(); return; }
   $("#key-in").setCustomValidity(""); setKey(k, $("#key-remember").checked); $("#key-in").value = ""; updateAiUi(); };
+$("#pass-save").onclick = () => { const k = $("#pass-in").value.trim(); if (!k) return; setPass(k, $("#pass-remember").checked); $("#pass-in").value = ""; $("#passbox").hidden = true; updateAiUi();
+  if (pendingQ){ const q = pendingQ; pendingQ = ""; ask(q); } };
+$("#pass-in").oninput = () => $("#pass-in").setCustomValidity("");
+$("#pass-in").onkeydown = e => { if (e.key === "Enter"){ e.preventDefault(); $("#pass-save").click(); } };
 function updateAiUi(){
   const mode = aiMode();
-  $("#ai-mode").textContent = { claude: "Using your Claude account", key: "Using your API key", relay: "Using the Faculty relay", none: "" }[mode];
+  $("#ai-mode").textContent = { claude: "Using your Claude account", key: "Using your API key", relay: "Shared Faculty assistant", none: "" }[mode];
   $("#keybox").hidden = mode !== "none";
-  $("#ai-web").disabled = mode !== "key"; $("#ai-model").disabled = mode === "claude";
+  $("#ai-web").disabled = !(mode === "key" || mode === "relay"); $("#ai-model").disabled = mode !== "key";
+  $("#ai-model").closest("label").hidden = mode === "relay";
   $("#key-status").innerHTML = mode === "key" ? `API key saved in this browser. <button class="btn" id="key-forget" style="padding:2px 8px;font-size:11.5px">Forget key</button>`
-    : mode === "claude" ? "Running inside Claude on your own account." : mode === "relay" ? "" : "No API key saved yet.";
+    : mode === "claude" ? "Running inside Claude on your own account." : mode === "relay" ? (getPass() ? `Using the shared Faculty assistant. <button class="btn" id="pass-forget" style="padding:2px 8px;font-size:11.5px">Forget passcode</button>` : "Using the shared Faculty assistant.") : "No API key saved yet.";
+  const pf = $("#pass-forget"); if (pf) pf.onclick = () => { setPass("", false); updateAiUi(); };
   const f = $("#key-forget"); if (f) f.onclick = () => { forgetKey(); updateAiUi(); };
   const dr = $("#dr-ai-sec"); if (dr) dr.hidden = mode === "none";
 }
@@ -1111,6 +1133,8 @@ renderChat();
     const [d, w] = await Promise.all([fetch("data.json").then(r => r.json()), fetch("world.json").then(r => r.json())]);
     D = d; WORLD = w;
     try { const r = await fetch("signals.json"); if (r.ok) SG = await r.json(); } catch {}
+    if (!sample) try { const r = await fetch("ai.json", { cache: "no-store" }); if (r.ok){ const a = await r.json(); if (a && /^https:\/\//.test(a.endpoint || "")) AI_ENDPOINT = a.endpoint; } } catch {}
+    updateAiUi();
   } catch (e) { $("#loading").textContent = "The publication data could not be loaded. Reload the page to try again."; return; }
   prep(); buildSearch();
   Y0 = d3.min(WK, w => w.y); Y1 = d3.max(WK, w => w.y); GEN = D.gen; GENL = d3.timeFormat("%b %-d")(new Date(GEN + "T12:00")); PARTIAL = +GEN.slice(0,4) === Y1 && GEN.slice(5) < "12-31"; S.y0 = Y0; S.y1 = Y1;

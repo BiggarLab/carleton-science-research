@@ -27,7 +27,8 @@ This is a tool for discovery, not assessment. Counts come from OpenAlex and miss
 | `config/settings.json` | Site address and Claude model |
 | `scripts/update.py` | The weekly job |
 | `state/` | Which papers have already been in a digest, and each issue's content |
-| `worker/worker.js` | Optional relay that turns on Ask AI on the public site |
+| `worker/worker.js` | Relay that runs the shared research assistant on one key (OpenAI or Claude) |
+| `docs/ai.json` | Address of that relay; empty turns the shared assistant off |
 
 ## One-time setup
 
@@ -78,16 +79,32 @@ Industry pull drives the ranking; paper volume only breaks ties, so prolific pub
 **Quarterly brief.** On the first Monday of January, April, July and October the job takes the 12 strongest lines, has Claude run the same four checks (market, verified partner, Carleton-led, enough evidence) with web search, keeps only lines that pass all four (at most three), and emails a short brief. It's also at `/brief/` on the site. To make one now: **Actions → Weekly research update → Run workflow**, tick *Also make the quarterly partnership brief now*. Cost is roughly 50 cents to a dollar per brief.
 
 ## The research assistant (AI chat)
-The **Assistant** tab is a chat that searches the Faculty publication data and, when you allow it, the web. Use it to match researchers to an industry partner, build a team for a grant call, prep for a meeting, or find committee members. Follow-up questions keep the conversation's context.
+The **Assistant** tab is a chat that searches the Faculty publication data and, when allowed, the web. Use it to match researchers to an industry partner, build a team for a grant call, prep for a meeting, or find committee members. Follow-up questions keep the conversation's context.
 
-On the public site it uses **your own Claude API key, saved in your browser only**:
-1. Open the dashboard, go to **Assistant**, paste your key (from platform.claude.com → API Keys) and click **Save key**.
-2. The key is sent only to Anthropic. It is never in this repo, the website code, or GitHub. Other visitors see a "connect your key" box and can't use yours.
-3. Untick *Remember on this device* on a shared computer; the key is then forgotten when the tab closes. **Forget key** removes it at any time.
+### Shared assistant (one key, held by you)
+A small Cloudflare Worker (`worker/worker.js`) holds one AI key and relays questions. The key never reaches the website, the repo or anyone's browser. Visitors type a passcode once; there's a daily question cap.
 
-Each question costs roughly 5 to 15 cents (Sonnet, with a few web searches). The spending limit you set on platform.claude.com caps the total.
+1. Sign up free at **dash.cloudflare.com**. Go to **Compute (Workers) → Create → Hello World → Deploy**. Name it `carleton-science-ai`.
+2. Click **Edit code**, delete everything, paste all of `worker/worker.js`, click **Deploy**.
+3. Worker **Settings → Variables and Secrets → Add**:
 
-Optional alternative: to let colleagues use the assistant without their own key, deploy `worker/worker.js` as a Cloudflare Worker holding the key, then put its URL in `docs/index.html` on the line `const AI_ENDPOINT = "";`.
+| Name | Type | Value |
+|---|---|---|
+| `OPENAI_API_KEY` | Secret | your OpenAI key (platform.openai.com → API keys; set a monthly budget under Limits) |
+| `PASSCODE` | Secret | a passcode you'll give colleagues |
+| `PROVIDER` | Text | `openai` (or `anthropic`, with `ANTHROPIC_API_KEY` instead) |
+| `MODEL` | Text | `gpt-5-mini` (cheap, good) or `gpt-5` (deeper) |
+| `ALLOWED_ORIGIN` | Text | `https://biggarlab.github.io` |
+
+4. Optional daily cap: **Storage & Databases → KV → Create** a namespace `LIMITS`; then Worker **Settings → Bindings → Add → KV namespace**, variable name `LIMITS`. Default cap is 200 questions a day; change with a text variable `DAILY_LIMIT`.
+5. Copy the Worker's address (like `https://carleton-science-ai.<you>.workers.dev`). In this repo, edit `docs/ai.json` to `{"endpoint": "https://carleton-science-ai.<you>.workers.dev"}` and commit. The site picks it up within a minute.
+
+To change the key, model or passcode later, edit them in Cloudflare; nothing in the repo changes. To switch the assistant off, set `docs/ai.json` back to `{"endpoint": ""}`.
+
+Cost with `gpt-5-mini`: about 1 to 3 cents a question; web searches add about 1 cent each. The weekly digest still uses Claude (`ANTHROPIC_API_KEY` in GitHub secrets).
+
+### Personal key (no Worker)
+With `docs/ai.json` empty, the Assistant asks for a Claude API key, kept only in that browser and sent only to Anthropic. Fine for one person; use the Worker for colleagues.
 
 ## Running it yourself
 ```
