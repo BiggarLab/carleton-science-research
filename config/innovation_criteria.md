@@ -11,9 +11,8 @@ Each paper with a plausible commercial or partnering angle is scored on four fix
 
 ## Outcome (applied by the script)
 
-- **Act on:** all four checks pass.
-- **Worth a conversation:** market and partner pass, but Carleton's role or evidence fails. The digest says what holds it back.
-- **Not yet:** market or partner fails. Listed in one line with the reason.
+- **Recommended:** all four checks pass. Only these get a full write-up with partners and a next step.
+- **Near miss:** any check fails. Listed in one line naming the paper and the failed check, so it can be revisited if follow-up work changes the picture. No partial recommendations.
 
 ## Also state
 

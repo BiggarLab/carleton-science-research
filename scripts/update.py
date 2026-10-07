@@ -314,37 +314,37 @@ def innovation(items):
 
 
 def tier_assessments(raw):
-    """Fixed rule: all four checks pass -> act; market and partner pass but something else fails -> conversation; otherwise not yet."""
+    """Fixed rule: a paper is recommended only when all four checks pass. Anything else is a near-miss with its reason."""
     labels = {"carleton_role": "Carleton's role", "evidence": "evidence", "market": "market", "partner": "partner"}
-    ops, notyet = [], []
+    ops, near = [], []
     for a in raw.get("assessments", []):
         ch = a.get("checks", {})
-        ok = {k: bool((ch.get(k) or {}).get("pass")) for k in CHECKS}
-        failed = [k for k in CHECKS if not ok[k]]
-        if ok["market"] and ok["partner"]:
-            tier = "act" if not failed else "conversation"
-            blocker = " ".join(f"{labels[k].capitalize()}: {(ch.get(k) or {}).get('evidence', '')}" for k in failed)
+        failed = [k for k in CHECKS if not (ch.get(k) or {}).get("pass")]
+        if not failed:
             route = a.get("route", "unclear")
-            ops.append({"tier": tier, "id": a.get("id"), "heading": a.get("heading") or a.get("title", ""), "what": a.get("what", ""),
+            ops.append({"tier": "act", "id": a.get("id"), "heading": a.get("heading") or a.get("title", ""), "what": a.get("what", ""),
                         "market_fit": a.get("market_fit", ""), "partners": a.get("partners", []), "next_step": a.get("next_step", ""),
                         "licensing_note": f"{'Licence' if route == 'licence' else 'Partnership' if route == 'partnership' else 'Route unclear'}. {a.get('route_reason', '')}".strip(),
-                        "blocker": blocker, "checks": {k: ok[k] for k in CHECKS}})
+                        "checks": {k: True for k in CHECKS}})
         else:
-            why = "; ".join(f"{labels[k]}: {(ch.get(k) or {}).get('evidence', '').rstrip('.')}" for k in failed[:2])
-            notyet.append(f"{a.get('title', a.get('id'))} ({why})")
-    ops.sort(key=lambda o: o["tier"] != "act")
-    screened = ("Not yet: " + " | ".join(notyet)) if notyet else ""
+            why = "; ".join(f"{labels[k]}: {(ch.get(k) or {}).get('evidence', '').rstrip('.')}" for k in failed)
+            near.append({"id": a.get("id"), "title": a.get("title", a.get("id")), "why": why})
+    screened = ("Screened, nothing to act on yet: " + " | ".join(f"{n['title']} ({n['why']})" for n in near)) if near else ""
     if raw.get("skipped_note"):
         screened = (screened + " " if screened else "") + raw["skipped_note"]
-    return {"opportunities": ops, "screened": screened}
+    return {"opportunities": ops, "screened": screened, "near_misses": near}
 
 
 def log_innovation(issue):
     p = ROOT / "state/innovation_log.json"
     log_ = json.loads(p.read_text()) if p.exists() else {}
-    for o in (issue.get("innovation") or {}).get("opportunities", []):
+    inn = issue.get("innovation") or {}
+    for o in inn.get("opportunities", []):
         if o.get("id"):
-            log_[o["id"]] = {"week_end": issue["week_end"], "tier": o.get("tier"), "heading": o.get("heading"), "checks": o.get("checks")}
+            log_[o["id"]] = {"week_end": issue["week_end"], "outcome": "act", "heading": o.get("heading")}
+    for n in inn.get("near_misses", []):
+        if n.get("id"):
+            log_[n["id"]] = {"week_end": issue["week_end"], "outcome": "near miss", "title": n.get("title"), "why": n.get("why")}
     p.write_text(json.dumps(log_, indent=1, ensure_ascii=False))
 
 

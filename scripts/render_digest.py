@@ -126,13 +126,13 @@ def opp_html(inn):
     ops = inn.get("opportunities") or []
     act = sum(1 for o in ops if o.get("tier", "act") == "act")
     conv = len(ops) - act
-    count = ", ".join(x for x in [f"{act} to act on" if act else "", f"{conv} worth a conversation" if conv else ""] if x) or "nothing this week"
+    count = f"{act} opportunit{'y' if act == 1 else 'ies'} this week" if act else "nothing this week"
     out = [f'<section class="opp" id="opp"><h2>Innovation and partnering <span>{count}</span></h2>']
     if not ops:
         out.append("<p>Nothing this week cleared the bar for a licensing or partnership conversation.</p>")
     for o in ops:
         tier = o.get("tier", "act")
-        out.append(f'<h4><span class="tier {tier}">{TIER.get(tier, "")}</span> {E(o["heading"])}</h4>')
+        out.append(f'<h4>{E(o["heading"])}</h4>')
         out.append(f'<p><span class="k">What.</span> {E(o["what"])}</p>')
         out.append(f'<p><span class="k">Why there is market fit.</span> {E(o["market_fit"])}</p>')
         if o.get("partners"):
@@ -147,7 +147,6 @@ def opp_html(inn):
             out.append(f'<p><span class="k">Route.</span> {E(o["licensing_note"])}</p>')
     if inn.get("screened"):
         out.append(f'<p class="screened">{E(inn["screened"])}</p>')
-    out.append('<p class="screened">Act on: market, verified partner, Carleton-led and enough evidence all check out. Worth a conversation: real market and partner, but one of the other checks fails.</p>')
     out.append("</section>")
     return "\n".join(out)
 
@@ -214,7 +213,7 @@ def render_text(issue, dashboard_url=""):
         if not inn.get("opportunities"):
             L.append("Nothing this week cleared the bar.")
         for o in inn.get("opportunities") or []:
-            L += [f"[{TIER.get(o.get('tier', 'act'), '')}] " + o["heading"], "What: " + o["what"], "Market fit: " + o["market_fit"]]
+            L += [o["heading"], "What: " + o["what"], "Market fit: " + o["market_fit"]]
             if o.get("blocker"):
                 L.append("What holds it back: " + o["blocker"])
             L += [f"- {p['name']} ({p['location']}): {p['why']}" for p in o.get("partners", [])]
@@ -257,7 +256,7 @@ def render_email(issue, web_url="", dashboard_url="", logo_url=""):
         for o in ops:
             tier = o.get("tier", "act")
             pill = f"<span style='display:inline-block;font-size:11px;padding:1px 6px;border-radius:3px;margin-right:6px;{'background:#b0162b;color:#fff' if tier == 'act' else 'background:#f7e3e6;color:#15171c'}'>{TIER.get(tier, '')}</span>"
-            body.append(f"<p style='margin:0 0 6px;font-weight:bold;font-size:15px'>{pill}{E(o['heading'])}</p>")
+            body.append(f"<p style='margin:0 0 6px;font-weight:bold;font-size:15px'>{E(o['heading'])}</p>")
             if o.get("blocker"):
                 body.append(f"<p style='margin:0 0 8px'><b>What holds it back.</b> {E(o['blocker'])}</p>")
             for k, lab in (("what", "What."), ("market_fit", "Why there is market fit.")):
