@@ -1,0 +1,40 @@
+# University-wide research strengths: all Carleton outputs, researchers identified from department sites and NSERC/SSHRC grants.
+name: University-wide update
+
+on:
+  schedule:
+    - cron: "30 11 * * 1"   # Mondays, after the Science update
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-update
+  cancel-in-progress: false
+
+jobs:
+  university:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Build university data
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+          PATENTSVIEW_API_KEY: ${{ secrets.PATENTSVIEW_API_KEY }}
+          EPO_OPS_KEY: ${{ secrets.EPO_OPS_KEY }}
+          EPO_OPS_SECRET: ${{ secrets.EPO_OPS_SECRET }}
+        run: python scripts/university.py
+      - name: Save results
+        if: always()
+        run: |
+          git config user.name "research-digest-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/university state
+          git diff --cached --quiet || git commit -m "University update $(date -u +%Y-%m-%d)"
+          git pull --rebase
+          git push

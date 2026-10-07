@@ -107,6 +107,23 @@ Cost with `gpt-5-mini`: about 1 to 3 cents a question; web searches add about 1 
 ### Personal key (no Worker)
 With `docs/ai.json` empty, the Assistant asks for a Claude API key, kept only in that browser and sent only to Anthropic. Fine for one person; use the Worker for colleagues.
 
+## University-wide view
+**https://biggarlab.github.io/carleton-science-research/university/** shows research strengths across all of Carleton, built every Monday by the *University-wide update* action (`scripts/university.py`, about 20 to 40 minutes).
+
+**Who counts as a researcher.** There is no university-wide faculty list, so each person carries the evidence that put them on the page:
+- **Science roster**: `config/roster.csv`, exact.
+- **Department website**: listed as professor, instructor, lecturer or research chair on a carleton.ca department site (adjuncts, emeriti, contract instructors and students are left out).
+- **NSERC or SSHRC grant**: held a research grant at Carleton in the last six years (scholarships and fellowships are left out) and publishes from Carleton in OpenAlex.
+
+Departments, their Faculty and the websites read are in `config/university_units.json`; edit it if a unit is missing or misfiled. Outputs from people who are not identified still count toward strengths, attributed to a department from the affiliation text on the paper where possible.
+
+**Strength rules** (shown on the page):
+- **Established**: 30+ outputs (120+ for broad areas), at least 1.5x the world share of output in the topic (1.2x for broad areas), mean FWCI of 1.0 or more, and 3+ researchers.
+- **Emerging**: real volume in the latest two full years, publishing at least 1.5x faster per year than before, with 2+ researchers.
+- **Cross-Faculty**: researchers from two or more Faculties, or many outputs co-authored across Faculties.
+
+To run it now: **Actions → University-wide update → Run workflow**.
+
 ## Running it yourself
 ```
 python scripts/update.py --no-email      # full run without sending email
