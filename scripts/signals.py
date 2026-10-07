@@ -173,8 +173,8 @@ def nserc_awards(people, years=6, refresh_days=28, pause=1.0):
         last, _, first = key.partition(", ")
         try:
             rows, total = [], None
-            for pg in range(0, 8):
-                url = NSERC_SEARCH.format(y0=y0, y1=y1, name=urllib.parse.quote(last)) + (f"&page={pg}" if pg else "")
+            for pg in range(1, 9):  # NSERC pages are numbered from 1
+                url = NSERC_SEARCH.format(y0=y0, y1=y1, name=urllib.parse.quote(last)) + f"&page={pg}"
                 r, total = parse_search(_get_html(url))
                 ids = {x["id"] for x in rows}
                 r = [x for x in r if x["id"] not in ids]

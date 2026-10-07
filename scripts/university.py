@@ -30,7 +30,7 @@ OUT = ROOT / "docs/university"
 CFG = json.loads((ROOT / "config/university_units.json").read_text())
 UA = {"User-Agent": "CarletonResearchDashboard/1.0 (Faculty of Science research office; contact via carleton.ca)"}
 CORE = re.compile(r"profess|instructor|lecturer|research chair", re.I)
-NOT_CORE = re.compile(r"adjunct|emerit|contract instructor|sessional|visiting|post-?doc|candidate|student|retired|honou?rary|teaching assistant|"
+NOT_CORE = re.compile(r"performance instructor|adjunct|emerit|contract instructor|sessional|visiting|post-?doc|candidate|student|retired|honou?rary|teaching assistant|"
                       r"research associate|alumn|former|limited.term|limited term", re.I)
 OTHER_UNI = re.compile(r"universit|college|polytechnique|institute of technology", re.I)
 NO_GRANT = re.compile(r"scholarship|fellowship|doctoral|master|cgs|postdoc|post-doctoral|undergraduate|usra|bourse|award program for students", re.I)
@@ -118,10 +118,11 @@ def directory():
 def nserc_holders(years=6):
     y1 = dt.date.today().year
     rows, total = [], None
-    for pg in range(0, 200):
-        url = SIG.NSERC_SEARCH.format(y0=y1 - years, y1=y1, name="") + (f"&page={pg}" if pg else "")
+    for pg in range(1, 200):
+        url = SIG.NSERC_SEARCH.format(y0=y1 - years, y1=y1, name="") + f"&page={pg}"
         r, total = SIG.parse_search(get(url).decode("utf-8", "replace"))
-        new = [x for x in r if x["id"] not in {y["id"] for y in rows[-50:]}]
+        seen = {(y["id"], y["year"], y["name"]) for y in rows[-60:]}
+        new = [x for x in r if (x["id"], x["year"], x["name"]) not in seen]
         rows += new
         time.sleep(1.0)
         if len(rows) >= total or not new:

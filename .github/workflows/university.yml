@@ -28,7 +28,9 @@ jobs:
           PATENTSVIEW_API_KEY: ${{ secrets.PATENTSVIEW_API_KEY }}
           EPO_OPS_KEY: ${{ secrets.EPO_OPS_KEY }}
           EPO_OPS_SECRET: ${{ secrets.EPO_OPS_SECRET }}
-        run: python scripts/university.py
+        run: |
+          set -o pipefail
+          python scripts/university.py 2>&1 | tee state/uni_last_run.log
       - name: Save results
         if: always()
         run: |
