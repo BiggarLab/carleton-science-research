@@ -1,3 +1,4 @@
+# Builds the dashboard data and the weekly digest, then emails it. See README for setup.
 name: Weekly research update
 
 on:
