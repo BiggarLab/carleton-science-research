@@ -1,0 +1,44 @@
+{
+ "W7214928232": {
+  "week_end": "2026-10-04",
+  "outcome": "near miss",
+  "title": "Uncovering the importance of lipofection for aptamer-mediated therapeutic oligonucleotide delivery in a HER2+ SKBR3 breast cancer cell line",
+  "why": "evidence: Results come from one cell line (SKBR3). The abstract says the gene silencing depended on a Lipofectamine formulation. That is a lab-scale proof of concept"
+ },
+ "W7214992825": {
+  "week_end": "2026-10-04",
+  "outcome": "near miss",
+  "title": "Pendant Phosphonium Outperforms Ammonium by Strengthening Local Electric Fields in a Ruthenium Hydrogenation Catalyst",
+  "why": "Carleton's role: Marczenko is the fifth of nine authors. The first and last authors are at Pacific Northwest National Laboratory; evidence: This is a mechanistic study of a homogeneous ruthenium complex using operando NMR and computation. It reports no scale-up and no validation beyond the lab"
+ },
+ "W7131660471": {
+  "week_end": "2026-10-04",
+  "outcome": "near miss",
+  "title": "The Silent Spill: Measuring Sensitive Data Leaks Across Public URL Repositories",
+  "why": "Carleton's role: Abdou is the second of four authors. The first and last authors are at Concordia University"
+ },
+ "W7215081028": {
+  "week_end": "2026-10-04",
+  "outcome": "near miss",
+  "title": "Measuring display clutter in different contexts: evidence from performance and attention in websites and maps",
+  "why": "evidence: The study compares three existing clutter algorithms against eye-tracking and response-time data from one lab study of participants. It does not present a new working method or prototype"
+ },
+ "W7214804148": {
+  "week_end": "2026-10-04",
+  "outcome": "near miss",
+  "title": "Semantic Factorization for 3D Shape Generation",
+  "why": "market: The abstract is empty, so I cannot name a product category or customer for this result without guessing; evidence: There is no abstract, so no reported performance or validation is available to assess"
+ },
+ "W7214578629": {
+  "week_end": "2026-10-04",
+  "outcome": "near miss",
+  "title": "Signal-Adapted Kernels and Lazy-Evaluation Gaussian Process Regression",
+  "why": "partner: My search found only open-source GP and interpolation repositories. It did not find a specific operating company, Ottawa or otherwise, that sells this kind of regression; evidence: The abstract describes a working method but reports no performance numbers. It states only that the method was compared on rainfall and elevation datasets for oscillation and smoothing behaviour"
+ },
+ "W7214721820": {
+  "week_end": "2026-10-04",
+  "outcome": "near miss",
+  "title": "Carrier dynamics in neutron irradiated high-quality epitaxial GaN",
+  "why": "market: The paper is a materials characterization of carrier lifetimes and trapping in irradiated GaN layers. I could not tie it to a product category that buys this result today; partner: Novigrad (Saskatoon) does radiation testing for aerospace, defence and nuclear teams, but it works on electronics testing. I did not verify a company active in GaN radiation detectors; Carleton's role: Carleton authors are at positions 6 and 7 of 14. The first and last authors are at Vilnius University; evidence: The paper reports lab measurements on epitaxial GaN samples. It shows no device or prototype"
+ }
+}

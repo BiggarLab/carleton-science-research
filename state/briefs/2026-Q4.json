@@ -1,0 +1,190 @@
+{
+ "picks": [
+  {
+   "tier": "act",
+   "id": "L0",
+   "heading": "Cooke: telemetry-based fish monitoring for hydro operators and fisheries consultants",
+   "what": "Cooke's group runs acoustic telemetry and tagging studies on fish survival, movement and habitat use. Recent work includes a performance test of a 307 kHz telemetry system in a small freshwater lake, post-release survival of angled Brook Trout, and Walleye spawning habitat selection in Hamilton Harbour. Hydro utilities already co-author and fund this work.",
+   "market_fit": "Buyers are hydro operators and the consultancies they hire for fish passage, survival and habitat studies. <cite index=\"26-9\">Innovasea's V3 tag operates at 307 kHz,</cite> the same band as the Carleton lake test. I have not confirmed that the paper used Innovasea equipment.",
+   "partners": [
+    {
+     "name": "Kintama Research Services",
+     "location": "Nanaimo, BC",
+     "why": "Designs and runs large acoustic telemetry arrays and already co-authors with Cooke. It is a small firm (11-50 staff), which suits Mitacs."
+    },
+    {
+     "name": "InStream Fisheries Research",
+     "location": "Vancouver and Squamish, BC",
+     "why": "Provides telemetry, fish counters and population assessment to government, industry and First Nations clients. It co-authors with Cooke."
+    },
+    {
+     "name": "Innovasea Systems",
+     "location": "Boston, US (acoustic telemetry line includes the former Vemco and HTI)",
+     "why": "Added as the one new company. It makes acoustic receivers and tags for fish passage and fine-scale tracking. <cite index=\"22-5\">It became the leader in acoustic telemetry tools after acquiring Vemco and HTI in 2019.</cite>"
+    }
+   ],
+   "next_step": "Call Cooke first. Ask which of the 307 kHz, hypoxia and release-survival results a client has asked to repeat, and who the non-Carleton co-authors are. Then propose a Mitacs Accelerate project with InStream or Kintama, with NRC IRAP as the route for the company's own costs. The existing NSERC Alliance agreements with BC Hydro, OPG and other partners may set IP and publication terms, so have the research office read them before anything is offered. Hydro partners and any co-authors at other institutions are potential co-owners.",
+   "licensing_note": "Partnership. The value is field methods and know-how for fish tagging and tracking studies, not a protectable device. The 307 kHz paper is an open preprint dated 2026-06-15. In Canada and the US the 12-month grace period runs to 2027-06-15. Most of Europe has no grace period, so any filing right there is already gone. No Carleton patents are on record.",
+   "checks": {
+    "market": true,
+    "partner": true,
+    "carleton_role": true,
+    "evidence": true
+   },
+   "signals": {
+    "name": "Steven Cooke",
+    "units": [
+     "Biology",
+     "Environmental & Interdisciplinary Sci"
+    ],
+    "topic": "Fish Ecology and Management Studies",
+    "n": 129,
+    "recent": 63,
+    "lead_share": 0.59,
+    "companies": [
+     "BC Hydro (Canada)",
+     "InStream Fisheries Research (Canada)",
+     "Kintama (Canada)",
+     "Ontario Power Generation"
+    ],
+    "citers": [
+     "BC Hydro (Canada)",
+     "CHN Energy (China)",
+     "China Three Gorges Corporation (China)",
+     "China Yangtze Power Co., Ltd. (China)",
+     "Cramer Fish Sciences (United States)",
+     "East Japan Railway (Japan)",
+     "Kintama (Canada)",
+     "Medtronic (United States)"
+    ],
+    "industry": [
+     "Fonds de recherche du Québec – Nature et technologies",
+     "Mitacs",
+     "Mitacs IT39290",
+     "Natural Sciences and Engineering Research Council of Canada ALLRP 562034-21",
+     "Natural Sciences and Engineering Research Council of Canada ALLRP 568649‐21"
+    ],
+    "preprints": [
+     {
+      "t": "Performance of a 307 kHz acoustic telemetry system in a small freshwater lake",
+      "d": "2026-06-15",
+      "grace_until": "2027-06-15"
+     }
+    ],
+    "patents": []
+   },
+   "score": 59
+  },
+  {
+   "tier": "act",
+   "id": "L10",
+   "heading": "Barry: ALD precursors and area-selective deposition for chip makers",
+   "what": "Barry's group develops precursor chemistry and deposition processes for atomic layer deposition. Recent work covers molybdenum carbide films, precursor decomposition on surfaces, and carbene layers for area-selective deposition.",
+   "market_fit": "Precursor suppliers and chip makers pay for new precursors and process chemistry, and Adeka and Tokyo Electron already cite the work. <cite index=\"63-3\">Entegris sells organosilane precursors and molecules for area-selective deposition,</cite> which overlaps with Barry's topics.",
+   "partners": [
+    {
+     "name": "Solvay",
+     "location": "United States (co-author); NSERC partner record lists Cytec Canada and Solvay Specialty Polymers",
+     "why": "Co-authors with Barry and is tied to the CRD project. Its scope for deposition precursors is unconfirmed."
+    },
+    {
+     "name": "ADEKA",
+     "location": "Tokyo, Japan",
+     "why": "<cite index=\"38-2\">Develops many ALD and CVD precursors as a leading supplier.</cite> It already cites the line."
+    },
+    {
+     "name": "Entegris",
+     "location": "Billerica, Massachusetts, US",
+     "why": "Added as the one new company. <cite index=\"63-2\">It sells ultra-pure precursors for molybdenum and other metal films,</cite> which matches Barry's molybdenum carbide work."
+    }
+   ],
+   "next_step": "Call Barry. Ask what the Solvay CRD (CRDPJ 543877-19) covers, whether it is still active, and whether any precursor or process is unpublished and worth a filing. Have the research office read the CRD agreement, because Solvay may co-own results and hold publication rights. If the terms allow it, pitch an NSERC Alliance or a follow-on CRD to ADEKA or Entegris, confirming eligibility with a Canadian-based partner or subsidiary. Tokyo Electron Technology Solutions has a Canadian link to check.",
+   "licensing_note": "Partnership. No Carleton patents are on record, no open preprints are flagged, and the published methods are already public. The CRD with Solvay probably sets IP terms. Treat this as a know-how and follow-on research play unless Barry has an unpublished precursor that merits a filing.",
+   "checks": {
+    "market": true,
+    "partner": true,
+    "carleton_role": true,
+    "evidence": true
+   },
+   "signals": {
+    "name": "Seán Barry",
+    "units": [
+     "Chemistry"
+    ],
+    "topic": "Semiconductor materials and devices",
+    "n": 8,
+    "recent": 3,
+    "lead_share": 0.75,
+    "companies": [
+     "Solvay (United States)"
+    ],
+    "citers": [
+     "Adeka (Japan)",
+     "Tokyo Electron Technology Solutions Limited (Japan)"
+    ],
+    "industry": [
+     "Natural Sciences and Engineering Research Council of Canada CRDPJ 543877-19",
+     "Semiconductor Research Corporation"
+    ],
+    "preprints": [],
+    "patents": []
+   },
+   "score": 23
+  }
+ ],
+ "near_misses": [
+  {
+   "id": "L1",
+   "title": "Utkarsh Dang: Duchenne and Becker muscular dystrophy biomarkers",
+   "why": "partner: Not verified by search this quarter, because the line already fails on Carleton's role. The companies are US and Swiss, with none in Canada; Carleton's role: Share as lead author is 0.38, below 0.5. The titles are multi-site clinical trial analyses with industry co-authors, which points to a Carleton middle-author position"
+  },
+  {
+   "id": "L2",
+   "title": "Argel Aguilar Valles: psychedelics and non-hallucinogenic analogs",
+   "why": "partner: No company co-authors, and citing companies were not verified by search. Mitacs funding is the only industry-linked signal; evidence: The titles point to preclinical, mechanistic work, plus reviews and a conference abstract. I saw nothing showing validation beyond a lab model. I did not have the abstracts"
+  },
+  {
+   "id": "L3",
+   "title": "Steven Cooke: wildlife ecology and conservation",
+   "why": "market: The recent titles are reviews and horizon scans (ranger patrol effectiveness, AI in conservation, biologging, migration threats). They do not describe a product or a result a customer type buys; partner: Microsoft and Vizzuality co-author, but they were not verified by search. The line fails on other checks; evidence: Syntheses, not a method or prototype with reported performance"
+  },
+  {
+   "id": "L4",
+   "title": "Steven Cooke: physiological and biochemical adaptations in fish",
+   "why": "market: Thermal tolerance, cortisol response and transcriptomic stress studies. No customer type that spends money on this result was identified; partner: PowerChina co-authors. It was not verified by search, because the line fails on other checks; Carleton's role: Share as lead author is 0.48, just under 0.5; evidence: Physiology studies on single species and streams, with no prototype or method"
+  },
+  {
+   "id": "L5",
+   "title": "Sean Landsman: fish ecology and management",
+   "why": "market: Release mortality and habitat improvement studies. No buyer identified; partner: No company co-authors and none verified; Carleton's role: Share as lead author is 0.0; evidence: Field studies, with no method or prototype"
+  },
+  {
+   "id": "L6",
+   "title": "Steven Cooke: fish anaesthesia and immobilisation methods",
+   "why": "partner: BC Hydro and Manitoba Hydro are real utilities, but I did not verify them by search, and utilities as research co-authors are not yet a commercial counterpart for a method or product; evidence: The titles show two species (lake sturgeon and largemouth bass) and a decision framework. I saw no multi-site or in-field validation and no performance numbers. I did not have the abstracts"
+  },
+  {
+   "id": "L7",
+   "title": "Junfeng Wen: federated learning client selection",
+   "why": "partner: No company co-authors. The citing companies were not verified by search; evidence: The titles describe algorithms. I saw no prototype, deployment or reported performance, and I did not have abstracts"
+  },
+  {
+   "id": "L8",
+   "title": "Yuhong Guo: neural network applications (object detection)",
+   "why": "partner: Alibaba was not verified by search. It is also not a Canadian or Ottawa partner; evidence: One paper is a survey. The other is an unsupervised segmentation method (Exemplar-FreeSOLO). Neither is a prototype with reported performance that I could confirm, and there are no papers in the last two years"
+  },
+  {
+   "id": "L9",
+   "title": "Maria DeRosa: aptamer biosensors",
+   "why": "evidence: The serum sensor titles do not show reported performance in patient samples. The other recent titles are a review and a critique of the field. I did not have the abstracts"
+  },
+  {
+   "id": "L11",
+   "title": "Steven Cooke: animal behaviour and fish welfare",
+   "why": "market: Fish welfare commentary. Nofima, DigsFish Services and Pescanova show aquaculture interest, but the papers are perspective pieces, not a result a buyer would purchase; partner: Nofima and DigsFish Services were not verified by search; Carleton's role: Share as lead author is 0.0; evidence: Two opinion and review papers"
+  }
+ ],
+ "screened": 12,
+ "quarter": "2026-Q4",
+ "date": "2026-10-07"
+}
