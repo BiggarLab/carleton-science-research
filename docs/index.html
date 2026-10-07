@@ -763,7 +763,7 @@ function opps(){
       <div class="sc">${L.n} papers · ${L.recent} recent<br>${Math.round(L.lead_share*100)}% as lead</div></div>`).join("")
     : `<div class="empty">No research lines with industry signals match these filters.</div>`;
   box.onclick = e => { const b = e.target.closest(".nm[data-p]"); if (b) openProfile(+b.dataset.p); };
-  const src = SG.sources || {}; const on = [["OpenAlex co-authors and funders", src.openalex], ["companies citing our work", src.company_citers], ["NSERC partners", src.nserc], ["patents (USPTO, EPO)", src.patents], ["CV data", src.cv]];
+  const src = SG.sources || {}; const on = [["OpenAlex co-authors and funders", src.openalex], ["companies citing our work", src.company_citers], ["NSERC grants and partners", src.nserc], ["patents (USPTO, EPO)", src.patents], ["CV data", src.cv]];
   $("#opp-src").textContent = `Signals updated ${SG.gen}. Sources in use: ${on.filter(x => x[1]).map(x => x[0]).join(", ")}.` + (on.some(x => !x[1]) ? ` Not yet connected: ${on.filter(x => !x[1]).map(x => x[0]).join(", ")}.` : "");
 }
 
@@ -886,6 +886,7 @@ function openProfile(i){
     ${st.big ? `<p class="note">${st.big} of these outputs are large collaborations (100+ authors).</p>` : ""}
     <div class="dsec"><h3>Outputs per year</h3><svg width="100%" height="56" viewBox="0 0 ${yrs.length*40} 56" style="max-width:${yrs.length*56}px">${yrs.map((n,k) => `<rect x="${k*40+8}" y="${44 - 38*n/ym}" width="24" height="${Math.max(38*n/ym, n?2:0)}" rx="2" fill="var(--seq-4)"><title>${S.y0+k}: ${n}</title></rect><text x="${k*40+20}" y="55" text-anchor="middle" style="font-size:9px">${String(S.y0+k).slice(2)}</text>`).join("")}</svg></div>
     ${SG && SG.lines.some(L => L.person === i && L.pull > 0) ? `<div class="dsec"><h3>Industry signals</h3>${SG.lines.filter(L => L.person === i && L.pull > 0).slice(0,3).map(L => `<div style="font-size:13px"><b>${esc(L.topic)}</b><div class="chips" style="margin-top:4px">${lineChips(L)}</div></div>`).join("")}</div>` : ""}
+    ${SG && SG.nserc && SG.nserc[i] ? `<div class="dsec"><h3>NSERC grants</h3>${SG.nserc[i].grants.slice(0,3).map(g => `<div class="dpub"><b>${esc(g.title)}</b><br><small class="muted">${esc(g.program)} · ${esc(g.year)}${g.area ? " · " + esc(g.area) : ""}</small>${g.partners && g.partners.length ? `<br><small>Partners: ${esc(g.partners.join(", "))}</small>` : ""}${g.summary ? `<details><summary class="muted" style="font-size:12px;cursor:pointer">Summary</summary><small>${esc(g.summary)}</small></details>` : ""}</div>`).join("")}</div>` : ""}
     <div class="dsec"><h3>Topics</h3><div class="chips">${st.top.map(t => `<button class="chip" data-q="${esc(t)}">${esc(t)}</button>`).join("") || `<span class="muted">None in this period</span>`}</div></div>
     <div class="dsec"><h3>Carleton Science co-authors</h3><div class="dlist">${Object.entries(coll).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([j,n]) => `<button data-p="${j}"><span>${esc(P[j].n)} <small class="muted">${esc(P[j].u.map(unitLabel).join(", "))}</small></span><span class="num muted">${n}</span></button>`).join("") || `<span class="muted">None in this period</span>`}</div></div>
     <div class="dsec"><h3>Partner countries</h3><div class="muted" style="font-size:13px">${Object.entries(ctry).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([c,n]) => `${esc((WORLD.cc[c]||[c])[0])} <span class="num">${n}</span>`).join(" · ") || "None recorded"}</div></div>
@@ -996,14 +997,15 @@ const TOOLS = [
     execute(inp){ log(`ranking experts on “${inp.query}”`); const saved = new Set(S.units); S.units.clear();
       const r = expertSearch(String(inp.query||""), { noadmin: !!inp.exclude_admin, rank: inp.rank || "" }).slice(0, 20); S.units = saved;
       return r.map(x => ({ name: x.p.n, units: x.p.u, rank: x.p.rk, stream: x.p.st, admin_roles: x.p.ro, matches: x.n, latest: x.last, examples: x.ws.slice(-3).map(w => w.t) })); } },
-  { name: "person_profile", description: "Get one researcher's profile: units, rank, roles, lifetime works, h-index, last-five-year output count, top topics, top Carleton co-authors, partner countries and their 15 most recent titles.",
+  { name: "person_profile", description: "Get one researcher's profile: units, rank, roles, lifetime works, h-index, last-five-year output count, top topics, top Carleton co-authors, partner countries, their 15 most recent titles, and their NSERC grants (program, year, partner organizations, and the plain-language summary of planned work).",
     inputSchema: { type:"object", properties: { name: { type:"string" } }, required: ["name"] },
     execute(inp){ const n = String(inp.name||"").toLowerCase(); const p = P.find(p => p.n.toLowerCase() === n) || P.find(p => p.n.toLowerCase().includes(n) || p.sort.toLowerCase().includes(n)); if (!p) throw new Error("No researcher by that name in the Faculty list");
       log(`reading ${p.n}'s profile`); const ws = p.works.filter(w => !w.pre); const coll = {}; ws.forEach(w => w.f.forEach(j => { if (j !== p.i) coll[P[j].n] = (coll[P[j].n]||0) + 1; }));
       const ct = {}; ws.filter(w => !w.big).forEach(w => w.co.forEach(c => { if (c !== "CA") ct[c] = (ct[c]||0) + 1; }));
       return { name: p.n, units: p.u, rank: p.rk, stream: p.st, roles: p.ro, lifetime_works: p.lw, h_index: p.h, outputs_last_five_years: ws.length, large_collaboration_outputs: ws.filter(w => w.big).length,
         top_topics: d3.rollups(ws.filter(w => w.T), v => v.length, w => w.T[0]).sort((a,b) => b[1]-a[1]).slice(0, 6), coauthors: Object.entries(coll).sort((a,b) => b[1]-a[1]).slice(0, 8), countries: Object.entries(ct).sort((a,b) => b[1]-a[1]).slice(0, 8),
-        recent: [...ws].sort((a,b) => b.d.localeCompare(a.d)).slice(0, 15).map(w => `${w.d} ${w.t} (${w.v})`) }; } },
+        recent: [...ws].sort((a,b) => b.d.localeCompare(a.d)).slice(0, 15).map(w => `${w.d} ${w.t} (${w.v})`),
+        nserc_grants: SG && SG.nserc && SG.nserc[p.i] ? SG.nserc[p.i].grants : "not available" }; } },
   { name: "partnership_signals", description: "Research lines (one researcher, one topic) ranked by industry pull: companies co-authoring or citing the work, industry funding (Mitacs, NSERC Alliance etc.), NSERC partner organizations, patents, preprints with an open patent clock, and CV items. Filter by keywords, researcher name or unit. Use this first for partnership, licensing or industry-fit questions.",
     inputSchema: { type:"object", properties: { query: { type:"string", description:"topic keywords, optional" }, researcher: { type:"string" }, unit: { type:"string" }, limit: { type:"integer" } } },
     execute(inp){ if (!SG) return "Partnership signals are not available yet (they are built by the weekly update)."; log("checking partnership signals");
@@ -1037,7 +1039,7 @@ ${aiMode() === "key" ? "You can search the web. Use it to learn what a company d
 
 How to work:
 - Industry partner: understand the company first, check partnership_signals for lines where that company (or its competitors) already co-authors, cites or funds our work, then run find_experts on several different keyword angles (their products, the underlying science, the methods), then read profiles of the strongest candidates. Give a ranked shortlist with why each fits, two or three supporting paper titles with years, and a suggested opening angle. Say plainly if the fit is weak.
-- Grant opportunity: check the program rules, then propose a team that covers the required expertise across units and ranks, name the gaps, and note any partner or eligibility requirements. Do not guess anyone's demographics.
+- Grant opportunity: check the program rules, read candidates' profiles (their NSERC grant summaries describe planned work and existing partners), then propose a team that covers the required expertise across units and ranks, name the gaps, and note any partner or eligibility requirements. Do not guess anyone's demographics.
 - Meeting prep: give a short brief: who they are, links to our Faculty (people, papers, shared topics), and three things worth raising.
 - Committees: respect any exclusions asked for (for example skip chairs and directors) and aim for a mix of units and ranks.
 Style: plain, direct Canadian English for a busy dean. Short paragraphs and short lists. Name each Carleton person with their unit. Flag thin evidence or possible name-matching errors. No em dashes, no hype.`;

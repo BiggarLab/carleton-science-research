@@ -6,7 +6,7 @@ several papers) and scores each line on evidence that industry already cares:
   company co-authors     companies on the author list of our papers           (OpenAlex)
   company citers         companies whose own papers cite our papers           (OpenAlex)
   industry funding       Mitacs, NSERC Alliance/CRD/Engage, OCI, company funders (OpenAlex funders and awards)
-  NSERC partners         partner organizations on the researcher's NSERC grants (NSERC open data, if reachable)
+  NSERC grants           partner organizations, co-researchers and plain-language summaries of planned work (NSERC awards database)
   patents                Carleton patents naming the researcher (USPTO PatentSearch and/or EPO OPS, free keys)
   preprint clock         preprints in the last 12 months (patent grace period still open in Canada and the US)
   CV signals             grants, theses and other items from config/cv_signals.csv, when that file exists
@@ -21,6 +21,7 @@ import os
 import re
 import unicodedata
 import urllib.error
+import urllib.parse
 import urllib.request
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -100,101 +101,143 @@ def company_citers(works, y0, oa_pages, batch=50, max_pages=3):
     return out
 
 
-# ------------------------------------------------------------------ NSERC open data (optional)
-NSERC_BASES = ["https://www.nserc-crsng.gc.ca/opendata/", "https://nserc-crsng.canada.ca/opendata/"]
+# ------------------------------------------------------------------ NSERC awards database
+# Public search at nserc-crsng.canada.ca/en/awards-database (robots.txt allows it). One search per person,
+# detail pages only for partner programs and the latest Discovery grant. Cached in state/nserc_cache.json,
+# refreshed per person every 28 days, with a pause between requests.
+import html as _html
+import time as _time
+
+NSERC_HOST = "https://nserc-crsng.canada.ca"
+NSERC_SEARCH = (NSERC_HOST + "/en/awards-database?fiscal_year_from={y0}&fiscal_year_to={y1}&competition_year_from=0&competition_year_to=0"
+                "&keywords=&institution_type=0&institution_name_1_6%5B23%5D=23&area_code=&subject_code=&department=&award_amount_min="
+                "&award_amount_max=&report_type=0&op=Search&person_name={name}")
+PARTNER_PROGRAMS = re.compile(r"alliance|collaborative research and development|engage|idea to innovation|applied research|strategic|"
+                              r"industrial research chair|partnership|i2i|create|college and community|mission", re.I)
+UA = {"User-Agent": "CarletonScienceResearchDashboard/1.0 (Carleton University Faculty of Science research office)"}
 
 
-def _get_csv(url):
-    req = urllib.request.Request(url, headers={"User-Agent": "carleton-science-digest"})
-    with urllib.request.urlopen(req, timeout=120) as r:
-        b = r.read()
-    for enc in ("utf-8-sig", "cp1252", "latin-1"):
-        try:
-            txt = b.decode(enc)
-            break
-        except UnicodeDecodeError:
+def _get_html(url):
+    req = urllib.request.Request(url, headers=UA)
+    with urllib.request.urlopen(req, timeout=60) as r:
+        return r.read().decode("utf-8", "replace")
+
+
+def _strip(h):
+    return re.sub(r"\s+", " ", _html.unescape(re.sub(r"<[^>]+>", " ", h or ""))).strip()
+
+
+def parse_search(page):
+    rows = []
+    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", page, re.S):
+        tds = re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)
+        if len(tds) < 5:
             continue
-    if "<html" in txt[:500].lower():
-        raise ValueError("got a web page, not a CSV")
-    return list(csv.DictReader(io.StringIO(txt)))
+        m = re.search(r'href="/en/awards-database/(\d+)"', tr)
+        amt = re.sub(r"[^\d.]", "", _strip(tds[2])) or "0"
+        rows.append({"name": _strip(tds[0]), "title": _strip(tds[1]), "amount": float(amt), "year": _strip(tds[3]), "program": _strip(tds[4]), "id": m.group(1) if m else None})
+    m = re.search(r"Showing \d+ to \d+ of ([\d,]+)", page)
+    total = int(m.group(1).replace(",", "")) if m else len(rows)
+    return rows, total
 
 
-def _col(headers, *needles, avoid=()):
-    for h in headers:
-        hl = norm(h)
-        if any(n in hl for n in needles) and not any(a in hl for a in avoid):
-            return h
-    return None
+def parse_detail(page):
+    d = {}
+    for lab, span, ul in re.findall(r'award-db-item-label">([^<]+)</span>\s*(?:<span class="award-db-item-value">(.*?)</span>|<ul class="award-db-item-value">(.*?)</ul>)', page, re.S):
+        lab = lab.strip().lower()
+        d[lab] = [_strip(x) for x in re.findall(r"<li>(.*?)</li>", ul, re.S)] if ul else _strip(span)
+    m = re.search(r"Award summary\s*</gcds-heading>(.*?)</section>", page, re.S)
+    summ = _strip(m.group(1)) if m else ""
+    if summ.lower().startswith("no summary"):
+        summ = ""
+    partners = d.get("partners") if isinstance(d.get("partners"), list) else []
+    cores = d.get("co-researchers") if isinstance(d.get("co-researchers"), list) else []
+    return {"app_id": d.get("application id", ""), "program": d.get("program", ""), "area": d.get("area of application", ""), "subject": d.get("research subject", ""),
+            "partners": partners, "coresearchers": cores, "summary": summ[:900], "department": d.get("department", "")}
 
 
-def nserc_partners(people, years=4):
-    """Return {person index: [{"partner", "program", "title", "year"}]} from NSERC partner and award files."""
-    files = sorted((ROOT / "config/nserc").glob("*.csv")) if (ROOT / "config/nserc").exists() else []
-    this_fy = dt.date.today().year - (0 if dt.date.today().month >= 4 else 1)
-    pairs = []
-    for fy in range(this_fy, this_fy - years - 1, -1):
-        aw = pa = None
-        for base in NSERC_BASES:
-            try:
-                aw = _get_csv(f"{base}NSERC_FY{fy}_Expenditures.csv")
-                pa = _get_csv(f"{base}NSERC_FY{fy}_PARTNER.csv")
-                break
-            except Exception:
-                aw = pa = None
-        if aw and pa:
-            pairs.append((fy, aw, pa))
-    for f in files:  # manual downloads: config/nserc/<anything>_Expenditures.csv + <anything>_PARTNER.csv
-        if "expenditure" in f.name.lower():
-            p = f.with_name(f.name.lower().replace("expenditures", "partner"))
-            cand = [x for x in files if x.name.lower() == p.name]
-            if cand:
-                pairs.append((f.stem, _read_local(f), _read_local(cand[0])))
-    if not pairs:
-        log("NSERC open data not reachable and no files in config/nserc; skipping NSERC partners")
-        return {}
-    by_last = defaultdict(list)
+def nserc_awards(people, years=6, refresh_days=28, pause=1.0):
+    """Return {person index: {"partners": [...], "grants": [...]}} from the NSERC awards database."""
+    cache_p = ROOT / "state/nserc_cache.json"
+    cache = json.loads(cache_p.read_text()) if cache_p.exists() else {"people": {}, "details": {}}
+    today = dt.date.today()
+    y1 = today.year
+    y0 = y1 - years
+    fetched = 0
+    failures = 0
     for i, p in enumerate(people):
-        last, _, first = p["sort"].partition(", ")
-        by_last[norm(last)].append((i, norm(first)[:3]))
-    out = defaultdict(list)
-    for fy, aw, pa in pairs:
-        ah, ph = list(aw[0].keys()), list(pa[0].keys())
-        key = next((h for h in ah if h in ph and re.search(r"cle|key|id", norm(h))), None) or next((h for h in ah if h in ph), None)
-        name_c = _col(ah, "name", "nom", avoid=("partner", "partenaire", "organization", "program", "institution"))
-        inst_c = _col(ah, "institution", "etablissement")
-        prog_c = _col(ah, "program")
-        title_c = _col(ah, "title", "titre")
-        part_c = _col(ph, "partner", "partenaire", "organization", "organisme", avoid=("type", "id", "province", "country", "pays"))
-        if not (key and name_c and inst_c and part_c):
-            log(f"NSERC FY{fy}: unexpected columns, skipped. Award columns: {ah[:12]} Partner columns: {ph[:8]}")
+        key = p["sort"]
+        ent = cache["people"].get(key)
+        if ent and (today - dt.date.fromisoformat(ent["fetched"])).days < refresh_days:
             continue
-        partners = defaultdict(set)
-        for r in pa:
-            if r.get(part_c):
-                partners[r[key]].add(r[part_c].strip())
-        hits = 0
-        for r in aw:
-            if "carleton" not in norm(r.get(inst_c, "")) or r.get(key) not in partners:
-                continue
-            nm = r.get(name_c, "")
-            last, _, first = nm.partition(",")
-            for i, f3 in by_last.get(norm(last), []):
-                if not f3 or norm(first).startswith(f3):
-                    for prt in partners[r[key]]:
-                        out[i].append({"partner": prt, "program": r.get(prog_c, ""), "title": r.get(title_c, ""), "year": str(fy)})
-                    hits += 1
-        log(f"NSERC FY{fy}: {hits} Carleton Science grants with partners")
-    return dict(out)
-
-
-def _read_local(p):
-    b = p.read_bytes()
-    for enc in ("utf-8-sig", "cp1252", "latin-1"):
+        last, _, first = key.partition(", ")
         try:
-            return list(csv.DictReader(io.StringIO(b.decode(enc))))
-        except UnicodeDecodeError:
+            rows, total = [], None
+            for pg in range(0, 8):
+                url = NSERC_SEARCH.format(y0=y0, y1=y1, name=urllib.parse.quote(last)) + (f"&page={pg}" if pg else "")
+                r, total = parse_search(_get_html(url))
+                ids = {x["id"] for x in rows}
+                r = [x for x in r if x["id"] not in ids]
+                rows += r
+                fetched += 1
+                _time.sleep(pause)
+                if len(rows) >= total or not r:
+                    break
+        except Exception as e:
+            failures += 1
+            log(f"NSERC search failed for {p['n']}: {e}")
+            if failures >= 5:
+                log("NSERC awards database not reachable; stopping NSERC lookups this run")
+                break
             continue
-    return []
+        f3 = norm(first)[:3]
+        mine = [r for r in rows if norm(r["name"].split(",")[0]).replace(" ", "") == norm(last).replace(" ", "")
+                and (not f3 or norm(r["name"].partition(",")[2]).startswith(f3))]
+        cache["people"][key] = {"fetched": today.isoformat(), "awards": mine}
+    for key, ent in cache["people"].items():
+        aw = sorted(ent["awards"], key=lambda r: r["year"], reverse=True)
+        want = [r for r in aw if PARTNER_PROGRAMS.search(r["program"])]
+        disc = next((r for r in aw if "discovery grants program - individual" in r["program"].lower()), None)
+        if disc:
+            want.append(disc)
+        seen_titles = set()
+        for r in want:
+            t = (r["title"], r["program"])
+            if t in seen_titles or not r.get("id") or r["id"] in cache["details"]:
+                seen_titles.add(t)
+                continue
+            seen_titles.add(t)
+            try:
+                cache["details"][r["id"]] = parse_detail(_get_html(f"{NSERC_HOST}/en/awards-database/{r['id']}"))
+                fetched += 1
+                _time.sleep(pause)
+            except Exception as e:
+                log(f"NSERC detail failed {r['id']}: {e}")
+    cache_p.write_text(json.dumps(cache, ensure_ascii=False, indent=0))
+    out = {}
+    idx = {p["sort"]: i for i, p in enumerate(people)}
+    for key, ent in cache["people"].items():
+        i = idx.get(key)
+        if i is None:
+            continue
+        grants, partners, seen = [], [], set()
+        for r in sorted(ent["awards"], key=lambda r: r["year"], reverse=True):
+            t = (r["title"], r["program"])
+            if t in seen:
+                continue
+            seen.add(t)
+            det = cache["details"].get(r.get("id") or "", {})
+            total = sum(x["amount"] for x in ent["awards"] if (x["title"], x["program"]) == t)
+            g = {"title": r["title"], "program": r["program"], "year": r["year"], "total": round(total), "area": det.get("area", ""),
+                 "partners": det.get("partners", []), "summary": det.get("summary", "")[:600]}
+            grants.append(g)
+            for prt in det.get("partners", []):
+                partners.append({"partner": prt, "program": r["program"], "title": r["title"], "year": r["year"]})
+        if grants:
+            out[i] = {"partners": partners, "grants": grants[:6]}
+    log(f"NSERC: {fetched} page requests this run; {sum(1 for v in out.values() if v['partners'])} researchers with partner organizations, "
+        f"{sum(len(v['partners']) for v in out.values())} partner links")
+    return out
 
 
 # ------------------------------------------------------------------ patents (optional, free sources)
@@ -409,7 +452,7 @@ def build_lines(data, works, citers, nserc, patents, cvs, today=None):
         prior = n - rec
         lead_share = L["lead"] / n
         p = people[i]
-        np_ = nserc.get(i, [])
+        np_ = (nserc.get(i) or {}).get("partners", [])
         pat = patents.get(i, [])
         cv = cvs.get(i, [])
         pull = (4 * len(L["companies"]) + 3 * min(len(L["citers"]), 6) + 3 * len(L["industry"]) + min(len({x["partner"] for x in np_}), 3)
@@ -421,6 +464,7 @@ def build_lines(data, works, citers, nserc, patents, cvs, today=None):
                     "companies": sorted(L["companies"])[:8], "citers": sorted(L["citers"])[:8], "industry": sorted(L["industry"])[:6],
                     "funders": [f for f, _ in L["funders"].most_common(5)], "preprints": L["preprints"][:3],
                     "nserc_partners": sorted({x["partner"] for x in np_})[:6], "patents": pat[:4],
+                    "current_grant": next(({"title": g["title"], "program": g["program"], "year": g["year"], "area": g["area"]} for g in (nserc.get(i) or {}).get("grants", [])), None),
                     "cv": [c for c in cv if c["type"] in ("grant", "thesis", "patent", "award")][:5],
                     "titles": [x["t"] for x in sorted(L["works"], key=lambda x: x["d"], reverse=True)[:4]],
                     "pull": pull, "score": round(score, 1)})
@@ -437,7 +481,7 @@ def compute(data, works, y0, oa_pages):
         log("company citers skipped:", e)
         citers = {}
     try:
-        nserc = nserc_partners(people)
+        nserc = nserc_awards(people)
     except Exception as e:
         log("NSERC skipped:", e)
         nserc = {}
@@ -445,7 +489,10 @@ def compute(data, works, y0, oa_pages):
     cvs = cv_signals(people)
     lines = build_lines(data, works, citers, nserc, patents, cvs)
     sources = {"openalex": True, "company_citers": bool(citers), "nserc": bool(nserc), "patents": bool(os.environ.get("PATENTSVIEW_API_KEY") or os.environ.get("EPO_OPS_KEY")), "cv": bool(cvs)}
-    (ROOT / "docs/signals.json").write_text(json.dumps({"gen": dt.date.today().isoformat(), "sources": sources, "lines": lines[:120]},
+    nserc_out = {str(i): {"partners": sorted({x["partner"] for x in v["partners"]})[:10],
+                          "grants": [{k: g[k] for k in ("title", "program", "year", "total", "area", "partners", "summary")} for g in v["grants"][:4]]}
+                 for i, v in nserc.items()}
+    (ROOT / "docs/signals.json").write_text(json.dumps({"gen": dt.date.today().isoformat(), "sources": sources, "lines": lines[:120], "nserc": nserc_out},
                                                        ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     log(f"signals.json: {len(lines)} research lines, top score {lines[0]['score'] if lines else 0}")
     return lines, citers

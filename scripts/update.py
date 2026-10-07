@@ -459,6 +459,7 @@ def quarterly_brief(lines, n_screen=12):
                 "recent_titles": L["titles"], "companies_coauthoring": L["companies"], "companies_citing": L["citers"],
                 "industry_funding": L["industry"], "main_funders": L["funders"], "nserc_partners": L["nserc_partners"],
                 "carleton_patents": L["patents"], "open_preprints": L["preprints"], "cv_items": L["cv"],
+                "latest_nserc_grant": L.get("current_grant"),
                 "companies_patenting_in_topic": L.get("patent_landscape", [])} for k, L in enumerate(short)]
     prompt = (f"{STYLE}\n\nOnce a quarter you pick the best partnership or IP opportunities in Carleton University's Faculty of Science "
               f"for the Associate Dean of Research, International and Innovation. Below are the {len(short)} research lines with the strongest "

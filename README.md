@@ -69,7 +69,7 @@ The **Partnership signals** tab ranks *research lines* (one researcher working o
 | Companies whose papers cite our work | OpenAlex | nothing extra |
 | Industry funding (Mitacs, NSERC Alliance/CRD/Engage, OCI, company funders) | OpenAlex funders and award IDs | nothing extra |
 | Preprints in the last 12 months (patent grace period still open) | OpenAlex | nothing extra |
-| Partner organizations on the researcher's NSERC grants | NSERC open data | used automatically when NSERC's files are reachable; otherwise drop the yearly `*_Expenditures.csv` and `*_PARTNER.csv` files from open.canada.ca into `config/nserc/` |
+| NSERC grants: partner organizations, co-researchers, area of application and the plain-language summary of planned work | NSERC awards database (nserc-crsng.canada.ca) | nothing extra; one search per person, cached in `state/nserc_cache.json` and refreshed monthly |
 | Carleton patents, and companies patenting in a topic | USPTO PatentSearch (US) and/or EPO Open Patent Services (worldwide, incl. Canada and PCT) | free: a USPTO key from account.uspto.gov/api-manager as secret `PATENTSVIEW_API_KEY`; and/or an EPO app from developers.epo.org as secrets `EPO_OPS_KEY` and `EPO_OPS_SECRET` |
 | Grants, theses, patents from CVs | `config/cv_signals.csv` | your CV dataset, in the format of `config/cv_signals.example.csv` |
 
