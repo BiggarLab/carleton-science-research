@@ -12,7 +12,7 @@ works: 19676 Carleton outputs since 2021, 8190 Carleton-affiliated author profil
 people: 767 so far; 268 web-listed faculty had no Carleton outputs in OpenAlex for these years
 people: 62 more found through NSERC/SSHRC grants; 829 in total
 world baseline: 2322 topics, 90,930,176 works worldwide 2021-2026
-university data.json: 829 people, 19676 outputs, 6.3 MB
+university data.json: 829 people, 19676 outputs, 6.4 MB
 company citers: 2518 company links across 1251 papers (215 batches)
 patents: USPTO: 17 Carleton applications and patents -> 15 matched to 11 researchers
 university signals.json: 1341 research lines
