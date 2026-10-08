@@ -1,39 +1,3 @@
-directory: sce: 53 faculty listings
-directory: doe: 28 faculty listings
-directory: mae: 51 faculty listings
-directory: cee: 41 faculty listings
-directory: architecture: 28 faculty listings
-directory: engineering: 180 faculty listings
-directory: cognitivescience: 39 faculty listings
-directory: english: 36 faculty listings
-directory: french: 14 faculty listings
-directory: geography: 11 faculty listings
-directory: history: 37 faculty listings
-directory: chum: 68 faculty listings
-directory: icslac: 1 faculty listings
-directory: arthistory: 15 faculty listings
-directory: filmstudies: 11 faculty listings
-directory: music: 20 faculty listings
-directory: ssac: 0 faculty listings
-directory: fist: 50 faculty listings
-directory: slals: 38 faculty listings
-directory: philosophy: 5 faculty listings
-directory: psychology: 68 faculty listings
-directory: socanth: 42 faculty listings
-directory: economics: 42 faculty listings
-directory: polisci: 1 faculty listings
-directory: npsia: 23 faculty listings
-directory: sppa: 31 faculty listings
-directory: spa: 31 faculty listings
-directory: socialwork: 17 faculty listings
-directory: law: 31 faculty listings
-directory: criminology: 21 faculty listings
-directory: politicaleconomy: 67 faculty listings
-directory: eurus: 18 faculty listings
-directory: globalstudies: 10 faculty listings
-directory: akcollege: 5 faculty listings
-directory: sprott: 63 faculty listings
-directory: 842 faculty across 35 department sites
 works: 2000 read
 works: 4000 read
 works: 6000 read
@@ -43,11 +7,12 @@ works: 12000 read
 works: 14000 read
 works: 16000 read
 works: 18000 read
-works: 20035 Carleton outputs since 2021, 8236 Carleton-affiliated author profiles
+works: 20000 read
+works: 19676 Carleton outputs since 2021, 8190 Carleton-affiliated author profiles
 people: 767 so far; 268 web-listed faculty had no Carleton outputs in OpenAlex for these years
 people: 62 more found through NSERC/SSHRC grants; 829 in total
-world baseline: 2326 topics, 92,838,524 works worldwide 2021-2026
-university data.json: 829 people, 20035 outputs, 6.4 MB
-company citers: 2526 company links across 1259 papers (220 batches)
-No patent keys set (PATENTSVIEW_API_KEY or EPO_OPS_KEY/SECRET); skipping patents
-university signals.json: 1375 research lines
+world baseline: 2322 topics, 90,930,176 works worldwide 2021-2026
+university data.json: 829 people, 19676 outputs, 6.3 MB
+company citers: 2518 company links across 1251 papers (215 batches)
+patents: USPTO: 17 Carleton applications and patents -> 15 matched to 11 researchers
+university signals.json: 1341 research lines
