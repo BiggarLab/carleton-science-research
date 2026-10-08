@@ -1,3 +1,168 @@
-key present: True (length 30)
-PatentsView PatentSearch: failed (<urlopen error [Errno -2] Name or service not known>)
-USPTO Open Data Portal: HTTP 200; {"count":12,"patentFileWrapperDataBag":[{"eventDataBag":[{"eventCode":"EML_NTR","eventDescriptionText":"Email Notification","eventDate":"2026-07-23"},{"eventCode":"PG-ISSUE","eventDescriptionText":"PG-Pub Issue Notification","eventDate":"2026-07-23"},{"eventCode":"EML_NTR","eventDescriptionText":"Em
+first applicant exact: count=12 error=None 
+applicant bag: count=13 error=None 
+free text carleton university: count=45 error=None 
+assignment: count=41 error=None 
+title words since 2023: count=22 error=None 
+{
+ "eventDataBag": [
+  {
+   "eventCode": "EML_NTR",
+   "eventDescriptionText": "Email Notification",
+   "eventDate": "2026-07-23"
+  }
+ ],
+ "applicationMetaData": {
+  "applicationStatusCode": "int",
+  "applicationTypeCode": "UTL",
+  "entityStatusData": {
+   "smallEntityStatusIndicator": "bool",
+   "businessEntityStatusCategory": "Small"
+  },
+  "filingDate": "2025-03-18",
+  "uspcSymbolText": "435/6.19",
+  "nationalStageIndicator": "bool",
+  "firstInventorName": "Ravi PRAKASH",
+  "cpcClassificationBag": [
+   "H10K  10/468"
+  ],
+  "effectiveFilingDate": "2025-03-18",
+  "publicationDateBag": [
+   "2026-07-23"
+  ],
+  "publicationSequenceNumberBag": [
+   "0210903"
+  ],
+  "earliestPublicationDate": "2026-07-23",
+  "applicationTypeLabelName": "Utility",
+  "applicationStatusDate": "2025-03-18",
+  "class": "435",
+  "applicationTypeCategory": "REGULAR",
+  "inventorBag": [
+   {
+    "firstName": "Ravi",
+    "lastName": "PRAKASH",
+    "inventorNameText": "Ravi PRAKASH",
+    "correspondenceAddressBag": [
+     "{...}"
+    ]
+   }
+  ],
+  "applicationStatusDescriptionText": "Application Undergoing Preexam Processin",
+  "applicantBag": [
+   {
+    "applicantNameText": "Carleton University",
+    "correspondenceAddressBag": [
+     "{...}"
+    ]
+   }
+  ],
+  "firstApplicantName": "Carleton University",
+  "customerNumber": "int",
+  "groupArtUnitNumber": "1677",
+  "earliestPublicationNumber": "US20260210903A1",
+  "inventionTitle": "Organic Electrolyte-Gated Field Effect T",
+  "applicationConfirmationNumber": "int",
+  "subclass": "6.19",
+  "publicationCategoryBag": [
+   "Pre-Grant Publications - PGPub"
+  ],
+  "docketNumber": "MCO.114X"
+ },
+ "parentContinuityBag": [
+  {
+   "parentApplicationStatusCode": "int",
+   "claimParentageTypeCode": "NST",
+   "claimParentageTypeCodeDescriptionText": "is a National Stage Entry of",
+   "parentApplicationStatusDescriptionText": "Application Undergoing Preexam Processin",
+   "parentApplicationNumberText": "PCTCA2024050988",
+   "parentApplicationFilingDate": "2024-07-25",
+   "childApplicationNumberText": "19112623"
+  }
+ ],
+ "assignmentBag": [
+  {
+   "assignmentDocumentLocationURI": "https://assignmentcenter.uspto.gov/ipas/",
+   "assignmentReceivedDate": "2025-03-18",
+   "reelAndFrameNumber": "070542/0836",
+   "frameNumber": "int",
+   "assignmentRecordedDate": "2025-03-18",
+   "conveyanceText": "ASSIGNMENT OF ASSIGNOR'S INTEREST",
+   "imageAvailableStatusCode": "bool",
+   "assigneeBag": [
+    "{...}"
+   ],
+   "assignmentMailedDate": "2025-03-19",
+   "reelNumber": "int",
+   "correspondenceAddress": {
+    "addressLineOneText": "P. O. BOX 142950",
+    "correspondentNameText": "DAVID R. SALIWANCHIK",
+    "addressLineTwoText": "GAINESVILLE, FL 32614-2950"
+   },
+   "assignorBag": [
+    "{...}"
+   ],
+   "pageTotalQuantity": "int",
+   "attorneyDocketNumber": "MCO.114X"
+  }
+ ],
+ "pgpubDocumentMetaData": {
+  "productIdentifier": "APPXML",
+  "zipFileName": "ipa260723.zip",
+  "fileCreateDateTime": "2026-07-23T08:39:20",
+  "xmlFileName": "19112623_20260210903.xml",
+  "fileLocationURI": "https://api.uspto.gov/api/v1/datasets/pr"
+ },
+ "lastIngestionDateTime": "2026-08-01T03:00:03",
+ "recordAttorney": {
+  "customerNumberCorrespondenceData": {
+   "powerOfAttorneyAddressBag": [
+    "{...}"
+   ],
+   "patronIdentifier": "int"
+  },
+  "powerOfAttorneyBag": [
+   {
+    "activeIndicator": "ACTIVE",
+    "firstName": "FEDERICO",
+    "lastName": "SIMONE",
+    "registrationNumber": "59457",
+    "attorneyAddressBag": [
+     "{...}"
+    ],
+    "telecommunicationAddressBag": [
+     "{...}"
+    ],
+    "registeredPractitionerCategory": "ATTNY"
+   }
+  ],
+  "attorneyBag": [
+   {
+    "activeIndicator": "ACTIVE",
+    "firstName": "DAVID",
+    "lastName": "SALIWANCHIK",
+    "registrationNumber": "31794",
+    "attorneyAddressBag": [
+     "{...}"
+    ],
+    "telecommunicationAddressBag": [
+     "{...}"
+    ],
+    "registeredPractitionerCategory": "ATTNY"
+   }
+  ]
+ },
+ "applicationNumberText": "19112623",
+ "correspondenceAddressBag": [
+  {
+   "cityName": "GAINESVILLE",
+   "geographicRegionName": "FLORIDA",
+   "geographicRegionCode": "FL",
+   "countryCode": "US",
+   "postalCode": "32614",
+   "nameLineOneText": "SALIWANCHIK, LLOYD & EISENSCHENK",
+   "nameLineTwoText": "A PROFESSIONAL ASSOCIATION",
+   "countryName": "UNITED STATES",
+   "addressLineOneText": "P.O. BOX 142950"
+  }
+ ]
+}
