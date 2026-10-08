@@ -18,7 +18,7 @@ import html
 import json
 import sys
 
-PREPARED = "Prepared by the Associate Dean of Research, International and Innovation"
+PREPARED = "Independent summary built from public data (OpenAlex, NSERC, SSHRC). Not an official Carleton University publication."
 import re
 E = lambda s: html.escape(re.sub(r"</?cite[^>]*>", "", str(s or "")), quote=True)
 
@@ -330,7 +330,6 @@ def render_web(issue, dashboard_url="", archive=None, logo_src="logo.png", archi
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Science Weekly Digest</title>{FONTS}<style>{CSS}</style></head><body>
 <div class="col"><article class="sheet" id="digest">
-<img class="logo" src="{E(logo_src)}" alt="Carleton University, Faculty of Science" width="800" height="297">
 <div class="eyebrow"><i></i>Research digest</div>
 <h1>New from Carleton Science</h1>
 <div class="dates">{E(week_label(issue))} · issue {issue['issue']}</div>
@@ -427,8 +426,7 @@ def render_email(issue, web_url="", dashboard_url="", logo_url=""):
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6"><tr><td align="center" style="padding:20px 10px">
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:#ffffff;border:1px solid #d9dce1"><tr><td style="padding:28px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-{f'<tr><td style="padding:0 0 14px"><img src="{E(logo_url)}" width="200" alt="Carleton University, Faculty of Science" style="display:block;width:200px;height:auto"></td></tr>' if logo_url else ''}
-<tr><td style="{font}font-size:11px;letter-spacing:1px;text-transform:uppercase;color:{muted}">Carleton University · Faculty of Science · Research digest</td></tr>
+<tr><td style="{font}font-size:11px;letter-spacing:1px;text-transform:uppercase;color:{muted}">Research digest</td></tr>
 <tr><td style="{font}font-size:30px;font-weight:bold;color:{ink};padding:6px 0 4px">New from Carleton Science</td></tr>
 <tr><td style="{font}font-size:13px;color:#4a4f5a">{E(week_label(issue))} · issue {issue['issue']}<br>{PREPARED}</td></tr>
 <tr><td style="{font}font-size:13px;color:{ink};padding:14px 0;border-bottom:1px solid {line};border-top:1px solid {line};margin-top:12px"><b>{n}</b> new outputs &nbsp;·&nbsp; <b>{ppl}</b> researchers &nbsp;·&nbsp; <b>{nu}</b> units &nbsp;·&nbsp; <b>{cross}</b> cross-unit</td></tr>
@@ -494,7 +492,6 @@ def render_brief_web(b, quarters, logo_src="../logo.png", prefix=""):
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Partnership Brief</title>{FONTS}<style>{CSS}</style></head><body>
 <div class="col"><article class="sheet">
-<img class="logo" src="{E(logo_src)}" alt="Carleton University, Faculty of Science" width="800" height="297">
 <div class="eyebrow"><i></i>Quarterly partnership brief</div>
 <h1>Partnership and IP opportunities</h1>
 <div class="dates">{E(b.get('quarter', ''))} · prepared {E(b.get('date', ''))}</div>
@@ -521,7 +518,6 @@ def render_brief_email(b, web_url="", logo_url=""):
     return f"""<!doctype html><html><body style="margin:0;background:#f3f4f6"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:20px 10px">
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:#fff;border:1px solid #d9dce1"><tr><td style="padding:28px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-{f'<tr><td style="padding:0 0 14px"><img src="{E(logo_url)}" width="200" alt="Carleton University, Faculty of Science" style="display:block;width:200px;height:auto"></td></tr>' if logo_url else ''}
 <tr><td style="{font}font-size:11px;letter-spacing:1px;text-transform:uppercase;color:{muted}">Quarterly partnership brief</td></tr>
 <tr><td style="{font}font-size:28px;font-weight:bold;color:{ink};padding:6px 0 4px">Partnership and IP opportunities</td></tr>
 <tr><td style="{font}font-size:13px;color:#4a4f5a">{E(b.get('quarter', ''))}<br>{PREPARED}</td></tr>

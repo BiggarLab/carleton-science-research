@@ -1,7 +1,7 @@
 # Carleton Science Research
 
 A research dashboard and weekly publication digest for Carleton University's Faculty of Science.
-Prepared by the Associate Dean of Research, International and Innovation.
+An independent tool built from public data. It is not an official Carleton University site or publication.
 
 - **Dashboard:** https://biggarlab.github.io/carleton-science-research/
 - **Latest digest:** https://biggarlab.github.io/carleton-science-research/digest/
