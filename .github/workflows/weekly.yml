@@ -18,6 +18,10 @@ on:
         description: "Also make the quarterly partnership brief now"
         type: boolean
         default: false
+      data_only:
+        description: "Only refresh the dashboard data (no digest, brief or email)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -54,6 +58,7 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.send_email }}" != "true" ]; then ARGS="$ARGS --no-email"; fi
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" != "false" ]; then ARGS="$ARGS --force"; fi
           if [ "${{ inputs.brief }}" = "true" ]; then ARGS="$ARGS --brief"; fi
+          if [ "${{ inputs.data_only }}" = "true" ]; then ARGS="--data-only --no-email"; fi
           echo "Running: python scripts/update.py $ARGS"
           python scripts/update.py $ARGS
       - name: Save results

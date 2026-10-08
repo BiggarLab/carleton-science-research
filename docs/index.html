@@ -309,6 +309,7 @@ table.st tr.clk.on{background:var(--accent-soft)}
     <div class="fld"><span class="lbl">Years</span><div class="row2"><select class="inp" id="f-y0" aria-label="From year"></select><select class="inp" id="f-y1" aria-label="To year"></select></div></div>
     <div class="fld" style="gap:8px">
       <label class="tog"><input type="checkbox" id="f-pre">Include preprints</label>
+      <label class="tog" id="f-lead-l" hidden title="Counts a paper for a researcher only when they are first, last or corresponding author"><input type="checkbox" id="f-lead">Lead author only (first, last or corresponding)</label>
       <label class="tog"><input type="checkbox" id="f-big">Include large collaborations (100+ authors, e.g. ATLAS)</label>
     </div>
     <button class="btn" id="f-reset">Reset filters</button>
@@ -489,7 +490,8 @@ const DIGEST_URL = "digest/";
 const MODE = "science"; // the university page is built from this file with MODE = "uni"
 const UNI = MODE === "uni";
 const ORG = UNI ? "Carleton University" : "Carleton University's Faculty of Science";
-let FACS = [], FAC_OF = new Map(), WSUB = null;
+let FACS = [], FAC_OF = new Map(), WSUB = null, HAS_LEAD = false;
+const wf = w => S.lead && w.lead ? w.lead : w.f; // researchers credited with a paper: all Carleton authors, or only lead authors when the switch is on
 const facColor = f => { const k = FACS.indexOf(f); return k >= 0 && k < 5 ? `var(--fc${k + 1})` : "var(--fc0)"; };
 const EVL = { roster: "Science roster", web: "department website", nserc: "NSERC grant", sshrc: "SSHRC grant" };
 const $ = s => document.querySelector(s);
@@ -503,7 +505,7 @@ function hideTip(){ tip.style.opacity = 0; }
 
 let D, WORLD, P, WK, TOP, UNITS, SG = null;
 let Y0 = 2021, Y1 = 2026, GEN = "", GENL = "", PARTIAL = true;
-const S = { units: new Set(), facs: new Set(), person: null, topic: "", y0: 2021, y1: 2026, pre: false, big: false, tab: UNI ? "strengths" : "overview", pair: null, pubSort: "new", page: 0, country: null,
+const S = { units: new Set(), facs: new Set(), person: null, topic: "", y0: 2021, y1: 2026, pre: false, big: false, lead: false, tab: UNI ? "strengths" : "overview", pair: null, pubSort: "new", page: 0, country: null,
   stLevel: "topic", stShow: "all", stSort: "n", stSel: null };
 let AI_ENDPOINT = ""; // GitHub version: read at startup from ai.json ({"endpoint": "<Cloudflare Worker URL>"}), see README.
 
@@ -574,10 +576,11 @@ function prep(){
   const order = UNI ? D.units.map(u => u[0]) : ["Biochemistry","Biology","Chemistry","Computer Science","Earth Sciences","Environmental & Interdisciplinary Sci","Health Sciences","Mathematics & Statistics","Neuroscience","Nursing","Physics","TSE"];
   UNITS = order.filter(u => uset.has(u)).concat([...uset].filter(u => !order.includes(u)));
   WK = D.works.map(r => {
-    const [id,t,d,ty,v,doi,c,fw,tp,kw,na,f,co,ins,oa,ex] = r;
+    const [id,t,d,ty,v,doi,c,fw,tp,kw,na,f,co,ins,oa,ex,ld] = r;
     const T = tp >= 0 ? D.topics[tp] : null;
     const w = { id:"W"+id, t:strip(t), d, y:+d.slice(0,4), ty:D.types[ty], v: v>=0 ? D.venues[v] : "", doi, c, fw, tp, T, kw, na, f, co, ins, oa,
       big: na >= 100, pre: D.types[ty] === "preprint" };
+    w.lead = Array.isArray(ld) ? ld : null; if (w.lead) HAS_LEAD = true;
     w.units = new Set(f.flatMap(i => P[i].u)); (ex || []).forEach(k => w.units.add(D.units[k][0]));
     w.facs = UNI ? new Set([...w.units].map(u => FAC_OF.get(u)).filter(Boolean)) : new Set();
     w.intl = !w.big && co.some(c => c !== "CA");
@@ -595,7 +598,8 @@ function pass(w, opts = {}){
   if (w.big && !S.big) return false;
   if (!opts.noUnit && S.units.size && ![...S.units].some(u => w.units.has(u))) return false;
   if (!opts.noUnit && UNI && S.facs.size && ![...S.facs].some(f => w.facs.has(f))) return false;
-  if (!opts.noPerson && S.person != null && !w.f.includes(S.person)) return false;
+  if (!opts.noPerson && S.person != null && !wf(w).includes(S.person)) return false;
+  if (S.lead && w.lead && !w.lead.some(i => inScopePerson(i))) return false;
   if (S.topic && !matchQ(w, compileQuery(S.topic))) return false;
   return true;
 }
@@ -623,10 +627,11 @@ function buildFilters(){
   $("#f-y1").onchange = e => { S.y1 = +e.target.value; if (S.y1 < S.y0){ S.y0 = S.y1; $("#f-y0").value = S.y0; } update(); };
   $("#f-pre").onchange = e => { S.pre = e.target.checked; update(); };
   $("#f-big").onchange = e => { S.big = e.target.checked; update(); };
-  $("#f-reset").onclick = () => { Object.assign(S, { units:new Set(), facs:new Set(), person:null, topic:"", y0:Y0, y1:Y1, pre:false, big:false, pair:null, country:null });
-    $("#f-person").value = ""; $("#f-topic").value = ""; $("#f-y0").value = Y0; $("#f-y1").value = Y1; $("#f-pre").checked = false; $("#f-big").checked = false; update(); };
+  $("#f-lead-l").hidden = !HAS_LEAD; $("#f-lead").onchange = e => { S.lead = e.target.checked; update(); };
+  $("#f-reset").onclick = () => { Object.assign(S, { units:new Set(), facs:new Set(), person:null, topic:"", y0:Y0, y1:Y1, pre:false, big:false, lead:false, pair:null, country:null });
+    $("#f-person").value = ""; $("#f-topic").value = ""; $("#f-y0").value = Y0; $("#f-y1").value = Y1; $("#f-pre").checked = false; $("#f-big").checked = false; $("#f-lead").checked = false; update(); };
   $("#sel-sum").onclick = e => { const b = e.target.closest("[data-clear]"); if (!b) return; const k = b.dataset.clear;
-    if (k === "person"){ S.person = null; $("#f-person").value = ""; } else if (k === "topic"){ S.topic = ""; $("#f-topic").value = ""; } else if (k.startsWith("fac:")){ S.facs.delete(k.slice(4)); S.units.clear(); } else S.units.delete(k); update(); };
+    if (k === "lead"){ S.lead = false; $("#f-lead").checked = false; } else if (k === "person"){ S.person = null; $("#f-person").value = ""; } else if (k === "topic"){ S.topic = ""; $("#f-topic").value = ""; } else if (k.startsWith("fac:")){ S.facs.delete(k.slice(4)); S.units.clear(); } else S.units.delete(k); update(); };
 }
 function unitChips(){
   const list = UNI ? UNITS.filter(u => S.facs.has(FAC_OF.get(u))) : UNITS;
@@ -639,11 +644,12 @@ function setFac(f){ S.facs = new Set([f]); S.units.clear(); update(); }
 function syncFilterUI(){
   if (UNI){ unitChips(); document.querySelectorAll("#f-facs .chip").forEach(b => b.setAttribute("aria-pressed", b.dataset.f ? S.facs.has(b.dataset.f) : !S.facs.size)); }
   document.querySelectorAll("#f-units .chip").forEach(b => b.setAttribute("aria-pressed", b.dataset.u ? S.units.has(b.dataset.u) : !S.units.size));
-  const ws = sel(); const people = new Set(ws.flatMap(w => w.f).filter(inScopePerson));
+  const ws = sel(); const people = new Set(ws.flatMap(wf).filter(inScopePerson));
   let af = [...S.facs].map(f => `<span class="af">${esc(f)}<button data-clear="fac:${esc(f)}" aria-label="Remove">×</button></span>`).concat([...S.units].map(u => `<span class="af">${esc(unitLabel(u))}<button data-clear="${esc(u)}" aria-label="Remove">×</button></span>`));
   if (S.person != null) af.push(`<span class="af">${esc(P[S.person].n)}<button data-clear="person" aria-label="Remove">×</button></span>`);
   $("#f-topic-note").textContent = S.topic ? queryNote(S.topic) : "";
   if (S.topic) af.push(`<span class="af">“${esc(S.topic)}”<button data-clear="topic" aria-label="Remove">×</button></span>`);
+  if (S.lead) af.push(`<span class="af">Lead author only<button data-clear="lead" aria-label="Remove">×</button></span>`);
   $("#sel-sum").innerHTML = `<div><b>${fmt(ws.length)}</b> outputs · <b>${fmt(people.size)}</b> researchers · <b>${S.y0}–${S.y1}</b></div>` + (af.length ? `<div class="active-f">${af.join("")}</div>` : "");
 }
 
@@ -659,7 +665,7 @@ function update(){ S.page = 0; syncFilterUI(); render(); }
 /* ---------- overview ---------- */
 function overview(){
   const ws = sel(); const small = ws.filter(w => !w.big);
-  const ppl = new Set(ws.flatMap(w => w.f).filter(inScopePerson));
+  const ppl = new Set(ws.flatMap(wf).filter(inScopePerson));
   const ctry = new Set(small.flatMap(w => w.co).filter(c => c !== "CA"));
   const xu = ws.filter(w => w.units.size > 1).length;
   $("#kpis").innerHTML = [
@@ -742,7 +748,7 @@ function stAreas(){
     let a = A.get(k); if (!a){ a = { k, name: lv === "topic" ? w.T[0] : w.T[1], sub: lv === "topic" ? w.T[1] : w.T[2], n: 0, yrs: new Map(), fws: [], ppl: new Map(), facW: new Map(), unitW: new Map(), xf: 0, early: 0, recent: 0, tps: new Set(), ws: [] }; A.set(k, a); }
     a.n++; a.yrs.set(w.y, (a.yrs.get(w.y) || 0) + 1); if (w.fw != null) a.fws.push(w.fw); a.ws.push(w); a.tps.add(w.tp);
     if (w.y >= S.y0 && w.y < rf) a.early++; else if (w.y >= rf && w.y <= y1) a.recent++;
-    w.f.forEach(i => a.ppl.set(i, (a.ppl.get(i) || 0) + 1));
+    wf(w).forEach(i => a.ppl.set(i, (a.ppl.get(i) || 0) + 1));
     w.facs.forEach(f => a.facW.set(f, (a.facW.get(f) || 0) + 1)); w.units.forEach(u => a.unitW.set(u, (a.unitW.get(u) || 0) + 1));
     if (w.facs.size > 1) a.xf++; });
   const N = ws.length || 1;
@@ -975,7 +981,7 @@ function opps(){
 }
 
 function personStats(i, ws){
-  const mine = ws.filter(w => w.f.includes(i)); const small = mine.filter(w => !w.big);
+  const mine = ws.filter(w => wf(w).includes(i)); const small = mine.filter(w => !w.big);
   const fws = mine.map(w => w.fw).filter(v => v != null);
   const tc = d3.rollups(mine.filter(w => w.T), v => v.length, w => w.T[0]).sort((a,b) => b[1]-a[1]);
   return { mine, n: mine.length, cit: d3.sum(mine, w => w.c), fw: fws.length ? d3.mean(fws) : null, intl: small.length ? small.filter(w => w.intl).length / small.length : null, top: tc.slice(0,3).map(d => d[0]), big: mine.filter(w => w.big).length };
@@ -986,7 +992,7 @@ function people(){
   const K = { name: r => r.p.sort, unit: r => r.p.u[0], rank: r => r.p.rk, n: r => r.n, cit: r => r.cit, fw: r => r.fw ?? -1, intl: r => r.intl ?? -1, lw: r => r.p.lw, h: r => r.p.h };
   const f = K[pplSort.k] || K.n; rows.sort((a,b) => { const x = f(a), y = f(b); return (x > y ? 1 : x < y ? -1 : 0) * pplSort.dir; });
   const col = (k, l, r) => `<th data-k="${k}" class="${r?"r":""}" aria-sort="${pplSort.k===k ? (pplSort.dir<0?"descending":"ascending") : "none"}">${l}</th>`;
-  $("#ppl-note").textContent = `${rows.length} researchers · lifetime figures and h-index are from OpenAlex across all years`;
+  $("#ppl-note").textContent = `${rows.length} researchers · ${S.lead ? "lead-author papers only · " : ""}FWCI from OpenAlex, 1.0 = world average · lifetime figures and h-index from OpenAlex across all years`;
   $("#ppl").innerHTML = `<thead><tr>${col("name","Name")}${col("unit","Unit")}${col("rank","Rank")}${col("n","Outputs",1)}${col("cit","Citations",1)}${col("fw","Mean FWCI",1)}${col("intl","Intl. share",1)}${col("lw","Lifetime works",1)}${col("h","h-index",1)}<th>Main topics</th></tr></thead><tbody>` +
     rows.map(r => `<tr class="clk" data-p="${r.p.i}"><td><span class="pn">${esc(r.p.n)}</span>${r.p.ro.length ? `<br><small>${esc(r.p.ro.join("; "))}</small>` : ""}</td><td>${esc(r.p.u.map(unitLabel).join(", "))}${UNI ? `<br><small class="muted">${esc(r.p.fac.join(", "))}</small>` : ""}</td><td><small>${esc(r.p.rk)}</small>${UNI ? `<br><span class="ev">${esc(r.p.ev.map(x => EVL[x]).join(", "))}</span>` : ""}</td><td class="r num">${fmt(r.n)}${r.big ? `<br><small title="includes large-collaboration outputs">${r.big} large</small>` : ""}</td><td class="r num">${fmt(r.cit)}</td><td class="r num">${r.fw == null ? "–" : r.fw.toFixed(2)}</td><td class="r num">${r.intl == null ? "–" : Math.round(r.intl*100) + "%"}</td><td class="r num">${fmt(r.p.lw)}</td><td class="r num">${r.p.oa.length ? r.p.h : "–"}</td><td><small>${esc(r.top.join(" · "))}</small></td></tr>`).join("") + `</tbody>`;
   $("#ppl").onclick = e => { const th = e.target.closest("th[data-k]"); if (th){ const k = th.dataset.k; pplSort = { k, dir: pplSort.k === k ? -pplSort.dir : (["name","unit","rank"].includes(k) ? 1 : -1) }; return people(); }
@@ -996,9 +1002,9 @@ function people(){
 /* ---------- expertise ---------- */
 function expertSearch(q, opts = {}){
   const cq = compileQuery(q); if (!cq) return [];
-  const ws = WK.filter(w => w.y >= S.y0 && w.y <= S.y1 && (S.pre || !w.pre) && (S.big || !w.big) && matchQ(w, cq));
+  const ws = WK.filter(w => w.y >= S.y0 && w.y <= S.y1 && (S.pre || !w.pre) && (S.big || !w.big) && matchQ(w, cq) && (!S.lead || !w.lead || w.lead.length));
   const sc = new Map();
-  ws.forEach(w => { const wt = 1 + (w.y - Y0) * .15; w.f.forEach(i => { if (!inScopePerson(i)) return; const s = sc.get(i) || { s:0, n:0, last:0, ws:[] }; s.s += wt; s.n++; s.last = Math.max(s.last, w.y); s.ws.push(w); sc.set(i, s); }); });
+  ws.forEach(w => { const wt = 1 + (w.y - Y0) * .15; wf(w).forEach(i => { if (!inScopePerson(i)) return; const s = sc.get(i) || { s:0, n:0, last:0, ws:[] }; s.s += wt; s.n++; s.last = Math.max(s.last, w.y); s.ws.push(w); sc.set(i, s); }); });
   let res = [...sc].map(([i,s]) => ({ p:P[i], ...s })).sort((a,b) => b.s - a.s);
   if (opts.noadmin) res = res.filter(r => !r.p.ro.some(x => /chair|director|dean/i.test(x)));
   if (opts.research) res = res.filter(r => r.p.st === "Research");
@@ -1093,6 +1099,7 @@ function openProfile(i){
     </div>
     ${p.oa.length ? "" : `<p class="note">No OpenAlex profile was matched for this person. Their outputs may be listed under a different name.</p>`}
     ${st.big ? `<p class="note">${st.big} of these outputs are large collaborations (100+ authors).</p>` : ""}
+    ${S.lead ? `<p class="note">Counting only papers where ${esc(p.n)} is first, last or corresponding author.</p>` : ""}
     <div class="dsec"><h3>Outputs per year</h3><svg width="100%" height="56" viewBox="0 0 ${yrs.length*40} 56" style="max-width:${yrs.length*56}px">${yrs.map((n,k) => `<rect x="${k*40+8}" y="${44 - 38*n/ym}" width="24" height="${Math.max(38*n/ym, n?2:0)}" rx="2" fill="var(--seq-4)"><title>${S.y0+k}: ${n}</title></rect><text x="${k*40+20}" y="55" text-anchor="middle" style="font-size:9px">${String(S.y0+k).slice(2)}</text>`).join("")}</svg></div>
     ${SG && SG.lines.some(L => L.person === i && L.pull > 0) ? `<div class="dsec"><h3>Industry signals</h3>${SG.lines.filter(L => L.person === i && L.pull > 0).slice(0,3).map(L => `<div style="font-size:13px"><b>${esc(L.topic)}</b><div class="chips" style="margin-top:4px">${lineChips(L)}</div></div>`).join("")}</div>` : ""}
     ${SG && SG.nserc && SG.nserc[i] ? `<div class="dsec"><h3>${UNI ? "Research grants" : "NSERC grants"}</h3>${SG.nserc[i].grants.slice(0,3).map(g => `<div class="dpub"><b>${esc(g.title)}</b><br><small class="muted">${esc(g.program)} · ${esc(g.year)}${g.area ? " · " + esc(g.area) : ""}</small>${g.partners && g.partners.length ? `<br><small>Partners: ${esc(g.partners.join(", "))}</small>` : ""}${g.summary ? `<details><summary class="muted" style="font-size:12px;cursor:pointer">Summary</summary><small>${esc(g.summary)}</small></details>` : ""}</div>`).join("")}</div>` : ""}
@@ -1239,7 +1246,7 @@ const TOOLS = [
     inputSchema: { type:"object", properties: { unit: { type:"string" }, faculty: { type:"string" }, year_from: { type:"integer" }, year_to: { type:"integer" } } },
     execute(inp){ const u = inp.unit ? String(inp.unit).toLowerCase() : null; const fa = inp.faculty ? String(inp.faculty).toLowerCase() : null; const y0 = Number(inp.year_from)||Y0, y1 = Number(inp.year_to)||Y1; log(`summarizing ${inp.unit || "the Faculty"}`);
       const ws = WK.filter(w => w.y >= y0 && w.y <= y1 && !w.pre && !w.big && (!u || [...w.units].some(x => x.toLowerCase().includes(u))) && (!fa || [...w.facs].some(x => x.toLowerCase().includes(fa))));
-      const who = {}; ws.forEach(w => w.f.forEach(i => { if ((!u || P[i].u.some(x => x.toLowerCase().includes(u))) && (!fa || P[i].fac.some(x => x.toLowerCase().includes(fa)))) who[P[i].n] = (who[P[i].n]||0) + 1; }));
+      const who = {}; ws.forEach(w => wf(w).forEach(i => { if ((!u || P[i].u.some(x => x.toLowerCase().includes(u))) && (!fa || P[i].fac.some(x => x.toLowerCase().includes(fa)))) who[P[i].n] = (who[P[i].n]||0) + 1; }));
       const ct = {}; ws.forEach(w => w.co.forEach(c => { if (c !== "CA") ct[c] = (ct[c]||0) + 1; }));
       return { outputs: ws.length, by_year: d3.rollups(ws, v => v.length, w => w.y).sort(), top_topics: d3.rollups(ws.filter(w => w.T), v => v.length, w => w.T[0]).sort((a,b) => b[1]-a[1]).slice(0, 12),
         most_active: Object.entries(who).sort((a,b) => b[1]-a[1]).slice(0, 12), countries: Object.entries(ct).sort((a,b) => b[1]-a[1]).slice(0, 10),

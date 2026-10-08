@@ -176,8 +176,11 @@ def build_data(rows, y0):
         for w in oa_pages("works", {"filter": f"author.id:{'|'.join(p['oa'])},from_publication_date:{y0}-01-01", "select": SELECT}):
             au = w.get("authorships") or []
             mine = False
-            for a in au:
+            lead = False
+            for k, a in enumerate(au):
                 aid = ((a.get("author") or {}).get("id") or "").split("/")[-1]
+                if aid in ids and (k == 0 or k == len(au) - 1 or a.get("is_corresponding")):
+                    lead = True
                 if aid in ids:
                     insts = [x.get("id") for x in a.get("institutions") or []]
                     raw = " ".join(a.get("raw_affiliation_strings") or [])
@@ -192,8 +195,10 @@ def build_data(rows, y0):
             if wid in works:
                 if i not in works[wid]["f"]:
                     works[wid]["f"].append(i)
+                if lead:
+                    works[wid]["lead"].add(i)
                 continue
-            works[wid] = {"raw": w, "f": [i]}
+            works[wid] = {"raw": w, "f": [i], "lead": {i} if lead else set()}
         log(f"{p['n']}: {n} outputs")
 
     topics, venues, insts = {}, {}, {}
@@ -227,7 +232,7 @@ def build_data(rows, y0):
                          TYPES.index(w["type"]) if w.get("type") in TYPES else 0, v, (w.get("doi") or "").replace("https://doi.org/", ""),
                          w.get("cited_by_count") or 0, None if fw is None else round(fw, 2), tp,
                          [k["display_name"] for k in (w.get("keywords") or [])[:4]], len(au), sorted(set(rec["f"])), sorted(countries),
-                         sorted(set(inst_ix)), 1 if (w.get("open_access") or {}).get("is_oa") else 0])
+                         sorted(set(inst_ix)), 1 if (w.get("open_access") or {}).get("is_oa") else 0, [], sorted(rec["lead"])])
     rows_out.sort(key=lambda r: r[2], reverse=True)
     inv = lambda d: [v for _, v in sorted(d.values(), key=lambda x: x[0])]
     data = {"gen": dt.date.today().isoformat(), "people": people, "works": rows_out,
@@ -610,6 +615,7 @@ def main():
     ap.add_argument("--week-end")
     ap.add_argument("--render-only", action="store_true", help="re-render pages from saved issues, no network")
     ap.add_argument("--brief", action="store_true", help="make the quarterly partnership brief now")
+    ap.add_argument("--data-only", action="store_true", help="rebuild dashboard data and signals only; no digest, brief or email")
     a = ap.parse_args()
     if a.render_only:
         render_all()
@@ -622,10 +628,10 @@ def main():
     state_p = ROOT / "state/digest_state.json"
     state = json.loads(state_p.read_text())
     done_already = state.get("last_week_end") == week_end.isoformat()
-    if done_already and not a.force and not a.brief:
+    if done_already and not a.force and not a.brief and not a.data_only:
         log("This week's digest was already made. Use --force to rebuild it.")
         return
-    skip_digest = done_already and not a.force  # brief-only run
+    skip_digest = (done_already and not a.force) or a.data_only  # brief-only or data-only run
     if a.force and state.get("last_week_end") == week_end.isoformat():
         state["last_issue"] = state.get("last_issue", 1) - 1
         prev = ROOT / f"state/issues/{week_end.isoformat()}.json"
@@ -656,7 +662,7 @@ def main():
         if not a.no_email:
             send_email(issue, f"{site}/digest/" if site else "", f"{site}/" if site else "")
     quarter_start = today.month in (1, 4, 7, 10) and today.day <= 7
-    if (a.brief or quarter_start) and lines and not a.no_ai:
+    if (a.brief or quarter_start) and lines and not a.no_ai and not a.data_only:
         try:
             run_brief(lines, today, send=not a.no_email, force=a.brief)
         except Exception as e:

@@ -224,7 +224,7 @@ def fetch_works(y0):
         au = w.get("authorships") or []
         na = len(au)
         wid = w["id"].split("/")[-1]
-        car = []
+        car, lead_aids = [], set()
         for k, a in enumerate(au):
             insts = [x.get("id") for x in a.get("institutions") or []]
             raw = a.get("raw_affiliation_strings") or []
@@ -236,6 +236,8 @@ def fetch_works(y0):
                 continue
             unit = infer_unit(raw, M)
             car.append((aid, unit))
+            if k == 0 or k == na - 1 or a.get("is_corresponding"):
+                lead_aids.add(aid)
             A = authors.setdefault(aid, {"name": au_.get("display_name") or "", "orcid": (au_.get("orcid") or "").split("/")[-1], "n": 0, "last": 0, "units": Counter()})
             A["n"] += 1
             A["last"] = max(A["last"], w.get("publication_year") or 0)
@@ -245,7 +247,7 @@ def fetch_works(y0):
             keep = {c[0] for c in car}
             w["authorships"] = [a for a in au if ((a.get("author") or {}).get("id") or "").split("/")[-1] in keep]
         w["_na"] = na
-        works[wid] = {"raw": w, "car": car}
+        works[wid] = {"raw": w, "car": car, "lead": lead_aids}
         if n % 2000 == 0:
             log(f"works: {n} read")
     log(f"works: {len(works)} Carleton outputs since {y0}, {len(authors)} Carleton-affiliated author profiles")
@@ -405,6 +407,7 @@ def main():
         w = rec["raw"]
         f = sorted({i for aid, _ in rec["car"] for i in aid2p.get(aid, [])})
         extra = sorted({uix[u] for aid, u in rec["car"] if u and not aid2p.get(aid) and u in uix})
+        lead = sorted({i for aid in rec["lead"] for i in aid2p.get(aid, [])})
         na = w["_na"]
         countries, inst_ix = set(), []
         if na <= 60:
@@ -422,7 +425,7 @@ def main():
         rows.append([wid[1:], w["title"].replace("�", ""), w.get("publication_date") or f"{w.get('publication_year')}-01-01",
                      TYPES.index(w["type"]) if w.get("type") in TYPES else 0, v, (w.get("doi") or "").replace("https://doi.org/", ""),
                      w.get("cited_by_count") or 0, None if fw is None else round(fw, 2), tp, [k["display_name"] for k in (w.get("keywords") or [])[:3]],
-                     na, f, sorted(countries), sorted(set(inst_ix)), 1 if (w.get("open_access") or {}).get("is_oa") else 0, extra])
+                     na, f, sorted(countries), sorted(set(inst_ix)), 1 if (w.get("open_access") or {}).get("is_oa") else 0, extra, lead])
         if f and na < 100:
             sig_works[wid] = {"raw": w, "f": f}
     rows.sort(key=lambda r: r[2], reverse=True)
