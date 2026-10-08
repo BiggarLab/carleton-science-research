@@ -243,7 +243,7 @@ def nserc_awards(people, years=6, refresh_days=28, pause=1.0):
 # ------------------------------------------------------------------ patents (optional, free sources)
 # USPTO Open Data Portal: free key from data.uspto.gov (MyUSPTO), stored as secret PATENTSVIEW_API_KEY. US applications and patents.
 # EPO Open Patent Services: free registration at developers.epo.org (4 GB/week), secrets EPO_OPS_KEY and EPO_OPS_SECRET. Worldwide incl. CA and PCT.
-NON_COMPANY = re.compile(r"univ|college|institut|hospital|research council|government|ministry|foundation|school|academy|\bcnrs\b|\binserm\b", re.I)
+NON_COMPANY = re.compile(r"univ|college|institut|hospital|research council|government|ministry|foundation|school|academy|cent(er|re)\b|industry partnerships|regents|trustees|\bcnrs\b|\binserm\b", re.I)
 
 
 def _post_json(url, body, headers, timeout=60):
@@ -265,7 +265,12 @@ def _odp(q, limit=100, offset=0):
 def _odp_all(q, cap=500):
     out, off = [], 0
     while off < cap:
-        d = _odp(q, 100, off)
+        try:
+            d = _odp(q, 100, off)
+        except urllib.error.HTTPError as e:
+            if e.code == 404:  # the portal answers "no matches" with 404
+                break
+            raise
         bag = d.get("patentFileWrapperDataBag") or []
         out += bag
         off += 100
@@ -413,6 +418,13 @@ def patent_landscape(keywords, years=3):
                         c[o.strip().title()] += 1
         except Exception as e:
             log("EPO landscape failed:", e)
+    if c:  # merge spellings that differ only in case or punctuation ("LAM RESEARCH CORPORATION" / "Lam Research Corporation")
+        merged, names = Counter(), {}
+        for o, n in c.items():
+            k = re.sub(r"[^a-z0-9]", "", o.lower())
+            names.setdefault(k, o if not o.isupper() else o.title())
+            merged[k] += n
+        c = Counter({names[k]: n for k, n in merged.items()})
     return c.most_common(8)
 
 
