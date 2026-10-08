@@ -241,7 +241,7 @@ def nserc_awards(people, years=6, refresh_days=28, pause=1.0):
 
 
 # ------------------------------------------------------------------ patents (optional, free sources)
-# USPTO PatentSearch (PatentsView): free key from account.uspto.gov/api-manager, secret PATENTSVIEW_API_KEY. US patents.
+# USPTO Open Data Portal: free key from data.uspto.gov (MyUSPTO), stored as secret PATENTSVIEW_API_KEY. US applications and patents.
 # EPO Open Patent Services: free registration at developers.epo.org (4 GB/week), secrets EPO_OPS_KEY and EPO_OPS_SECRET. Worldwide incl. CA and PCT.
 NON_COMPANY = re.compile(r"univ|college|institut|hospital|research council|government|ministry|foundation|school|academy|\bcnrs\b|\binserm\b", re.I)
 
@@ -252,9 +252,26 @@ def _post_json(url, body, headers, timeout=60):
         return json.loads(r.read())
 
 
-def _pv(q, f, size=100):
-    return _post_json("https://search.patentsview.org/api/v1/patent/", {"q": q, "f": f, "o": {"size": size}, "s": [{"patent_date": "desc"}]},
-                      {"X-Api-Key": os.environ["PATENTSVIEW_API_KEY"]})
+def _uspto_key():
+    return (os.environ.get("PATENTSVIEW_API_KEY") or os.environ.get("USPTO_ODP_API_KEY") or "").strip()
+
+
+def _odp(q, limit=100, offset=0):
+    """USPTO Open Data Portal patent application search (PatentsView's PatentSearch API was retired)."""
+    return _post_json("https://api.uspto.gov/api/v1/patent/applications/search", {"q": q, "pagination": {"offset": offset, "limit": limit}},
+                      {"X-API-KEY": _uspto_key(), "Accept": "application/json"})
+
+
+def _odp_all(q, cap=500):
+    out, off = [], 0
+    while off < cap:
+        d = _odp(q, 100, off)
+        bag = d.get("patentFileWrapperDataBag") or []
+        out += bag
+        off += 100
+        if len(bag) < 100 or off >= (d.get("count") or 0):
+            break
+    return out
 
 
 _ops_token = {}
@@ -322,17 +339,22 @@ def carleton_patents(people, since_year):
     """Return {person index: [patent titles]} for patents assigned to Carleton that name the person as inventor."""
     out = defaultdict(list)
     used = []
-    if os.environ.get("PATENTSVIEW_API_KEY"):
+    if _uspto_key():
         try:
-            d = _pv({"_and": [{"_text_phrase": {"assignees.assignee_organization": "Carleton University"}}, {"_gte": {"patent_date": f"{since_year}-01-01"}}]},
-                    ["patent_id", "patent_title", "patent_date", "inventors.inventor_name_first", "inventors.inventor_name_last"], size=500)
-            for pt in d.get("patents", []):
-                inv = [(x.get("inventor_name_first", ""), x.get("inventor_name_last", "")) for x in pt.get("inventors") or []]
+            apps = _odp_all(f'(applicationMetaData.applicantBag.applicantNameText:"Carleton University" OR assignmentBag.assigneeBag.assigneeNameText:"Carleton University") '
+                            f'AND applicationMetaData.filingDate:[{since_year}-01-01 TO 2100-12-31]')
+            for a in apps:
+                m = a.get("applicationMetaData") or {}
+                inv = [(x.get("firstName", ""), x.get("lastName", "")) for x in m.get("inventorBag") or []]
+                num = m.get("patentNumber") or m.get("earliestPublicationNumber") or a.get("applicationNumberText", "")
+                status = "granted" if m.get("patentNumber") else "application"
                 for i in _match_inventors(inv, people):
-                    out[i].append(f"{pt.get('patent_title', '')} (US {pt.get('patent_id', '')}, {pt.get('patent_date', '')[:4]})")
-            used.append(f"USPTO: {len(d.get('patents', []))} Carleton patents")
+                    label = f"{m.get('inventionTitle', '')} (US {num}, {status}, filed {(m.get('filingDate') or '')[:4]})"
+                    if label not in out[i]:
+                        out[i].append(label)
+            used.append(f"USPTO: {len(apps)} Carleton applications and patents")
         except Exception as e:
-            log("USPTO PatentSearch failed:", e)
+            log("USPTO Open Data Portal failed:", e)
     if os.environ.get("EPO_OPS_KEY") and os.environ.get("EPO_OPS_SECRET"):
         try:
             n = 0
@@ -356,7 +378,7 @@ def carleton_patents(people, since_year):
         except Exception as e:
             log("EPO OPS failed:", e)
     if not used:
-        log("No patent keys set (PATENTSVIEW_API_KEY or EPO_OPS_KEY/SECRET); skipping patents")
+        log("No patent keys set (PATENTSVIEW_API_KEY for the USPTO Open Data Portal, or EPO_OPS_KEY/SECRET); skipping patents")
     else:
         log("patents:", "; ".join(used), f"-> {sum(len(v) for v in out.values())} matched to {len(out)} researchers")
     return dict(out)
@@ -369,15 +391,16 @@ def patent_landscape(keywords, years=3):
     if not words:
         return []
     c = Counter()
-    if os.environ.get("PATENTSVIEW_API_KEY"):
+    if _uspto_key():
         try:
-            d = _pv({"_and": [{"_text_all": {"patent_abstract": " ".join(words[:3])}}, {"_gte": {"patent_date": f"{since}-01-01"}}]},
-                    ["assignees.assignee_organization"], size=200)
-            for pt in d.get("patents", []):
-                for a in pt.get("assignees") or []:
-                    o = a.get("assignee_organization")
-                    if o and not NON_COMPANY.search(o):
-                        c[o] += 1
+            terms = " AND ".join(words[:3])
+            apps = _odp_all(f"applicationMetaData.inventionTitle:({terms}) AND applicationMetaData.filingDate:[{since}-01-01 TO 2100-12-31]", cap=200)
+            if len(apps) < 5 and len(words) > 2:
+                apps = _odp_all(f"applicationMetaData.inventionTitle:({' AND '.join(words[:2])}) AND applicationMetaData.filingDate:[{since}-01-01 TO 2100-12-31]", cap=200)
+            for a in apps:
+                o = (a.get("applicationMetaData") or {}).get("firstApplicantName")
+                if o and not NON_COMPANY.search(o) and len(o.split()) > 1:
+                    c[o.strip()] += 1
         except Exception as e:
             log("USPTO landscape failed:", e)
     if os.environ.get("EPO_OPS_KEY") and os.environ.get("EPO_OPS_SECRET"):
@@ -488,7 +511,7 @@ def compute(data, works, y0, oa_pages):
     patents = carleton_patents(people, dt.date.today().year - 10)
     cvs = cv_signals(people)
     lines = build_lines(data, works, citers, nserc, patents, cvs)
-    sources = {"openalex": True, "company_citers": bool(citers), "nserc": bool(nserc), "patents": bool(os.environ.get("PATENTSVIEW_API_KEY") or os.environ.get("EPO_OPS_KEY")), "cv": bool(cvs)}
+    sources = {"openalex": True, "company_citers": bool(citers), "nserc": bool(nserc), "patents": bool(_uspto_key() or os.environ.get("EPO_OPS_KEY")), "cv": bool(cvs)}
     nserc_out = {str(i): {"partners": sorted({x["partner"] for x in v["partners"]})[:10],
                           "grants": [{k: g[k] for k in ("title", "program", "year", "total", "area", "partners", "summary")} for g in v["grants"][:4]]}
                  for i, v in nserc.items()}
