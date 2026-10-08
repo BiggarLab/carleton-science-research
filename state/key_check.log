@@ -1,0 +1,3 @@
+key present: True (length 30)
+PatentsView PatentSearch: failed (<urlopen error [Errno -2] Name or service not known>)
+USPTO Open Data Portal: HTTP 200; {"count":12,"patentFileWrapperDataBag":[{"eventDataBag":[{"eventCode":"EML_NTR","eventDescriptionText":"Email Notification","eventDate":"2026-07-23"},{"eventCode":"PG-ISSUE","eventDescriptionText":"PG-Pub Issue Notification","eventDate":"2026-07-23"},{"eventCode":"EML_NTR","eventDescriptionText":"Em
