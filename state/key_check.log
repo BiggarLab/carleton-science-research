@@ -3,7 +3,6 @@ Science researchers with Carleton patents: 3
   Seán Barry: 2 e.g. Method of Selective Deposition of Small Molecules on Metal Surfaces (US 12734548, granted,
   Maria DeRosa: 2 e.g. Root Exudate-Activated System for Agrochemical Delivery (US 12065392, granted, filed 2021)
   Matthew Holahan: 1 e.g. APTAMERS AS A THERAPEUTIC TOOL TO PREVENT PROTEIN AGGREGATION IN NEURODEGENERATIVE DISEASE
-landscape ['Antimicrobial peptides']: [('Donald Danforth Plant Science Center', 9), ('Peptilogics, Inc.', 4), ('UVIC INDUSTRY PARTNERSHIPS INC.', 3), ('Lytica Therapeutics, Inc.', 3), ('INVAIO SCIENCES, INC.', 2), ('Syngulon SA', 2), ('MATRUBIALS INC.', 2), ('CLEVER BIOSCIENCE S.R.L.', 2)]
-USPTO landscape failed: HTTP Error 404: Not Found
-landscape ['Acoustic telemetry fish']: []
-landscape ['Atomic layer deposition precursors']: [('Lam Research Corporation', 23), ('LAM RESEARCH CORPORATION', 11), ('Applied Materials, Inc.', 9), ('Micron Technology, Inc.', 9), ('APPLIED MATERIALS, INC.', 8), ('BENEQ OY', 6), ('Innovative Scientific Products, Inc.', 6), ('CORNING INCORPORATED', 5)]
+landscape ['Antimicrobial peptides']: [('Peptilogics, Inc.', 5), ('Invaio Sciences, Inc.', 3), ('Lytica Therapeutics, Inc.', 3), ('Syngulon SA', 2), ('Matrubials Inc.', 2), ('Eisai R&D Management Co., Ltd.', 2), ('Clever Bioscience S.R.L.', 2), ('Materias S.R.L.', 1)]
+landscape ['Acoustic telemetry fish']: [('Weatherford Technology Holdings, Llc', 3), ('Acoustic Data Limited', 2), ('Schlumberger Technology Corporation', 1)]
+landscape ['Atomic layer deposition precursors']: [('Lam Research Corporation', 34), ('Applied Materials, Inc.', 17), ('Micron Technology, Inc.', 14), ('Innovative Scientific Products, Inc.', 8), ('Beneq Oy', 7), ('Corning Incorporated', 5), ('Tokyo Electron Limited', 5), ('Lotus Applied Technology, Llc', 3)]
