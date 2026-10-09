@@ -518,9 +518,7 @@ function showTip(e, html){ tip.innerHTML = html; tip.style.opacity = 1; const x 
 function hideTip(){ tip.style.opacity = 0; }
 
 let D, WORLD, P, WK, TOP, UNITS, SG = null;
-let Y0 = 2021, Y1 = 2026, GEN = "", GENL = "", PARTIAL = true, FW_CUT = "";
-// FWCI is unstable for new papers, so averages only use papers published at least two years before the data date
-const fwOK = w => w.fw != null && w.d <= FW_CUT;
+let Y0 = 2021, Y1 = 2026, GEN = "", GENL = "", PARTIAL = true;
 const S = { units: new Set(), facs: new Set(), person: null, topic: "", y0: 2021, y1: 2026, pre: false, big: false, lead: false, tab: UNI ? "strengths" : "overview", pair: null, pubSort: "new", page: 0, country: null,
   stLevel: "topic", stShow: "all", stSort: "n", stSel: null };
 let AI_ENDPOINT = ""; // GitHub version: read at startup from ai.json ({"endpoint": "<Cloudflare Worker URL>"}), see README.
@@ -762,7 +760,7 @@ function stAreas(){
   const A = new Map();
   ws.forEach(w => { const k = lv === "topic" ? w.tp : w.T[1];
     let a = A.get(k); if (!a){ a = { k, name: lv === "topic" ? w.T[0] : w.T[1], sub: lv === "topic" ? w.T[1] : w.T[2], n: 0, yrs: new Map(), fws: [], ppl: new Map(), facW: new Map(), unitW: new Map(), xf: 0, early: 0, recent: 0, tps: new Set(), ws: [] }; A.set(k, a); }
-    a.n++; a.yrs.set(w.y, (a.yrs.get(w.y) || 0) + 1); if (fwOK(w)) a.fws.push(w.fw); a.ws.push(w); a.tps.add(w.tp);
+    a.n++; a.yrs.set(w.y, (a.yrs.get(w.y) || 0) + 1); if (w.fw != null) a.fws.push(w.fw); a.ws.push(w); a.tps.add(w.tp);
     if (w.y >= S.y0 && w.y < rf) a.early++; else if (w.y >= rf && w.y <= y1) a.recent++;
     wf(w).forEach(i => a.ppl.set(i, (a.ppl.get(i) || 0) + 1));
     w.facs.forEach(f => a.facW.set(f, (a.facW.get(f) || 0) + 1)); w.units.forEach(u => a.unitW.set(u, (a.unitW.get(u) || 0) + 1));
@@ -789,7 +787,7 @@ function strengths(){
   const lvl = S.stLevel === "topic" ? "topic" : "broad area";
   $("#st-kpis").innerHTML = [[areas.filter(a => a.est).length, `Established ${lvl}s`], [areas.filter(a => a.emg).length, `Emerging ${lvl}s`], [areas.filter(a => a.xfOn && (a.est || a.emg)).length, "Of those, cross-Faculty"], [fmt(areas.filter(a => a.n >= 5).length), `${lvl[0].toUpperCase() + lvl.slice(1)}s with 5+ outputs`]]
     .map(([v, k]) => `<div class="kpi"><span class="v">${v}</span><span class="k">${k}</span></div>`).join("");
-  $("#st-rule").innerHTML = `<b>Established</b>: ${R.est}+ outputs, at least ${R.rca}× the world share of output in this area, mean OpenAlex FWCI of 1.0 or more (papers at least two years old), and 3+ researchers with 2+ outputs each. ` +
+  $("#st-rule").innerHTML = `<b>Established</b>: ${R.est}+ outputs, at least ${R.rca}× the world share of output in this area, mean FWCI of 1.0 or more, and 3+ researchers with 2+ outputs each. ` +
     `<b>Emerging</b>: ${R.emg}+ outputs in ${rf}–${y1}, published at least 1.5× faster per year than ${S.y0}–${rf - 1}, with 2+ researchers. ` +
     `<b>Cross-Faculty</b>: researchers from 2+ Faculties, or ${R.xf}+ outputs co-authored across Faculties. Uses the filters on the left.${eY ? "" : " Pick a wider year range to see growth."}`;
   $("#st-leg").innerHTML = FACS.map(f => `<span><i style="background:${facColor(f)}"></i>${esc(f)}</span>`).join("");
@@ -822,7 +820,7 @@ function stDetail(a, yrs, gtxt){
   box.innerHTML = `<div class="ph"><h2>${esc(a.name)}</h2></div>
     <div>${a.est ? `<span class="badge est">Established</span>` : ""}${a.emg ? `<span class="badge emg">Emerging</span>` : ""}${a.xfOn && (a.est || a.emg) ? `<span class="badge xf">Cross-Faculty</span>` : ""}<span class="muted" style="font-size:12px">${esc(a.sub || "")}</span></div>
     <div class="mgrid" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div><b>${fmt(a.n)}</b><span>Outputs</span></div><div><b>${gtxt(a)}</b><span>Growth</span></div><div><b>${a.rca == null ? "–" : a.rca.toFixed(1) + "×"}</b><span>Specialisation</span></div>
-      <div><b>${a.fw == null ? "–" : a.fw.toFixed(2)}</b><span title="OpenAlex FWCI, papers at least two years old">Mean FWCI</span></div><div><b>${a.res}</b><span>Researchers (2+)</span></div><div><b>${fmt(a.xf)}</b><span>Cross-Faculty outputs</span></div></div>
+      <div><b>${a.fw == null ? "–" : a.fw.toFixed(2)}</b><span>Mean FWCI</span></div><div><b>${a.res}</b><span>Researchers (2+)</span></div><div><b>${fmt(a.xf)}</b><span>Cross-Faculty outputs</span></div></div>
     <div class="dsec"><h3>Faculties contributing</h3>${FACS.filter(f => a.facW.get(f)).sort((x, y) => a.facW.get(y) - a.facW.get(x)).map(f => `<button class="brow" data-f="${esc(f)}"><span class="nm">${esc(f)} <small>${a.facP.get(f) || 0} researchers</small></span><span class="tr"><span style="width:${100 * a.facW.get(f) / fm}%;background:${facColor(f)}"></span></span><span class="n">${a.facW.get(f)}</span></button>`).join("")}</div>
     <div class="dsec"><h3>Departments and schools</h3><div class="muted" style="font-size:12.5px">${units.map(([u, n]) => `${esc(unitLabel(u))} <span class="num">${n}</span>`).join(" · ")}</div></div>
     <div class="dsec"><h3>Researchers</h3><div class="dlist">${ppl.map(([i, n]) => `<button data-p="${i}"><span>${esc(P[i].n)} <small class="muted">${esc(P[i].u.map(unitLabel).join(", "))}</small></span><span class="num muted">${n}</span></button>`).join("") || `<span class="muted">No identified researchers</span>`}</div></div>
@@ -998,7 +996,7 @@ function opps(){
 
 function personStats(i, ws){
   const mine = ws.filter(w => wf(w).includes(i)); const small = mine.filter(w => !w.big);
-  const fws = mine.filter(fwOK).map(w => w.fw);
+  const fws = mine.map(w => w.fw).filter(v => v != null);
   const tc = d3.rollups(mine.filter(w => w.T), v => v.length, w => w.T[0]).sort((a,b) => b[1]-a[1]);
   return { mine, n: mine.length, cit: d3.sum(mine, w => w.c), fw: fws.length ? d3.mean(fws) : null, intl: small.length ? small.filter(w => w.intl).length / small.length : null, top: tc.slice(0,3).map(d => d[0]), big: mine.filter(w => w.big).length };
 }
@@ -1008,7 +1006,7 @@ function people(){
   const K = { name: r => r.p.sort, unit: r => r.p.u[0], rank: r => r.p.rk, n: r => r.n, cit: r => r.cit, fw: r => r.fw ?? -1, intl: r => r.intl ?? -1, lw: r => r.p.lw, h: r => r.p.h };
   const f = K[pplSort.k] || K.n; rows.sort((a,b) => { const x = f(a), y = f(b); return (x > y ? 1 : x < y ? -1 : 0) * pplSort.dir; });
   const col = (k, l, r) => `<th data-k="${k}" class="${r?"r":""}" aria-sort="${pplSort.k===k ? (pplSort.dir<0?"descending":"ascending") : "none"}">${l}</th>`;
-  $("#ppl-note").textContent = `${rows.length} researchers · ${S.lead ? "lead-author papers only · " : ""}mean OpenAlex FWCI of papers at least two years old (newer papers swing too much), 1.0 = world average · lifetime figures and h-index from OpenAlex across all years`;
+  $("#ppl-note").textContent = `${rows.length} researchers · ${S.lead ? "lead-author papers only · " : ""}FWCI from OpenAlex, 1.0 = world average · lifetime figures and h-index from OpenAlex across all years`;
   $("#ppl").innerHTML = `<thead><tr>${col("name","Name")}${col("unit","Unit")}${col("rank","Rank")}${col("n","Outputs",1)}${col("cit","Citations",1)}${col("fw","Mean FWCI",1)}${col("intl","Intl. share",1)}${col("lw","Lifetime works",1)}${col("h","h-index",1)}<th>Main topics</th></tr></thead><tbody>` +
     rows.map(r => `<tr class="clk" data-p="${r.p.i}"><td><span class="pn">${esc(r.p.n)}</span>${r.p.ro.length ? `<br><small>${esc(r.p.ro.join("; "))}</small>` : ""}</td><td>${esc(r.p.u.map(unitLabel).join(", "))}${UNI ? `<br><small class="muted">${esc(r.p.fac.join(", "))}</small>` : ""}</td><td><small>${esc(r.p.rk)}</small>${UNI ? `<br><span class="ev">${esc(r.p.ev.map(x => EVL[x]).join(", "))}</span>` : ""}</td><td class="r num">${fmt(r.n)}${r.big ? `<br><small title="includes large-collaboration outputs">${r.big} large</small>` : ""}</td><td class="r num">${fmt(r.cit)}</td><td class="r num">${r.fw == null ? "–" : r.fw.toFixed(2)}</td><td class="r num">${r.intl == null ? "–" : Math.round(r.intl*100) + "%"}</td><td class="r num">${fmt(r.p.lw)}</td><td class="r num">${r.p.oa.length ? r.p.h : "–"}</td><td><small>${esc(r.top.join(" · "))}</small></td></tr>`).join("") + `</tbody>`;
   $("#ppl").onclick = e => { const th = e.target.closest("th[data-k]"); if (th){ const k = th.dataset.k; pplSort = { k, dir: pplSort.k === k ? -pplSort.dir : (["name","unit","rank"].includes(k) ? 1 : -1) }; return people(); }
@@ -1109,7 +1107,7 @@ function openProfile(i){
   dr.innerHTML = `<div class="dhead"><div><h2>${esc(p.n)}</h2><div class="dsub">${esc(p.u.map(unitLabel).join(", "))}${UNI ? " · " + esc(p.fac.join(", ")) : ""} · ${esc(p.rk)}${p.st ? " · " + esc(p.st) + " stream" : ""}</div>${UNI ? `<div class="dsub ev">Identified from: ${esc(p.ev.map(x => EVL[x]).join(", "))}${p.title ? " · listed as " + esc(p.title) : ""}</div>` : ""}${p.ro.length ? `<div class="dsub"><span class="tag a">${esc(p.ro.join("; "))}</span></div>` : ""}</div><button class="x" id="dr-x" aria-label="Close">×</button></div>
     <div class="mgrid">
       <div><b>${fmt(st.n)}</b><span>Outputs ${S.y0}–${S.y1}</span></div><div><b>${fmt(st.cit)}</b><span>Citations to these</span></div>
-      <div><b>${st.fw == null ? "–" : st.fw.toFixed(2)}</b><span title="OpenAlex FWCI, papers at least two years old">Mean FWCI (2+ yr old papers)</span></div><div><b>${st.intl == null ? "–" : Math.round(st.intl*100) + "%"}</b><span>International</span></div>
+      <div><b>${st.fw == null ? "–" : st.fw.toFixed(2)}</b><span>Mean FWCI</span></div><div><b>${st.intl == null ? "–" : Math.round(st.intl*100) + "%"}</b><span>International</span></div>
       <div><b>${p.oa.length ? fmt(p.lw) : "–"}</b><span>Lifetime works</span></div><div><b>${p.oa.length ? p.h : "–"}</b><span>h-index</span></div>
       <div><b>${p.oa.length ? p.i10 : "–"}</b><span>i10-index</span></div><div><b>${fmt(xu)}</b><span>With other units</span></div>
     </div>
@@ -1380,7 +1378,7 @@ renderChat();
     updateAiUi();
   } catch (e) { $("#loading").textContent = "The publication data could not be loaded. Reload the page to try again."; return; }
   prep(); buildSearch();
-  Y0 = d3.min(WK, w => w.y); Y1 = d3.max(WK, w => w.y); GEN = D.gen; FW_CUT = (+GEN.slice(0,4) - 2) + GEN.slice(4); GENL = d3.timeFormat("%b %-d")(new Date(GEN + "T12:00")); PARTIAL = +GEN.slice(0,4) === Y1 && GEN.slice(5) < "12-31"; S.y0 = Y0; S.y1 = Y1;
+  Y0 = d3.min(WK, w => w.y); Y1 = d3.max(WK, w => w.y); GEN = D.gen; GENL = d3.timeFormat("%b %-d")(new Date(GEN + "T12:00")); PARTIAL = +GEN.slice(0,4) === Y1 && GEN.slice(5) < "12-31"; S.y0 = Y0; S.y1 = Y1;
   $("#h1").textContent = UNI ? `Research across Carleton, ${Y0} to ${Y1}` : `Research activity across the Faculty, ${Y0} to ${Y1}`;
   if (UNI) $("#tab-strengths").hidden = false;
   const ov = $("#other-view"); if (/github\.io/.test(location.hostname)){ ov.hidden = false; ov.href = UNI ? "../" : "university/"; ov.textContent = UNI ? "Faculty of Science dashboard →" : "University-wide view →"; }
