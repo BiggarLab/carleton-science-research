@@ -1,6 +1,21 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Research activity across Carleton University's Faculty of Science.">
+<style>html.gated body>*:not(#gate){visibility:hidden}#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+background:#f3f4f6;font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;color:#15171c}#gate form{background:#fff;border:1px solid #d9dce1;border-radius:6px;padding:22px;
+width:min(340px,calc(100vw - 32px));display:flex;flex-direction:column;gap:10px}#gate input{padding:8px 10px;border:1px solid #d9dce1;border-radius:4px;font:inherit}
+#gate button{padding:8px;border:0;border-radius:4px;background:#15171c;color:#fff;font:inherit;cursor:pointer}#gate small{color:#b0162b;min-height:1em}
+@media (prefers-color-scheme:dark){#gate{background:#111316;color:#eceef1}#gate form{background:#191c20;border-color:#2e3238}#gate input{background:#111316;color:#eceef1;border-color:#2e3238}#gate button{background:#eceef1;color:#111316}}</style>
+<script>(function(){var R="",K="cs-gate",S="carleton-research-dashboard",d=document.documentElement;d.classList.add("gated");
+function open(){d.classList.remove("gated");var g=document.getElementById("gate");if(g)g.remove();}
+async function h(t){var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(S+t));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("");}
+fetch(R+"gate.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(g){
+ var want=g&&g.sha256;var have="";try{have=localStorage.getItem(K)||""}catch(e){}
+ if(!want||have===want)return open();
+ var show=function(){var w=document.createElement("div");w.id="gate";w.innerHTML='<form><b>Password</b><input type="password" autocomplete="current-password" aria-label="Password" autofocus><button>Open</button><small></small></form>';
+  document.body.appendChild(w);var f=w.querySelector("form"),i=w.querySelector("input");i.focus();
+  f.onsubmit=async function(e){e.preventDefault();var x=await h(i.value);if(x===want){try{localStorage.setItem(K,x)}catch(e){}open();}else{w.querySelector("small").textContent="That password didn't work.";i.select();}};};
+ if(document.body)show();else document.addEventListener("DOMContentLoaded",show);});})();</script>
 <title>Carleton Science Research</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

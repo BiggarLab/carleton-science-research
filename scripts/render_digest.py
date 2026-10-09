@@ -17,6 +17,7 @@ import datetime as dt
 import html
 import json
 import sys
+from gate import gate_html
 
 PREPARED = "Independent summary built from public data (OpenAlex, NSERC, SSHRC). Not an official Carleton University publication."
 import re
@@ -328,6 +329,7 @@ def render_web(issue, dashboard_url="", archive=None, logo_src="logo.png", archi
         lead = issue["lead"]
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+{gate_html(dashboard_url or "")}
 <title>Science Weekly Digest</title>{FONTS}<style>{CSS}</style></head><body>
 <div class="col"><article class="sheet" id="digest">
 <div class="eyebrow"><i></i>Research digest</div>
@@ -490,6 +492,7 @@ def render_brief_web(b, quarters, logo_src="../logo.png", prefix=""):
     arch = ('<div class="arch">All briefs: ' + " · ".join(f'<a href="{prefix}{E(q)}.html">{E(q)}</a>' for q in quarters) + "</div>") if quarters else ""
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+{gate_html("../")}
 <title>Partnership Brief</title>{FONTS}<style>{CSS}</style></head><body>
 <div class="col"><article class="sheet">
 <div class="eyebrow"><i></i>Quarterly partnership brief</div>

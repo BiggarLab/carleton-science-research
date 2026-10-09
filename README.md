@@ -124,6 +124,10 @@ Departments, their Faculty and the websites read are in `config/university_units
 
 To run it now: **Actions → University-wide update → Run workflow**.
 
+## Password screen
+The pages show a simple password box. It keeps casual visitors out but is cosmetic: the data files and this repo stay public.
+To set or change the password: add a repository secret `SITE_PASSWORD`, then **Actions → Set site password → Run workflow**. To remove it, delete the secret and run the action again. Each browser asks once.
+
 ## Running it yourself
 ```
 python scripts/update.py --no-email      # full run without sending email
