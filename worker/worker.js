@@ -11,6 +11,9 @@
 //   ALLOWED_ORIGIN    https://biggarlab.github.io                       (plain text)
 //   PASSCODE          shared passcode people type once                  (secret, optional but recommended)
 //   DAILY_LIMIT       max questions per day, default 200                (plain text, optional; needs a KV binding named LIMITS)
+//   RCS_API_KEY       Carleton RCS LLM key (secret, optional). When set, the chat offers "Carleton RCS" as a second provider.
+//   RCS_BASE_URL      default https://rcsllm.carleton.ca/rcsapi            (plain text, optional)
+//   RCS_MODEL         default gpt-oss:120b                                 (plain text, optional)
 
 const MAX_BODY = 400_000;
 
@@ -39,6 +42,7 @@ export default {
     if (raw.length > MAX_BODY) return json({ error: { message: "Conversation too long. Start a new chat." } }, 413, headers);
     let body;
     try { body = JSON.parse(raw); } catch { return json({ error: { message: "Bad JSON" } }, 400, headers); }
+    if (body.list_providers) return json({ providers: providers(env) }, 200, headers);
     if (!Array.isArray(body.messages) || body.messages.length > 60) return json({ error: { message: "Bad request" } }, 400, headers);
 
     // Daily cap counts new questions only (a user turn that is plain text), not tool round trips.
@@ -50,14 +54,70 @@ export default {
       await env.LIMITS.put(day, String(used + 1), { expirationTtl: 172800 });
     }
 
+    // The page may ask for a provider; only ones configured here are honoured.
+    const avail = providers(env);
+    const choice = avail.some(p => p.id === body.provider) ? body.provider : (env.PROVIDER || "openai");
     try {
-      const out = (env.PROVIDER || "openai") === "anthropic" ? await viaAnthropic(body, env) : await viaOpenAI(body, env);
+      const out = choice === "rcs" ? await viaRCS(body, env) : choice === "anthropic" ? await viaAnthropic(body, env) : await viaOpenAI(body, env);
       return json(out, 200, headers);
     } catch (e) {
       return json({ error: { message: String(e.message || e).slice(0, 400) } }, e.status || 502, headers);
     }
   },
 };
+
+function providers(env) {
+  const main = env.PROVIDER || "openai";
+  const out = [{ id: main, label: main === "anthropic" ? "Claude" : "OpenAI", web: true }];
+  if (env.RCS_API_KEY && main !== "rcs") out.push({ id: "rcs", label: "Carleton RCS (" + (env.RCS_MODEL || "gpt-oss:120b") + ")", web: false });
+  return out;
+}
+
+// ---------------------------------------------------------------- Carleton RCS (OpenAI-style chat completions, open models)
+function toChatMessages(system, messages, note) {
+  const out = [];
+  if (system || note) out.push({ role: "system", content: (system || "") + (note ? "\n\n" + note : "") });
+  for (const m of messages) {
+    if (typeof m.content === "string") { out.push({ role: m.role, content: m.content }); continue; }
+    const blocks = m.content || [];
+    if (m.role === "assistant") {
+      const text = blocks.filter(b => b.type === "text").map(b => b.text).join("");
+      const calls = blocks.filter(b => b.type === "tool_use").map(b => ({ id: b.id, type: "function", function: { name: b.name, arguments: JSON.stringify(b.input || {}) } }));
+      out.push({ role: "assistant", content: text || null, ...(calls.length ? { tool_calls: calls } : {}) });
+    } else {
+      for (const b of blocks) {
+        if (b.type === "tool_result") out.push({ role: "tool", tool_call_id: b.tool_use_id, content: typeof b.content === "string" ? b.content : JSON.stringify(b.content) });
+        else if (b.type === "text" && b.text) out.push({ role: "user", content: b.text });
+      }
+    }
+  }
+  return out;
+}
+
+async function viaRCS(body, env) {
+  const base = (env.RCS_BASE_URL || "https://rcsllm.carleton.ca/rcsapi").trim().replace(/\/+$/, "");
+  const tools = (body.tools || []).slice(0, 10).map(t => ({ type: "function", function: { name: t.name, description: t.description, parameters: t.input_schema || { type: "object", properties: {} } } }));
+  const note = body.web ? "Web search is not available with this model. Say so if a question needs current outside information." : "";
+  const r = await fetch(`${base}/v1/chat/completions`, {
+    method: "POST",
+    headers: { "Authorization": `Bearer ${(env.RCS_API_KEY || "").trim()}`, "content-type": "application/json" },
+    body: JSON.stringify({ model: env.RCS_MODEL || "gpt-oss:120b", messages: toChatMessages(body.system, body.messages, note), stream: false, max_tokens: 6000,
+      ...(tools.length ? { tools, tool_choice: "auto" } : {}) }),
+  });
+  let d = {};
+  try { d = await r.json(); } catch {}
+  if (!r.ok) throw Object.assign(new Error((d.error && (d.error.message || d.error)) || d.detail || `Carleton RCS error ${r.status}`), { status: r.status === 401 || r.status === 403 ? 502 : r.status });
+  const msg = (d.choices && d.choices[0] && d.choices[0].message) || {};
+  const content = [];
+  if (msg.content) content.push({ type: "text", text: msg.content });
+  for (const c of msg.tool_calls || []) {
+    let input = {};
+    try { input = JSON.parse(c.function?.arguments || "{}"); } catch {}
+    content.push({ type: "tool_use", id: c.id || ("call_" + Math.random().toString(36).slice(2)), name: c.function?.name, input });
+  }
+  const fin = d.choices && d.choices[0] && d.choices[0].finish_reason;
+  return { content, stop_reason: (msg.tool_calls || []).length ? "tool_use" : fin === "length" ? "max_tokens" : "end_turn", model: d.model };
+}
 
 // ---------------------------------------------------------------- Claude
 async function viaAnthropic(body, env) {

@@ -1153,8 +1153,15 @@ const PASS_SLOT = "cs-research-passcode";
 let memPass = "";
 function getPass(){ if (memPass) return memPass; try { return localStorage.getItem(PASS_SLOT) || sessionStorage.getItem(PASS_SLOT) || ""; } catch { return ""; } }
 function setPass(k, remember){ memPass = k; try { localStorage.removeItem(PASS_SLOT); sessionStorage.removeItem(PASS_SLOT); if (k) (remember ? localStorage : sessionStorage).setItem(PASS_SLOT, k); } catch {} }
+const PROV_SLOT = "cs-ai-provider"; let PROVIDERS = null;
+function getProvider(){ try { return localStorage.getItem(PROV_SLOT) || ""; } catch { return ""; } }
+async function loadProviders(){
+  if (PROVIDERS || !AI_ENDPOINT || !getPass()) return;
+  try { const r = await fetch(AI_ENDPOINT, { method: "POST", headers: { "content-type": "application/json", "x-passcode": getPass() }, body: JSON.stringify({ list_providers: true }) });
+    if (r.ok){ PROVIDERS = (await r.json()).providers || []; updateAiUi(); } } catch {}
+}
 const aiMode = () => sample ? "claude" : AI_ENDPOINT ? "relay" : getKey() ? "key" : "none";
-const webOn = () => (aiMode() === "key" || aiMode() === "relay") && $("#ai-web").checked;
+const webOn = () => (aiMode() === "key" || (aiMode() === "relay" && !(PROVIDERS && (PROVIDERS.find(p => p.id === getProvider()) || {}).web === false))) && $("#ai-web").checked;
 const toolSpec = tools => (tools || []).map(t => ({ name: t.name, description: t.description, input_schema: t.inputSchema || { type: "object", properties: {} } }));
 const WEB_TOOL = { type: "web_search_20250305", name: "web_search", max_uses: 5, user_location: { type: "approximate", city: "Ottawa", region: "Ontario", country: "CA", timezone: "America/Toronto" } };
 
@@ -1164,7 +1171,7 @@ async function apiTurn(body, signal){
     if (mode === "key") r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", signal, body: JSON.stringify(body),
       headers: { "content-type": "application/json", "x-api-key": getKey(), "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" } });
     else r = await fetch(AI_ENDPOINT, { method: "POST", signal, headers: { "content-type": "application/json", "x-passcode": getPass() },
-      body: JSON.stringify({ messages: body.messages, tools: body.tools, system: body.system, web: !!body.web }) });
+      body: JSON.stringify({ messages: body.messages, tools: body.tools, system: body.system, web: !!body.web, provider: getProvider() }) });
   } catch (e) { throw { code: signal && signal.aborted ? "cancelled" : "network" }; }
   if (!r.ok){ let m = "", t = ""; try { const j = await r.json(); m = j.error?.message || ""; t = j.error?.type || ""; } catch {}
     if (mode === "relay" && t === "passcode"){ setPass("", false); throw { code: "passcode" }; }
@@ -1357,7 +1364,7 @@ $("#ask-stop").onclick = () => askCtl && askCtl.abort();
 $("#chat-new").onclick = () => { if (askCtl) askCtl.abort(); chatMsgs = []; chatTurns = []; log(""); renderChat(); };
 $("#key-save").onclick = () => { const k = $("#key-in").value.trim(); if (!/^sk-ant-/.test(k)){ $("#key-in").setCustomValidity("Claude API keys start with sk-ant-"); $("#key-in").reportValidity(); return; }
   $("#key-in").setCustomValidity(""); setKey(k, $("#key-remember").checked); $("#key-in").value = ""; updateAiUi(); };
-$("#pass-save").onclick = () => { const k = $("#pass-in").value.trim(); if (!k) return; setPass(k, $("#pass-remember").checked); $("#pass-in").value = ""; $("#passbox").hidden = true; updateAiUi();
+$("#pass-save").onclick = () => { const k = $("#pass-in").value.trim(); if (!k) return; setPass(k, $("#pass-remember").checked); PROVIDERS = null; $("#pass-in").value = ""; $("#passbox").hidden = true; updateAiUi();
   if (pendingQ){ const q = pendingQ; pendingQ = ""; ask(q); } };
 $("#pass-in").oninput = () => $("#pass-in").setCustomValidity("");
 $("#pass-in").onkeydown = e => { if (e.key === "Enter"){ e.preventDefault(); $("#pass-save").click(); } };
@@ -1365,8 +1372,19 @@ function updateAiUi(){
   const mode = aiMode();
   $("#ai-mode").textContent = { claude: "Using your Claude account", key: "Using your API key", relay: "Shared Faculty assistant", none: "" }[mode];
   $("#keybox").hidden = mode !== "none";
-  $("#ai-web").disabled = !(mode === "key" || mode === "relay"); $("#ai-model").disabled = mode !== "key";
-  $("#ai-model").closest("label").hidden = mode === "relay";
+  $("#ai-web").disabled = !(mode === "key" || mode === "relay"); $("#ai-model").disabled = !(mode === "key" || mode === "relay");
+  const ms = $("#ai-model"), lab = ms.closest("label");
+  if (mode === "relay"){
+    loadProviders();
+    lab.hidden = !(PROVIDERS && PROVIDERS.length > 1);
+    if (PROVIDERS && PROVIDERS.length > 1 && !ms.dataset.prov){
+      ms.dataset.prov = "1"; lab.firstChild.textContent = "AI provider ";
+      ms.innerHTML = PROVIDERS.map(p => `<option value="${esc(p.id)}">${esc(p.label)}${p.web ? "" : " (no web search)"}</option>`).join("");
+      const cur = getProvider(); ms.value = PROVIDERS.some(p => p.id === cur) ? cur : PROVIDERS[0].id;
+      ms.onchange = () => { try { localStorage.setItem(PROV_SLOT, ms.value); } catch {} chatMsgs = []; updateAiUi(); };
+    }
+    ms.disabled = false;
+  } else lab.hidden = false;
   $("#key-status").innerHTML = mode === "key" ? `API key saved in this browser. <button class="btn" id="key-forget" style="padding:2px 8px;font-size:11.5px">Forget key</button>`
     : mode === "claude" ? "Running inside Claude on your own account." : mode === "relay" ? (getPass() ? `Using the shared Faculty assistant. <button class="btn" id="pass-forget" style="padding:2px 8px;font-size:11.5px">Forget passcode</button>` : "Using the shared Faculty assistant.") : "No API key saved yet.";
   const pf = $("#pass-forget"); if (pf) pf.onclick = () => { setPass("", false); updateAiUi(); };
