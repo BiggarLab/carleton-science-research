@@ -306,6 +306,7 @@ def innovation(items):
               "Each paper carries 'signals' from our data: companies on the author list, industry funding, whether it is a preprint (patent grace "
               "period open), and the researcher's wider research line on this topic (paper count, momentum, companies citing that line). Use them as "
               "evidence for the market and partner checks; a company that already co-authors or cites the work is the strongest partner evidence. "
+              "Where a paper or research line names people at a company (people_at_companies_on_this_paper, warm_contacts), use them in next_step as the introduction route. "
               "Step 1. Skip papers with no plausible commercial or partnering angle at all (pure theory, reviews, large collaborations). "
               "Step 2. For every remaining paper, answer each check with pass true/false and evidence of at most 20 words (a plain fact, no hedging). "
               "Also give 'would_change': at most 15 words on the one concrete thing that would flip the failed checks (for example 'a Carleton-led prototype "
@@ -424,10 +425,12 @@ def make_issue(data, works, state, week_start, week_end, use_ai=True, lines=None
         ln = [line_ix.get((i, topic)) for i in rec["f"]]
         ln = [x for x in ln if x]
         it["signals"] = {"company_coauthors": sig["companies"], "industry_funding": sig["industry"], "funders": sig["funders"][:5],
+                         "people_at_companies_on_this_paper": [f"{n} ({c})" for n, c in sig["company_people"][:5]],
                          "companies_citing": sorted((citers or {}).get(wid, set()))[:6],
                          "preprint_grace_until": (dt.date.fromisoformat(w["publication_date"]) + dt.timedelta(days=365)).isoformat() if it["preprint"] and w.get("publication_date") else "",
                          "research_line": [{"researcher": x["name"], "topic": x["topic"], "papers_3y": x["n"], "recent_2y": x["recent"], "lead_share": x["lead_share"],
-                                            "companies_citing_line": x["citers"][:5], "companies_coauthoring_line": x["companies"][:5]} for x in ln]}
+                                            "companies_citing_line": x["citers"][:5], "companies_coauthoring_line": x["companies"][:5],
+                                            "partner_ready": x.get("ready_reasons", []), "warm_contacts": x.get("contacts", [])} for x in ln]}
     log(f"{len(items)} new outputs for {week_label({'week_start': week_start.isoformat(), 'week_end': week_end.isoformat()})}")
     for it in items:
         it["abstract"] = abstract_of(it["id"])
@@ -475,7 +478,8 @@ def quarterly_brief(lines, n_screen=12):
                 "recent_titles": L["titles"], "companies_coauthoring": L["companies"], "companies_citing": L["citers"],
                 "industry_funding": L["industry"], "main_funders": L["funders"], "nserc_partners": L["nserc_partners"],
                 "carleton_patents": L["patents"], "open_preprints": L["preprints"], "cv_items": L["cv"],
-                "latest_nserc_grant": L.get("current_grant"),
+                "latest_nserc_grant": L.get("current_grant"), "grant_timing": L.get("timing", ""),
+                "partner_ready_evidence": L.get("ready_reasons", []), "warm_contacts": L.get("contacts", []),
                 "companies_patenting_in_topic": L.get("patent_landscape", [])} for k, L in enumerate(short)]
     prompt = (f"{STYLE}\n\nOnce a quarter you pick the best partnership or IP opportunities in Carleton University's Faculty of Science "
               f"for the Associate Dean of Research, International and Innovation. Below are the {len(short)} research lines with the strongest "
@@ -483,6 +487,9 @@ def quarterly_brief(lines, n_screen=12):
               f"Rules:\n\n{crit}\n\nFor 'carleton_role', use share_as_lead_author (0.5 or more passes) plus the titles. For 'evidence', judge the "
               "line as a whole, not one paper. For 'partner', prefer companies already in the signals; verify with web search that they are real and "
               "active, preferring Ottawa and Canadian ones, and add at most one new company you find. Note open preprints as an IP clock. "
+              "'warm_contacts' are named people at companies who already co-authored with the researcher: when one is at a partner you list, "
+              "say so in next_step (who to ask for the introduction). 'partner_ready_evidence' is the researcher's track record with industry; "
+              "'grant_timing' flags a Discovery grant ending, which is a good moment to propose an Alliance grant. "
               "Be strict and consistent: most lines will not pass every check. Each check's evidence is at most 20 words, a plain fact. "
               "Also give 'would_change': at most 15 words on the one concrete thing that would flip the failed checks, or an empty string. "
               "Keep every field short so it scans: heading at most 12 words, what at most 40, market_fit at most 35, each partner why at most 20, "
@@ -502,7 +509,8 @@ def quarterly_brief(lines, n_screen=12):
     picks = []
     for o in tiers["opportunities"]:
         L = byid.get(o.get("id"), {})
-        o["signals"] = {k: L.get(k) for k in ("name", "units", "topic", "n", "recent", "lead_share", "companies", "citers", "industry", "preprints", "patents")}
+        o["signals"] = {k: L.get(k) for k in ("name", "units", "topic", "n", "recent", "lead_share", "companies", "citers", "industry", "preprints", "patents",
+                                              "ready", "ready_reasons", "contacts", "timing")}
         o["score"] = L.get("score", 0)
         picks.append(o)
     picks.sort(key=lambda o: o["score"], reverse=True)

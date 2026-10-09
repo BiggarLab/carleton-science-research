@@ -453,7 +453,8 @@ def main():
         gs = p.get("_g") or []
         if gs:
             nserc[i] = {"partners": [], "grants": [{"title": g["title"], "program": f"{g['src']} {g['program']}", "year": g["year"], "area": "", "partners": [], "summary": ""}
-                                                   for g in sorted(gs, key=lambda g: g["year"], reverse=True)[:4]]}
+                                                   for g in sorted(gs, key=lambda g: g["year"], reverse=True)[:4]],
+                        "timing": SIG.dg_timing([g for g in gs if g["src"] == "NSERC"])}
     patents = SIG.carleton_patents(people, today.year - 10)
     lines = SIG.build_lines(data, sig_works, citers, nserc, patents, {})
     (OUT / "signals.json").write_text(json.dumps({"gen": today.isoformat(), "sources": {"openalex": True, "company_citers": bool(citers), "nserc": bool(grants["nserc"]),

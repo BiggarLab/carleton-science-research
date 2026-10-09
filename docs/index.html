@@ -435,7 +435,8 @@ table.st tr.clk.on{background:var(--accent-soft)}
     <section data-p="opps" hidden>
       <div class="panel">
         <div class="ph"><h2>Where industry already shows interest</h2><a class="note" id="brief-link" href="brief/" target="_blank" rel="noopener" hidden style="color:var(--accent);font-weight:500">Latest quarterly brief →</a></div>
-        <p class="sub" id="opp-sub">Research lines (one researcher, one topic, two or more papers in three years) ranked by industry pull: companies that co-author, cite or fund the work, NSERC partners, patents and open preprints. Uses the unit and researcher filters.</p>
+        <p class="sub" id="opp-sub">Research lines (one researcher, one topic, two or more papers in three years) ranked by industry pull: companies that co-author, cite or fund the work, NSERC partners, patents and open preprints. <b>Partner-ready</b> means the researcher has at least two kinds of industry track record (partnered grants, industry-funded papers, company co-authors, patents). <b>Warm intro</b> names people at companies who already co-authored with them. Uses the unit and researcher filters.</p>
+        <label class="tog"><input type="checkbox" id="opp-ready">Partner-ready only</label>
         <div id="opp-list"></div>
         <p class="note" id="opp-src"></p>
       </div>
@@ -968,6 +969,7 @@ let pplSort = { k: "n", dir: -1 };
 /* ---------- partnership signals ---------- */
 function lineChips(L){
   const c = [];
+  if (L.ready) c.push(`<span class="tag" style="background:var(--ink);color:var(--surface)" title="${esc((L.ready_reasons || []).join("; "))}">Partner-ready</span>`);
   if (L.citers && L.citers.length) c.push(`<span class="tag a">cited by ${esc(L.citers.slice(0,3).join(", "))}${L.citers.length > 3 ? ` +${L.citers.length-3}` : ""}</span>`);
   if (L.companies && L.companies.length) c.push(`<span class="tag a">co-authored with ${esc(L.companies.slice(0,3).join(", "))}</span>`);
   (L.industry || []).slice(0,2).forEach(x => c.push(`<span class="tag a">${esc(x)}</span>`));
@@ -975,21 +977,25 @@ function lineChips(L){
   (L.preprints || []).slice(0,1).forEach(p => c.push(`<span class="tag">preprint, patent clock to ${esc(p.grace_until)}</span>`));
   if (L.patents && L.patents.length) c.push(`<span class="tag">${L.patents.length} Carleton patent${L.patents.length>1?"s":""}</span>`);
   if (L.cv && L.cv.length) c.push(`<span class="tag">${L.cv.length} CV item${L.cv.length>1?"s":""}</span>`);
+  if (L.timing) c.push(`<span class="tag">${esc(L.timing)}</span>`);
   return c.join("");
 }
 function opps(){
   const box = $("#opp-list");
   if (!SG){ box.innerHTML = `<div class="empty">Partnership signals appear after the next weekly update runs on GitHub.</div>`; $("#opp-src").textContent = ""; return; }
   $("#brief-link").hidden = !/github\.io/.test(location.hostname);
-  let ls = SG.lines.filter(L => L.pull > 0 && inScopePerson(L.person) && (S.person == null || L.person === S.person));
+  let ls = SG.lines.filter(L => L.pull > 0 && inScopePerson(L.person) && (S.person == null || L.person === S.person) && (!$("#opp-ready").checked || L.ready));
   if (S.topic){ const cq = compileQuery(S.topic); ls = ls.filter(L => { const tok = new Set(toks(L.topic + " " + L.subfield + " " + L.titles.join(" "))); return cq.alts.some(sl => sl.every(set => [...set].some(t => tok.has(t)))); }); }
   ls = ls.slice(0, 25);
   box.innerHTML = ls.length ? ls.map((L, k) => `<div class="oline"><span class="rk">${k+1}</span><div><button class="nm" data-p="${L.person}">${esc(L.name)}</button> <small class="muted">${esc(L.units.map(unitLabel).join(", "))}</small>
       <div class="tp">${esc(L.topic)}</div><div class="ev">${lineChips(L)}</div>
+      ${L.ready ? `<div class="note" style="margin-top:4px">Track record: ${esc(L.ready_reasons.join("; "))}</div>` : ""}
+      ${(L.contacts || []).length ? `<div style="font-size:12.5px;margin-top:4px"><b>Warm intro:</b> ${L.contacts.map(c => `${esc(c.name)} (${esc(c.company)}), co-authored ${esc(c.year)}`).join("; ")}</div>` : ""}
       <details><summary>Recent papers and funders</summary><ul>${L.titles.map(t => `<li>${esc(t)}</li>`).join("")}</ul>${L.funders.length ? `<div style="margin-top:4px">Funders: ${esc(L.funders.join(", "))}</div>` : ""}${(L.cv||[]).length ? `<div>CV: ${esc(L.cv.map(c => `${c.type}: ${c.title} ${c.year}`).join("; "))}</div>` : ""}</details></div>
       <div class="sc">${L.n} papers · ${L.recent} recent<br>${Math.round(L.lead_share*100)}% as lead</div></div>`).join("")
     : `<div class="empty">No research lines with industry signals match these filters.</div>`;
   box.onclick = e => { const b = e.target.closest(".nm[data-p]"); if (b) openProfile(+b.dataset.p); };
+  $("#opp-ready").onchange = opps;
   const src = SG.sources || {}; const on = [["OpenAlex co-authors and funders", src.openalex], ["companies citing our work", src.company_citers], ["NSERC grants and partners", src.nserc], ["patents (USPTO, EPO)", src.patents], ["CV data", src.cv]];
   $("#opp-src").textContent = `Signals updated ${SG.gen}. Sources in use: ${on.filter(x => x[1]).map(x => x[0]).join(", ")}.` + (on.some(x => !x[1]) ? ` Not yet connected: ${on.filter(x => !x[1]).map(x => x[0]).join(", ")}.` : "");
 }
@@ -1255,7 +1261,7 @@ const TOOLS = [
       if (inp.unit){ const u = String(inp.unit).toLowerCase(); ls = ls.filter(L => L.units.some(x => x.toLowerCase().includes(u))); }
       if (inp.query){ const cq = compileQuery(String(inp.query)); ls = ls.filter(L => { const tok = new Set(toks(L.topic + " " + L.subfield + " " + L.titles.join(" "))); return cq.alts.some(sl => sl.every(set => [...set].some(t => tok.has(t)))); }); }
       return { updated: SG.gen, sources: SG.sources, lines: ls.slice(0, Math.min(Number(inp.limit) || 12, 25)).map(L => ({ researcher: L.name, units: L.units, rank: L.rank, topic: L.topic, papers_3y: L.n, recent_2y: L.recent, lead_share: L.lead_share,
-        companies_coauthoring: L.companies, companies_citing: L.citers, industry_funding: L.industry, funders: L.funders, nserc_partners: L.nserc_partners, patents: L.patents, open_preprints: L.preprints, cv: L.cv, recent_titles: L.titles })) }; } },
+        companies_coauthoring: L.companies, companies_citing: L.citers, partner_ready: !!L.ready, track_record: L.ready_reasons || [], warm_contacts: L.contacts || [], grant_timing: L.timing || "", industry_funding: L.industry, funders: L.funders, nserc_partners: L.nserc_partners, patents: L.patents, open_preprints: L.preprints, cv: L.cv, recent_titles: L.titles })) }; } },
   { name: "unit_overview", description: "Summary for one unit (department or school), one Faculty (university view), or everything if both are omitted, over a year range: output counts by year, top topics, most active researchers, top partner countries and most-cited outputs.",
     inputSchema: { type:"object", properties: { unit: { type:"string" }, faculty: { type:"string" }, year_from: { type:"integer" }, year_to: { type:"integer" } } },
     execute(inp){ const u = inp.unit ? String(inp.unit).toLowerCase() : null; const fa = inp.faculty ? String(inp.faculty).toLowerCase() : null; const y0 = Number(inp.year_from)||Y0, y1 = Number(inp.year_to)||Y1; log(`summarizing ${inp.unit || "the Faculty"}`);
@@ -1293,6 +1299,7 @@ ${scope} Publications from OpenAlex, ${Y0} to ${GEN}. Large collaborations (100+
 ${webOn() ? "You can search the web. Use it to learn what a company does (products, R&D focus, Canadian presence) or what a grant program requires (eligibility, partner rules, team size, deadlines) before matching researchers to it. Say where facts came from." : "Web search is not available in this view; say so if a question needs current outside information."}
 
 How to work:
+- Use partnership_signals' warm_contacts (people at a company who already co-authored with the researcher) as the suggested introduction route, and prefer partner-ready researchers when fit is otherwise similar.
 - Industry partner: understand the company first, check partnership_signals for lines where that company (or its competitors) already co-authors, cites or funds our work, then run find_experts on several different keyword angles (their products, the underlying science, the methods), then read profiles of the strongest candidates. Give a ranked shortlist with why each fits, two or three supporting paper titles with years, and a suggested opening angle. Say plainly if the fit is weak.
 - Grant opportunity: check the program rules, read candidates' profiles (their NSERC grant summaries describe planned work and existing partners), then propose a team that covers the required expertise across units and ranks, name the gaps, and note any partner or eligibility requirements. Do not guess anyone's demographics.
 - Meeting prep: give a short brief: who they are, links to our Faculty (people, papers, shared topics), and three things worth raising.

@@ -47,11 +47,15 @@ def work_signals(raw):
     """Company co-authors, funders, industry funding and per-author roles for one OpenAlex work."""
     au = raw.get("authorships") or []
     companies = set()
+    people = []  # (person at the company, company): the warm introduction
     if len(au) < 100:
         for a in au:
             for x in a.get("institutions") or []:
                 if (x.get("type") or "") == "company" and x.get("display_name"):
                     companies.add(x["display_name"])
+                    nm = (a.get("author") or {}).get("display_name")
+                    if nm:
+                        people.append((nm, x["display_name"]))
     funders = sorted({f.get("display_name") for f in raw.get("funders") or [] if f.get("display_name")})
     industry = set()
     for aw in raw.get("awards") or []:
@@ -67,7 +71,7 @@ def work_signals(raw):
         aid = ((a.get("author") or {}).get("id") or "").split("/")[-1]
         lead = k == 0 or k == n - 1 or bool(a.get("is_corresponding"))
         roles[aid] = lead
-    return {"companies": sorted(companies), "funders": funders, "industry": sorted(industry), "roles": roles}
+    return {"companies": sorted(companies), "funders": funders, "industry": sorted(industry), "roles": roles, "company_people": people}
 
 
 # ------------------------------------------------------------------ companies citing our work
@@ -112,7 +116,7 @@ NSERC_HOST = "https://nserc-crsng.canada.ca"
 NSERC_SEARCH = (NSERC_HOST + "/en/awards-database?fiscal_year_from={y0}&fiscal_year_to={y1}&competition_year_from=0&competition_year_to=0"
                 "&keywords=&institution_type=0&institution_name_1_6%5B23%5D=23&area_code=&subject_code=&department=&award_amount_min="
                 "&award_amount_max=&report_type=0&op=Search&person_name={name}")
-PARTNER_PROGRAMS = re.compile(r"alliance|collaborative research and development|engage|idea to innovation|applied research|strategic|"
+PARTNER_PROGRAMS = re.compile(r"lab2market|mitacs|alliance|collaborative research and development|engage|idea to innovation|applied research|strategic|"
                               r"industrial research chair|partnership|i2i|create|college and community|mission", re.I)
 UA = {"User-Agent": "CarletonScienceResearchDashboard/1.0 (Carleton University Faculty of Science research office)"}
 
@@ -154,6 +158,22 @@ def parse_detail(page):
     cores = d.get("co-researchers") if isinstance(d.get("co-researchers"), list) else []
     return {"app_id": d.get("application id", ""), "program": d.get("program", ""), "area": d.get("area of application", ""), "subject": d.get("research subject", ""),
             "partners": partners, "coresearchers": cores, "summary": summ[:900], "department": d.get("department", "")}
+
+
+def dg_timing(rows):
+    """From award rows (one per fiscal-year installment): is the latest Discovery grant in its last year or already over?"""
+    dg = [r for r in rows if "discovery grants program - individual" in (r.get("program") or "").lower()]
+    if not dg:
+        return ""
+    latest = max(dg, key=lambda r: r["year"])
+    n = len({r["year"] for r in dg if r["title"] == latest["title"]})
+    fy_now = dt.date.today().year - (1 if dt.date.today().month < 4 else 0)
+    last_fy = int(str(latest["year"])[:4])
+    if last_fy < fy_now - 1:
+        return f"Discovery grant appears to have ended ({latest['year']})"
+    if n >= 4:
+        return f"Discovery grant in year {n} of 5 (renewal due soon)"
+    return ""
 
 
 def nserc_awards(people, years=6, refresh_days=28, pause=1.0):
@@ -234,7 +254,7 @@ def nserc_awards(people, years=6, refresh_days=28, pause=1.0):
             for prt in det.get("partners", []):
                 partners.append({"partner": prt, "program": r["program"], "title": r["title"], "year": r["year"]})
         if grants:
-            out[i] = {"partners": partners, "grants": grants[:6]}
+            out[i] = {"partners": partners, "grants": grants[:6], "timing": dg_timing(ent["awards"])}
     log(f"NSERC: {fetched} page requests this run; {sum(1 for v in out.values() if v['partners'])} researchers with partner organizations, "
         f"{sum(len(v['partners']) for v in out.values())} partner links")
     return out
@@ -456,7 +476,8 @@ def build_lines(data, works, citers, nserc, patents, cvs, today=None):
     recent_cut = (today - dt.timedelta(days=730)).isoformat()
     grace_cut = (today - dt.timedelta(days=365)).isoformat()
     aid2p = {a: i for i, p in enumerate(people) for a in p["oa"]}
-    lines = defaultdict(lambda: {"works": [], "companies": set(), "citers": set(), "industry": set(), "funders": Counter(), "lead": 0, "preprints": []})
+    lines = defaultdict(lambda: {"works": [], "companies": set(), "citers": set(), "industry": set(), "funders": Counter(), "lead": 0, "preprints": [], "contacts": {}})
+    p_comp, p_ind = defaultdict(set), defaultdict(set)  # person-level, across all their recent work
     for wid, rec in works.items():
         w = rec["raw"]
         pub = w.get("publication_date") or ""
@@ -470,6 +491,12 @@ def build_lines(data, works, citers, nserc, patents, cvs, today=None):
             L["subfield"] = (w["primary_topic"].get("subfield") or {}).get("display_name", "")
             L["works"].append({"id": wid, "t": re.sub(r"<[^>]+>", "", w.get("title") or ""), "d": pub, "v": ((w.get("primary_location") or {}).get("source") or {}).get("display_name") or ""})
             L["companies"] |= set(sig["companies"])
+            p_comp[i] |= set(sig["companies"])
+            p_ind[i] |= set(sig["industry"])
+            for nm, co in sig["company_people"]:
+                k = (nm, co)
+                if k not in L["contacts"] or pub > L["contacts"][k]["year"]:
+                    L["contacts"][k] = {"name": nm, "company": co, "year": pub[:4], "title": L["works"][-1]["t"][:120]}
             L["citers"] |= citers.get(wid, set())
             L["industry"] |= set(sig["industry"])
             L["funders"].update(sig["funders"])
@@ -493,7 +520,23 @@ def build_lines(data, works, citers, nserc, patents, cvs, today=None):
         pull = (4 * len(L["companies"]) + 3 * min(len(L["citers"]), 6) + 3 * len(L["industry"]) + min(len({x["partner"] for x in np_}), 3)
                 + (2 if pat else 0) + 2 * len(L["preprints"]) + min(sum(1 for c in cv if c["type"] in ("grant", "patent")), 3))
         base = min(rec, 3) + (1 if rec > prior else 0) + (2 if lead_share >= 0.5 else 0)
+        # partner-ready: past behaviour is the best predictor that a researcher will take the call
+        reasons = []
+        pg = sorted({g["program"] for g in (nserc.get(i) or {}).get("grants", []) if PARTNER_PROGRAMS.search(g["program"])})
+        if pg:
+            reasons.append("industry-partnered grants (" + ", ".join(pg[:2]) + ")")
+        if p_ind[i]:
+            reasons.append("industry-funded papers")
+        if p_comp[i]:
+            reasons.append(f"co-authors with {len(p_comp[i])} compan{'y' if len(p_comp[i]) == 1 else 'ies'}")
+        if pat:
+            reasons.append(f"{len(pat)} Carleton patent filing{'s' if len(pat) > 1 else ''}")
+        if any(c["type"] in ("patent", "disclosure_public") for c in cv):
+            reasons.append("patent or disclosure on CV")
+        ready = len(reasons) >= 2
         score = pull + base if pull else base / 10  # lines with no sign of industry interest sink to the bottom
+        if ready and pull:
+            score += 2
         out.append({"person": i, "name": p["n"], "units": p["u"], "rank": p["rk"], "roles": p["ro"], "topic": L["topic"], "subfield": L["subfield"],
                     "n": n, "recent": rec, "prior": prior, "lead_share": round(lead_share, 2),
                     "companies": sorted(L["companies"])[:8], "citers": sorted(L["citers"])[:8], "industry": sorted(L["industry"])[:6],
@@ -502,6 +545,8 @@ def build_lines(data, works, citers, nserc, patents, cvs, today=None):
                     "current_grant": next(({"title": g["title"], "program": g["program"], "year": g["year"], "area": g["area"]} for g in (nserc.get(i) or {}).get("grants", [])), None),
                     "cv": [c for c in cv if c["type"] in ("grant", "thesis", "patent", "award")][:5],
                     "titles": [x["t"] for x in sorted(L["works"], key=lambda x: x["d"], reverse=True)[:4]],
+                    "ready": ready, "ready_reasons": reasons, "timing": (nserc.get(i) or {}).get("timing", ""),
+                    "contacts": sorted(L["contacts"].values(), key=lambda c: c["year"], reverse=True)[:3],
                     "pull": pull, "score": round(score, 1)})
     out.sort(key=lambda x: x["score"], reverse=True)
     return out
@@ -525,7 +570,8 @@ def compute(data, works, y0, oa_pages):
     lines = build_lines(data, works, citers, nserc, patents, cvs)
     sources = {"openalex": True, "company_citers": bool(citers), "nserc": bool(nserc), "patents": bool(_uspto_key() or os.environ.get("EPO_OPS_KEY")), "cv": bool(cvs)}
     nserc_out = {str(i): {"partners": sorted({x["partner"] for x in v["partners"]})[:10],
-                          "grants": [{k: g[k] for k in ("title", "program", "year", "total", "area", "partners", "summary")} for g in v["grants"][:4]]}
+                          "grants": [{k: g[k] for k in ("title", "program", "year", "total", "area", "partners", "summary")} for g in v["grants"][:4]],
+                          "timing": v.get("timing", "")}
                  for i, v in nserc.items()}
     (ROOT / "docs/signals.json").write_text(json.dumps({"gen": dt.date.today().isoformat(), "sources": sources, "lines": lines[:120], "nserc": nserc_out},
                                                        ensure_ascii=False, separators=(",", ":")), encoding="utf-8")

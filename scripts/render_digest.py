@@ -452,6 +452,12 @@ BRIEF_FOOT = ("Each quarter the research lines with the strongest industry signa
 
 def _chips(sig):
     out = []
+    if sig.get("ready"):
+        out.append("partner-ready: " + "; ".join(sig.get("ready_reasons") or []))
+    for c in (sig.get("contacts") or [])[:2]:
+        out.append(f"warm intro: {c['name']} ({c['company']}), co-author {c['year']}")
+    if sig.get("timing"):
+        out.append(sig["timing"])
     if sig.get("citers"):
         out.append(f"cited by {', '.join(sig['citers'][:3])}")
     if sig.get("companies"):
