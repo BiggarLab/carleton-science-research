@@ -160,20 +160,25 @@ def parse_detail(page):
             "partners": partners, "coresearchers": cores, "summary": summ[:900], "department": d.get("department", "")}
 
 
-def dg_timing(rows):
-    """From award rows (one per fiscal-year installment): is the latest Discovery grant in its last year or already over?"""
+def dg_timing(rows, ref_fy):
+    """From award rows (one per fiscal-year installment): is the latest Discovery grant in its final years, or over?
+    ref_fy is the latest fiscal year the awards database has published (it lags a year or two), not today's date."""
     dg = [r for r in rows if "discovery grants program - individual" in (r.get("program") or "").lower()]
-    if not dg:
+    if not dg or not ref_fy:
         return ""
     latest = max(dg, key=lambda r: r["year"])
     n = len({r["year"] for r in dg if r["title"] == latest["title"]})
-    fy_now = dt.date.today().year - (1 if dt.date.today().month < 4 else 0)
     last_fy = int(str(latest["year"])[:4])
-    if last_fy < fy_now - 1:
-        return f"Discovery grant appears to have ended ({latest['year']})"
-    if n >= 4:
-        return f"Discovery grant in year {n} of 5 (renewal due soon)"
+    if last_fy < ref_fy and n >= 5:
+        return f"Discovery grant ended {latest['year']} (renewal due)"
+    if last_fy == ref_fy and n >= 4:
+        return f"Discovery grant in year {n} of 5 as of {latest['year']} (renewal soon)"
     return ""
+
+
+def latest_fy(rows):
+    ys = [int(str(r.get("year", ""))[:4]) for r in rows if str(r.get("year", ""))[:4].isdigit()]
+    return max(ys) if ys else 0
 
 
 def nserc_awards(people, years=6, refresh_days=28, pause=1.0):
@@ -236,6 +241,7 @@ def nserc_awards(people, years=6, refresh_days=28, pause=1.0):
     cache_p.write_text(json.dumps(cache, ensure_ascii=False, indent=0))
     out = {}
     idx = {p["sort"]: i for i, p in enumerate(people)}
+    ref = latest_fy([r for ent in cache["people"].values() for r in ent["awards"]])
     for key, ent in cache["people"].items():
         i = idx.get(key)
         if i is None:
@@ -254,7 +260,7 @@ def nserc_awards(people, years=6, refresh_days=28, pause=1.0):
             for prt in det.get("partners", []):
                 partners.append({"partner": prt, "program": r["program"], "title": r["title"], "year": r["year"]})
         if grants:
-            out[i] = {"partners": partners, "grants": grants[:6], "timing": dg_timing(ent["awards"])}
+            out[i] = {"partners": partners, "grants": grants[:6], "timing": dg_timing(ent["awards"], ref)}
     log(f"NSERC: {fetched} page requests this run; {sum(1 for v in out.values() if v['partners'])} researchers with partner organizations, "
         f"{sum(len(v['partners']) for v in out.values())} partner links")
     return out
@@ -533,7 +539,8 @@ def build_lines(data, works, citers, nserc, patents, cvs, today=None):
             reasons.append(f"{len(pat)} Carleton patent filing{'s' if len(pat) > 1 else ''}")
         if any(c["type"] in ("patent", "disclosure_public") for c in cv):
             reasons.append("patent or disclosure on CV")
-        ready = len(reasons) >= 2
+        committed = bool(pg or pat or any(c["type"] in ("patent", "disclosure_public") for c in cv))
+        ready = committed and len(reasons) >= 2  # a partnered grant or a patent, plus one more kind of industry contact
         score = pull + base if pull else base / 10  # lines with no sign of industry interest sink to the bottom
         if ready and pull:
             score += 2

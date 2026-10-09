@@ -449,12 +449,13 @@ def main():
         log("company citers skipped:", e)
         citers = {}
     nserc = {}
+    ref_fy = SIG.latest_fy(grants["nserc"])
     for i, p in enumerate(people):
         gs = p.get("_g") or []
         if gs:
             nserc[i] = {"partners": [], "grants": [{"title": g["title"], "program": f"{g['src']} {g['program']}", "year": g["year"], "area": "", "partners": [], "summary": ""}
                                                    for g in sorted(gs, key=lambda g: g["year"], reverse=True)[:4]],
-                        "timing": SIG.dg_timing([g for g in gs if g["src"] == "NSERC"])}
+                        "timing": SIG.dg_timing([g for g in gs if g["src"] == "NSERC"], ref_fy)}
     patents = SIG.carleton_patents(people, today.year - 10)
     lines = SIG.build_lines(data, sig_works, citers, nserc, patents, {})
     (OUT / "signals.json").write_text(json.dumps({"gen": today.isoformat(), "sources": {"openalex": True, "company_citers": bool(citers), "nserc": bool(grants["nserc"]),
