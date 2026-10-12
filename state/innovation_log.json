@@ -40,5 +40,17 @@
   "outcome": "near miss",
   "title": "Carrier dynamics in neutron irradiated high-quality epitaxial GaN",
   "why": "market: The paper is a materials characterization of carrier lifetimes and trapping in irradiated GaN layers. I could not tie it to a product category that buys this result today; partner: Novigrad (Saskatoon) does radiation testing for aerospace, defence and nuclear teams, but it works on electronics testing. I did not verify a company active in GaN radiation detectors; Carleton's role: Carleton authors are at positions 6 and 7 of 14. The first and last authors are at Vilnius University; evidence: The paper reports lab measurements on epitaxial GaN samples. It shows no device or prototype"
+ },
+ "W7220389919": {
+  "week_end": "2026-10-11",
+  "outcome": "near miss",
+  "title": "Label-free multimodal nonlinear optical imaging reveals key biomarkers of cellular radiation response",
+  "why": "evidence: Validated only in A549 lung cancer cells at 2 to 10 Gy. Single cell line"
+ },
+ "W7220958495": {
+  "week_end": "2026-10-11",
+  "outcome": "near miss",
+  "title": "Groundwater solution composition effects on copper corrosion in deep geological repositories",
+  "why": "partner: NWMO is a non-profit. Polycontrols and Integran sources date to 2020, so current operation is unconfirmed; evidence: Lab electrochemical tests on copper in three solutions. No container-scale or field validation"
  }
 }

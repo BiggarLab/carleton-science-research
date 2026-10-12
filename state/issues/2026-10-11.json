@@ -1,0 +1,300 @@
+{
+ "issue": 2,
+ "week_start": "2026-10-05",
+ "week_end": "2026-10-11",
+ "lead": "Ten publications this week came from Biology (three), Physics (four), Earth Sciences, Health Sciences and Neuroscience (one each), plus one from Environmental & Interdisciplinary Science. The one cross-unit collaboration was a Biology and Environmental & Interdisciplinary Science paper on how environmental professionals in Canada use knowledge co-production to connect research and policy. Biology's other two papers, both with Steven Cooke, covered recreational fishing values and invasive species impact measurement. Physics contributed three ATLAS collaboration papers and one cell imaging study on radiation response, and the other units each reported one paper on topics from nuclear waste containers to adrenal disease diagnosis to speech memory in children.",
+ "units": [
+  {
+   "unit": "Biology",
+   "items": [
+    {
+     "id": "W7221446597",
+     "who": [
+      [
+       "Steven Cooke",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "The overlooked role of food and cultural dimensions in recreational fisheries",
+     "url": "https://doi.org/10.1007/s13280-026-02484-x",
+     "venue": "AMBIO",
+     "date": "2026-10-11",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The authors surveyed 443 shore anglers in 10 cities in the lower Great Lakes about their preferences, behaviours, use of their catch and background. They identified five dimensions of value, including food and cultural dimensions, and sorted anglers into three groups (food-oriented, cultural or community-oriented, and leisure or sport-oriented), which suggests managers should treat food and culture as core parts of recreational fisheries."
+    },
+    {
+     "id": "W7220901202",
+     "who": [
+      [
+       "Vivian Nguyen",
+       "Biology"
+      ],
+      [
+       "Joe Bennett",
+       "Biology"
+      ],
+      [
+       "Steven Cooke",
+       "Biology"
+      ],
+      [
+       "Susan Aitken",
+       "Environmental & Interdisciplinary Sci"
+      ]
+     ],
+     "who_note": "",
+     "title": "Bridging conservation evidence and policy through knowledge co‐production: Perspectives from senior environmental professionals in Canada",
+     "url": "https://doi.org/10.1002/2688-8319.70334",
+     "venue": "Ecological Solutions and Evidence",
+     "date": "2026-10-01",
+     "oa": true,
+     "big": false,
+     "cross": true,
+     "summary": "The authors interviewed 82 senior environmental professionals in federal, provincial and territorial governments and NGOs across Canada about how they work with partners to produce knowledge that informs policy. Most saw co-production as useful for making research relevant to policy, and they named early relationship-building and sustained resourcing as helpful, and bureaucratic constraints and mismatched timelines as barriers."
+    }
+   ]
+  },
+  {
+   "unit": "Earth Sciences",
+   "items": [
+    {
+     "id": "W7220958495",
+     "who": [
+      [
+       "Richard Amos",
+       "Earth Sciences"
+      ]
+     ],
+     "who_note": "",
+     "title": "Groundwater solution composition effects on copper corrosion in deep geological repositories",
+     "url": "https://doi.org/10.1139/cjc-2026-0099",
+     "venue": "Canadian Journal of Chemistry",
+     "date": "2026-10-08",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "Electrochemical experiments and surface analysis were used to compare how copper corrodes in two sodium chloride solutions and in a synthetic version of groundwater from a Canadian Shield repository for spent nuclear fuel. Corrosion depended on oxygen, ionic strength and solution composition, with rates about twice as high at the higher ionic strength, and the groundwater analogue produced lower corrosion rates than the sodium chloride solutions, which matters for how well copper-coated fuel containers are assessed."
+    }
+   ]
+  },
+  {
+   "unit": "Health Sciences",
+   "items": [
+    {
+     "id": "W7221451738",
+     "who": [
+      [
+       "Utkarsh Dang",
+       "Health Sciences"
+      ]
+     ],
+     "who_note": "",
+     "title": "Cortisol Cutoffs for Adrenal Insufficiency Using Elecsys II: A Systematic Review",
+     "url": "https://doi.org/10.1111/cen.70218",
+     "venue": "Clinical Endocrinology",
+     "date": "2026-10-11",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "This systematic review looked at six studies, covering 1799 samples from 430 adult and child patients, that recommended a cortisol cutoff for diagnosing adrenal insufficiency with the Roche Elecsys II assay. The authors suggest a peak cutoff of 405 nmol/L for a standard-dose ACTH test, lower than the older 500 nmol/L threshold, and note that the small number and limited quality of the studies constrain the recommendation."
+    }
+   ]
+  },
+  {
+   "unit": "Neuroscience",
+   "items": [
+    {
+     "id": "W7220836170",
+     "who": [
+      [
+       "Amedeo D'Angiulli",
+       "Neuroscience"
+      ]
+     ],
+     "who_note": "",
+     "title": "Recall of overlearned speech in noise: Developmental ERP findings and an episodic buffer frame for culturally situated brain activity",
+     "url": "https://doi.org/10.1016/j.bandc.2026.106487",
+     "venue": "Brain and Cognition",
+     "date": "2026-10-07",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "This perspective paper reanalyzes data from children and young adults who had memorized Quranic passages without fully understanding Arabic, and who picked the missing final word of passages played with or without static noise. Noise reduced accuracy, children responded more slowly and showed larger, more widely spread brain responses, and the authors offer an episodic buffer explanation while describing the findings as preliminary and in need of further testing."
+    }
+   ]
+  },
+  {
+   "unit": "Physics",
+   "items": [
+    {
+     "id": "W7220389919",
+     "who": [
+      [
+       "Sangeeta Murugkar",
+       "Physics"
+      ]
+     ],
+     "who_note": "",
+     "title": "Label-free multimodal nonlinear optical imaging reveals key biomarkers of cellular radiation response",
+     "url": "https://doi.org/10.1038/s41598-026-73913-w",
+     "venue": "Scientific Reports",
+     "date": "2026-10-05",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The authors built a label-free imaging platform that combines stimulated Raman scattering and two-photon fluorescence microscopy, and used it on human lung cancer cells given clinical X-ray doses of 2 to 10 Gy. Irradiated cells showed measurable changes that varied with dose and time, including altered lipid and protein signals, a higher optical redox ratio, larger cells and lipid droplets, and more lipid droplets located with mitochondria, which supports using this imaging to assess cellular response to radiation."
+    },
+    {
+     "id": "W7221411938",
+     "who": [
+      [
+       "Dag Gillberg",
+       "Physics"
+      ],
+      [
+       "Jesse Heilman",
+       "Physics"
+      ],
+      [
+       "Alain Bellerive",
+       "Physics"
+      ],
+      [
+       "Kevin Graham",
+       "Physics"
+      ],
+      [
+       "Thomas Koffas",
+       "Physics"
+      ],
+      [
+       "Manuella Vincter",
+       "Physics"
+      ]
+     ],
+     "who_note": "with a large collaboration",
+     "title": "Search for charged-lepton-flavour violating $e\\mu tq$ interactions at $\\sqrt{s}=13$ TeV with the ATLAS detector",
+     "url": "https://openalex.org/W7221411938",
+     "venue": "CERN Document Server (European Organization for Nuclear Research)",
+     "date": "2026-10-01",
+     "oa": false,
+     "big": true,
+     "cross": false,
+     "summary": "Using 140 fb^-1 of proton-proton collision data from the ATLAS detector, the team searched for top-quark processes that would change the type of charged lepton, which the Standard Model does not predict in this form. They saw no significant deviation from the Standard Model and set upper limits on the strength of these interactions and on the rates of the corresponding top-quark decays."
+    },
+    {
+     "id": "W7221294330",
+     "who": [
+      [
+       "Thomas Koffas",
+       "Physics"
+      ],
+      [
+       "Manuella Vincter",
+       "Physics"
+      ]
+     ],
+     "who_note": "with a large collaboration",
+     "title": "Search for anomalies in vector-boson fusion production of the Higgs boson in H(→ γγ)jj events using 164 fb−1 of pp collision data collected at TeV with the ATLAS detector",
+     "url": "https://openalex.org/W7221294330",
+     "venue": "White Rose Research Online (University of Leeds, The University of Sheffield, University of York)",
+     "date": "2026-09-18",
+     "oa": true,
+     "big": true,
+     "cross": false,
+     "summary": "No abstract was available, so this summary reflects the title only. The title indicates an ATLAS search for anomalies in Higgs boson production through vector-boson fusion, in events where the Higgs decays to two photons, using 164 fb^-1 of proton-proton collision data."
+    }
+   ]
+  }
+ ],
+ "innovation": {
+  "opportunities": [],
+  "near_misses": [
+   {
+    "id": "W7220389919",
+    "title": "Label-free multimodal nonlinear optical imaging reveals key biomarkers of cellular radiation response",
+    "why": "evidence: Validated only in A549 lung cancer cells at 2 to 10 Gy. Single cell line",
+    "checks": {
+     "market": {
+      "pass": true,
+      "note": "Cancer and radiobiology research labs already buy coherent Raman microscopes, for example the Leica STELLARIS 8 CRS."
+     },
+     "partner": {
+      "pass": true,
+      "note": "Leica Microsystems sells an SRS plus two-photon microscope. International company, verified on its own site."
+     },
+     "carleton_role": {
+      "pass": true,
+      "note": "Gagnon is first author and Murugkar is last and corresponding author, both Carleton."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "Validated only in A549 lung cancer cells at 2 to 10 Gy. Single cell line."
+     }
+    },
+    "would_change": "Validation in several cell lines or patient-derived samples, with a vendor or clinic."
+   },
+   {
+    "id": "W7220958495",
+    "title": "Groundwater solution composition effects on copper corrosion in deep geological repositories",
+    "why": "partner: NWMO is a non-profit. Polycontrols and Integran sources date to 2020, so current operation is unconfirmed; evidence: Lab electrochemical tests on copper in three solutions. No container-scale or field validation",
+    "checks": {
+     "market": {
+      "pass": true,
+      "note": "Nuclear waste management organizations such as NWMO already fund copper container corrosion work for repository safety cases."
+     },
+     "partner": {
+      "pass": false,
+      "note": "NWMO is a non-profit. Polycontrols and Integran sources date to 2020, so current operation is unconfirmed."
+     },
+     "carleton_role": {
+      "pass": true,
+      "note": "Carleton first author Harper and last author Amos."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "Lab electrochemical tests on copper in three solutions. No container-scale or field validation."
+     }
+    },
+    "would_change": "Container-scale or long-duration tests with NWMO, with results beyond simple solutions."
+   }
+  ],
+  "skipped": [
+   {
+    "id": "W7220901202",
+    "reason": "social science interview study"
+   },
+   {
+    "id": "W7221181216",
+    "reason": "ecology metric, Carleton middle author"
+   },
+   {
+    "id": "W7221446597",
+    "reason": "social science angler survey"
+   },
+   {
+    "id": "W7221451738",
+    "reason": "systematic review, no new method"
+   },
+   {
+    "id": "W7220836170",
+    "reason": "basic cognitive neuroscience perspective"
+   }
+  ],
+  "screened": "",
+  "counts": {
+   "papers": 10,
+   "large_collaborations": 3,
+   "screened": 2,
+   "skipped": 5
+  }
+ },
+ "also_title": "Preprints",
+ "also": [
+  "Steven Cooke (Biology): A standardized metric for quantifying the ecological impacts of biological invasions. Zenodo (CERN European Organization for Nuclear Research), 2026-10-09.",
+  "Thomas Koffas, Manuella Vincter (Physics): Search for compressed electroweak SUSY production in final states with two $τ$-leptons in $\\sqrt{s} = 13$ and $13.6$ TeV $pp$ collisions with the ATLAS detector. HAL (Le Centre pour la Communication Scientifique Directe), 2026-10-06."
+ ]
+}
