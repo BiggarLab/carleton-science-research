@@ -1,0 +1,318 @@
+{
+ "issue": 3,
+ "week_start": "2026-10-12",
+ "week_end": "2026-10-18",
+ "lead": "Biology had the most output this week with three papers, covering fish telemetry and policy in Britain and Ireland, habitat fragmentation, and a grasshopper that resembles a butterfly. Earth Sciences had two papers, one in Nature on early tetrapod neck mobility and one on metals in century-old mine waste rock. Neuroscience contributed a preprint on hypothalamic neuron subtypes and an editorial on environmental effects on brain and cognition, Health Sciences a community physical activity study, and Physics an ATLAS leptoquark search (large collaboration, five Carleton authors). The one cross-unit paper is a statistical modelling study by Utkarsh Dang (Health Sciences) and Sanjeena Dang (Mathematics & Statistics).",
+ "units": [
+  {
+   "unit": "Biology",
+   "items": [
+    {
+     "id": "W7221756179",
+     "who": [
+      [
+       "Vivian Nguyen",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "Unlocking the potential of aquatic animal telemetry research to advance management and conservation: Barriers and a blueprint for Great Britain and Ireland",
+     "url": "https://doi.org/10.1139/cjfas-2025-0388",
+     "venue": "Canadian Journal of Fisheries and Aquatic Sciences",
+     "date": "2026-10-14",
+     "oa": false,
+     "big": false,
+     "cross": false,
+     "summary": "The authors surveyed 53 researchers to map aquatic animal telemetry work in Britain and Ireland and the barriers to using it in management. Seventy-three percent of respondents reported influencing management or policy decisions, and the authors recommend a coordinated research hub, better data sharing, and a permanent, interoperable acoustic receiver array."
+    },
+    {
+     "id": "W7221614242",
+     "who": [
+      [
+       "Jeff Dawson",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "Mimicry in motion? A grasshopper species that looks like, and moves like, a sympatric butterfly",
+     "url": "https://doi.org/10.1007/s10682-026-10423-1",
+     "venue": "Evolutionary Ecology",
+     "date": "2026-10-01",
+     "oa": false,
+     "big": false,
+     "cross": false,
+     "summary": "The title indicates a study of a grasshopper species that resembles a sympatric butterfly in appearance and also in how it moves. No abstract was available, so the methods and findings cannot be described here."
+    },
+    {
+     "id": "W7221531820",
+     "who": [
+      [
+       "Lenore Fahrig",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "Patch isolation increases with habitat loss, but decreases with habitat fragmentation",
+     "url": "https://doi.org/10.1016/j.pecon.2026.10.004",
+     "venue": "Perspectives in Ecology and Conservation",
+     "date": "2026-10-01",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The authors reviewed 100 papers and found that 83% of those using distance-based isolation metrics assumed isolation increases with habitat fragmentation, even though geometry says the reverse for a fixed amount of habitat. Using thousands of real forest landscapes, they showed that forest patch isolation declines as fragmentation increases, and they argue that correcting this assumption would help move the fragmentation debate forward."
+    }
+   ]
+  },
+  {
+   "unit": "Earth Sciences",
+   "items": [
+    {
+     "id": "W7222223404",
+     "who": [
+      [
+       "Hillary Maddin",
+       "Earth Sciences"
+      ]
+     ],
+     "who_note": "",
+     "title": "Early tetrapod neck mobility modelled using an extant analogue",
+     "url": "https://doi.org/10.1038/s41586-026-11158-3",
+     "venue": "Nature",
+     "date": "2026-10-14",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The authors tested the axial columns of sturgeon, which are built similarly to those of early tetrapods, to model how far early tetrapod necks could bend and rotate. Most stem tetrapods could move their heads less than 6° sideways and less than 3° up or down, and could not rotate them. Mobility did not change when the head separated from the shoulder girdle, so the authors conclude that neck mobility did not drive that separation and that forelimb-driven locomotion is a better explanation."
+    },
+    {
+     "id": "W7222301217",
+     "who": [
+      [
+       "Richard Amos",
+       "Earth Sciences"
+      ]
+     ],
+     "who_note": "",
+     "title": "Metal Transport through Century-Old Waste Rock",
+     "url": "https://doi.org/10.1016/j.apgeochem.2026.107128",
+     "venue": "Applied Geochemistry",
+     "date": "2026-10-01",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The authors extracted and analyzed porewater from a waste-rock pile at an abandoned prospecting property that has been in place for about 100 years. They found near-neutral pH, active carbonate buffering, and zinc making up 92% of heavy metals, attributed to weathering of sphalerite. Differences from other waste-rock studies were mostly explained by rock type (sulfide minerals and carbonate content) rather than by the age of the pile."
+    }
+   ]
+  },
+  {
+   "unit": "Health Sciences",
+   "items": [
+    {
+     "id": "W7222083018",
+     "who": [
+      [
+       "Francine Darroch",
+       "Health Sciences"
+      ]
+     ],
+     "who_note": "",
+     "title": "The sustainability of a trauma- and violence-informed physical activity program for women experiencing interpersonal and structural violence",
+     "url": "https://doi.org/10.1186/s12966-026-01995-w",
+     "venue": "International Journal of Behavioral Nutrition and Physical Activity",
+     "date": "2026-10-15",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The authors followed a trauma- and violence-informed physical activity program for women at three community sites in Canada for 12 months after delivery passed from the research team to local providers. Fidelity was high (median 91%) and average attendance was 7.6 participants per session. Interviews showed that community delivery is feasible but depends on leadership, a stable facilitator, and dedicated program management roles rather than short-term grant funding."
+    }
+   ]
+  },
+  {
+   "unit": "Neuroscience",
+   "items": [
+    {
+     "id": "W7222025661",
+     "who": [
+      [
+       "Amedeo D'Angiulli",
+       "Neuroscience"
+      ]
+     ],
+     "who_note": "",
+     "title": "Steps to an ecology of brain and cognition: From environmental effects to dynamic neurocognitive adaptation and resilience",
+     "url": "https://doi.org/10.1016/j.bandc.2026.106488",
+     "venue": "Brain and Cognition",
+     "date": "2026-10-15",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "This editorial introduces a special issue on physical, social and economic environmental effects on brain and cognition. It draws on the contributions to argue for an ecological view in which neural and cognitive differences are interpreted in light of environmental demands, costs and opportunities for recovery, and it sets priorities for longitudinal, multimodal research."
+    }
+   ]
+  },
+  {
+   "unit": "Physics",
+   "items": [
+    {
+     "id": "W7221651535",
+     "who": [
+      [
+       "Dag Gillberg",
+       "Physics"
+      ],
+      [
+       "Jesse Heilman",
+       "Physics"
+      ],
+      [
+       "Alain Bellerive",
+       "Physics"
+      ],
+      [
+       "Thomas Koffas",
+       "Physics"
+      ],
+      [
+       "Manuella Vincter",
+       "Physics"
+      ]
+     ],
+     "who_note": "with a large collaboration",
+     "title": "Search for a leptoquark in events with a hadronically decaying τ-lepton and missing transverse momentum using pp collisions at s=13TeV with the ATLAS detector",
+     "url": "https://doi.org/10.1016/j.physletb.2026.141033",
+     "venue": "Physics Letters B",
+     "date": "2026-10-01",
+     "oa": true,
+     "big": true,
+     "cross": false,
+     "summary": "The ATLAS collaboration searched proton-proton collision data from Run 2 of the Large Hadron Collider for signs of a leptoquark, a hypothetical particle, in events with a hadronically decaying tau lepton and missing transverse momentum. No excess above the Standard Model prediction was seen, so the authors set limits on couplings in a benchmark vector-leptoquark model for masses between 1.5 TeV and 3.0 TeV."
+    }
+   ]
+  }
+ ],
+ "innovation": {
+  "opportunities": [
+   {
+    "tier": "act",
+    "id": "W7221532883",
+    "heading": "Clustering method for longitudinal RNA-seq counts, with public code",
+    "what": "A mixture model that clusters subjects by multivariate count trajectories over time. It handles irregular timing and covariates. A variational EM algorithm keeps it scalable. Tested in simulations and on COVID-19 neutrophil RNA-seq data.",
+    "market_fit": "Pharma, biotech and core labs pay for omics analysis software such as JMP Pro and Partek Flow. Whether they would adopt this clustering method is untested.",
+    "partners": [
+     {
+      "name": "JMP Statistical Discovery (SAS)",
+      "location": "Cary, North Carolina, US",
+      "why": "Genomic data analysis is offered in JMP Pro."
+     },
+     {
+      "name": "Illumina (Partek Flow)",
+      "location": "San Diego, California, US",
+      "why": "Partek Flow RNA-seq tools include k-means, hierarchical and graph-based clustering."
+     }
+    ],
+    "next_step": "Ask Sanjeena Dang to approach JMP's life sciences R&D team. Also check the four companies that co-author Utkarsh Dang's research line. If a Canadian company joins, scope Mitacs Accelerate or NSERC Alliance. No outside co-owners.",
+    "licensing_note": "Partnership. Code is public on GitHub and the preprint is open, so this is a know-how partnership, not a licence.",
+    "checks": {
+     "market": true,
+     "partner": true,
+     "carleton_role": true,
+     "evidence": true
+    },
+    "evidence": {
+     "market": "Paid tools such as Partek Flow and JMP Genomics already serve RNA-seq and expression analysis.",
+     "partner": "JMP is a SAS subsidiary with a December 2025 release. Partek Flow is now an Illumina product.",
+     "carleton_role": "All three authors are Carleton. Pengqi Liu is first author and Sanjeena Dang Subedi is last.",
+     "evidence": "Simulations show accurate recovery against existing approaches. Applied to COVID-19 neutrophil RNA-seq data. Code is on GitHub."
+    }
+   }
+  ],
+  "near_misses": [
+   {
+    "id": "W7222301217",
+    "title": "Metal Transport through Century-Old Waste Rock",
+    "why": "evidence: Single-site field characterization at one abandoned prospect. No method or tool with reported performance",
+    "checks": {
+     "market": {
+      "pass": true,
+      "note": "Mining companies and consultants already pay for waste-rock geochemical characterization and mine closure planning."
+     },
+     "partner": {
+      "pass": true,
+      "note": "SRK Consulting lists mine closure and mine waste management among its services."
+     },
+     "carleton_role": {
+      "pass": true,
+      "note": "All three authors are Carleton. Andrew Hicks is first author and Richard Amos is last."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "Single-site field characterization at one abandoned prospect. No method or tool with reported performance."
+     }
+    },
+    "would_change": "Multi-site data or a validated long-term leaching prediction method from Amos's group."
+   },
+   {
+    "id": "W7221692631",
+    "title": "Intersectional genetic targeting of molecularly distinct melanin-concentrating hormone neuron subpopulations reveals distinct and overlapping subcircuit architecture",
+    "why": "market: No product or buyer exists for an anatomical map of MCH neuron subpopulations; Carleton's role: Melissa Chee is a middle author. First and last authors are at University of Connecticut; evidence: Mouse line validation and anatomical tracing only. No performance data for a tool or therapy",
+    "checks": {
+     "market": {
+      "pass": false,
+      "note": "No product or buyer exists for an anatomical map of MCH neuron subpopulations."
+     },
+     "partner": {
+      "pass": true,
+      "note": "Vertex co-authors the paper. It reported first quarter 2026 revenue of $2.99 billion."
+     },
+     "carleton_role": {
+      "pass": false,
+      "note": "Melissa Chee is a middle author. First and last authors are at University of Connecticut."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "Mouse line validation and anatomical tracing only. No performance data for a tool or therapy."
+     }
+    },
+    "would_change": "A Carleton-led study with a validated tool or target tested beyond mouse anatomy."
+   }
+  ],
+  "skipped": [
+   {
+    "id": "W7221614242",
+    "reason": "basic evolutionary ecology"
+   },
+   {
+    "id": "W7221756179",
+    "reason": "42-author survey, no method"
+   },
+   {
+    "id": "W7221531820",
+    "reason": "conservation ecology theory"
+   },
+   {
+    "id": "W7222223404",
+    "reason": "basic palaeontology"
+   },
+   {
+    "id": "W7222083018",
+    "reason": "community health implementation study"
+   },
+   {
+    "id": "W7222025661",
+    "reason": "editorial"
+   }
+  ],
+  "screened": "",
+  "counts": {
+   "papers": 10,
+   "large_collaborations": 1,
+   "screened": 3,
+   "skipped": 6
+  }
+ },
+ "also_title": "Preprints",
+ "also": [
+  "Utkarsh Dang, Sanjeena Dang (Health Sciences): Latent-Class Poisson-Lognormal Mixed Models for Clustering Multivariate Longitudinal Count Data. arXiv (Cornell University), 2026-10-09.",
+  "Melissa Chee (Neuroscience): Intersectional genetic targeting of molecularly distinct melanin-concentrating hormone neuron subpopulations reveals distinct and overlapping subcircuit architecture. bioRxiv (Cold Spring Harbor Laboratory), 2026-10-12."
+ ]
+}
