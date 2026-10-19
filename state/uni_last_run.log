@@ -1,3 +1,39 @@
+directory: sce: 53 faculty listings
+directory: doe: 28 faculty listings
+directory: mae: 51 faculty listings
+directory: cee: 41 faculty listings
+directory: architecture: 28 faculty listings
+directory: engineering: 180 faculty listings
+directory: cognitivescience: 39 faculty listings
+directory: english: 36 faculty listings
+directory: french: 14 faculty listings
+directory: geography: 11 faculty listings
+directory: history: 37 faculty listings
+directory: chum: 68 faculty listings
+directory: icslac: 1 faculty listings
+directory: arthistory: 15 faculty listings
+directory: filmstudies: 11 faculty listings
+directory: music: 20 faculty listings
+directory: ssac: 0 faculty listings
+directory: fist: 50 faculty listings
+directory: slals: 38 faculty listings
+directory: philosophy: 5 faculty listings
+directory: psychology: 68 faculty listings
+directory: socanth: 42 faculty listings
+directory: economics: 42 faculty listings
+directory: polisci: 1 faculty listings
+directory: npsia: 23 faculty listings
+directory: sppa: 31 faculty listings
+directory: spa: 31 faculty listings
+directory: socialwork: 17 faculty listings
+directory: law: 31 faculty listings
+directory: criminology: 21 faculty listings
+directory: politicaleconomy: 68 faculty listings
+directory: eurus: 19 faculty listings
+directory: globalstudies: 10 faculty listings
+directory: akcollege: 5 faculty listings
+directory: sprott: 63 faculty listings
+directory: 843 faculty across 35 department sites
 works: 2000 read
 works: 4000 read
 works: 6000 read
@@ -8,11 +44,11 @@ works: 14000 read
 works: 16000 read
 works: 18000 read
 works: 20000 read
-works: 19279 Carleton outputs since 2021, 7919 Carleton-affiliated author profiles
-people: 767 so far; 268 web-listed faculty had no Carleton outputs in OpenAlex for these years
-people: 63 more found through NSERC/SSHRC grants; 830 in total
-world baseline: 2318 topics, 90,391,401 works worldwide 2021-2026
-university data.json: 830 people, 19279 outputs, 6.3 MB
-company citers: 2529 company links across 1255 papers (211 batches)
+works: 19376 Carleton outputs since 2021, 7857 Carleton-affiliated author profiles
+people: 767 so far; 269 web-listed faculty had no Carleton outputs in OpenAlex for these years
+people: 62 more found through NSERC/SSHRC grants; 829 in total
+world baseline: 2320 topics, 91,633,098 works worldwide 2021-2026
+university data.json: 829 people, 19376 outputs, 6.3 MB
+company citers: 2546 company links across 1270 papers (212 batches)
 patents: USPTO: 17 Carleton applications and patents -> 15 matched to 11 researchers
-university signals.json: 1295 research lines
+university signals.json: 1303 research lines

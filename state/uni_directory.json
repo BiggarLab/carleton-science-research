@@ -1,5 +1,5 @@
 {
-"fetched": "2026-10-07",
+"fetched": "2026-10-19",
 "items": [
 {
 "first": "Abdullah",
@@ -940,7 +940,7 @@
 "first": "Mehdi",
 "last": "Eshaghi",
 "name": "Mehdi Eshaghi",
-"title": "Assistant Professor - Teaching Stream;",
+"title": "Associate Professor - Teaching Stream;",
 "units": [
 "Mechanical and Aerospace Engineering"
 ],
@@ -2969,7 +2969,7 @@
 "first": "Céline",
 "last": "Bonnotte-Hoover",
 "name": "Céline Bonnotte-Hoover",
-"title": "Associate Professor (Teaching Stream)",
+"title": "Associate Professor (Teaching Stream) and French Support Services Coordinator",
 "units": [
 "French"
 ],
@@ -3010,7 +3010,7 @@
 "first": "Frenand",
 "last": "Léger",
 "name": "Frenand Léger",
-"title": "Associate Professor (Teaching Stream)",
+"title": "Associate Professor (Teaching Stream) and Language Courses Coordinator",
 "units": [
 "French"
 ],
@@ -3030,7 +3030,7 @@
 "first": "Erik",
 "last": "Anonby",
 "name": "Erik Anonby",
-"title": "Professor",
+"title": "Professor (cross-appointed in the School of Linguistics & Language Studies)",
 "units": [
 "French",
 "Linguistics and Language Studies"
@@ -3071,7 +3071,7 @@
 "first": "Christine",
 "last": "Duff",
 "name": "Christine Duff",
-"title": "Associate Professor, Undergraduate Advisor",
+"title": "Associate Professor and Undergraduate Advisor",
 "units": [
 "French"
 ],
@@ -3081,7 +3081,7 @@
 "first": "Sébastien",
 "last": "Côté",
 "name": "Sébastien Côté",
-"title": "Professor",
+"title": "Professor (on sabbatical leave, 2026-2027)",
 "units": [
 "French"
 ],
@@ -3091,7 +3091,7 @@
 "first": "Catherine",
 "last": "Khordoc",
 "name": "Catherine Khordoc",
-"title": "Professor",
+"title": "Professor (on sabbatical leave, 2026-2027)",
 "units": [
 "French"
 ],
@@ -5026,7 +5026,7 @@
 "first": "Cristina E.",
 "last": "Trevisan",
 "name": "Cristina E. Trevisan",
-"title": "Coordinator and Associate Professor, Teaching Stream (Italian Language); Language Advisor (Norman Paterson School of International Affairs)",
+"title": "Coordinator and Associate Professor, Teaching Stream (Italian Language)",
 "units": [
 "Linguistics and Language Studies"
 ],
@@ -7680,6 +7680,16 @@
 "title": "Associate Professor, School of Canadian Studies -- – Politics of Urban Commemoration, Representations of Ruins, Holocaust Commemoration/Tourism",
 "units": [
 "European, Russian and Eurasian Studies"
+],
+"orcid": ""
+},
+{
+"first": "Andrea",
+"last": "Chandler",
+"name": "Andrea Chandler",
+"title": "Distinguished Research Professor, Department of Poltical Science",
+"units": [
+"Political Science"
 ],
 "orcid": ""
 },
