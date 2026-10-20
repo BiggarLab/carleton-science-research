@@ -216,7 +216,12 @@ def nserc_awards(people, years=6, refresh_days=28, pause=1.0):
                 break
             continue
         f3 = norm(first)[:3]
-        mine = [r for r in rows if norm(r["name"].split(",")[0]).replace(" ", "") == norm(last).replace(" ", "")
+        lasts = {norm(last)} | {norm(a.split()[-1]) for a in p.get("aka") or [] if a.split()}
+
+        def same_last(n):  # NSERC may list a compound surname ("Ganapathi Subramanian") where the roster has one part, or the reverse
+            n = norm(n)
+            return any(n == l or n.endswith(" " + l) or l.endswith(" " + n) or n.replace(" ", "") == l.replace(" ", "") for l in lasts if l)
+        mine = [r for r in rows if same_last(r["name"].split(",")[0])
                 and (not f3 or norm(r["name"].partition(",")[2]).startswith(f3))]
         cache["people"][key] = {"fetched": today.isoformat(), "awards": mine}
     for key, ent in cache["people"].items():

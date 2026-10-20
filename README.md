@@ -61,6 +61,8 @@ Expected cost: the weekly digest is a few cents a week, plus about one cent per 
 ## Keeping the roster current
 Edit `config/roster.csv` on GitHub (click the file, then the pencil). To add someone, add a row with name, `sort_name` as "Last, First", units separated by semicolons, rank, stream and roles. Leave `openalex_ids` blank; the next run looks them up and writes a note saying "please check". Adding their ORCID makes the match exact. To remove someone, delete the row.
 
+Names: people often publish under a longer or different name than the one in the Carleton directory (Sriram Subramanian publishes as Sriram Ganapathi Subramanian). The build picks up the name variants on each person's OpenAlex profile, so the Researcher box and the research assistant find them under either name, and the NSERC lookup accepts compound surnames. If someone publishes or holds grants under a name OpenAlex doesn't show (a maiden name, say), add an `aka` column to the roster and put the other names there, separated by semicolons.
+
 ## Partnership signals and the quarterly brief
 The **Partnership signals** tab ranks *research lines* (one researcher working on one topic, two or more papers in three years) by evidence that industry already cares:
 

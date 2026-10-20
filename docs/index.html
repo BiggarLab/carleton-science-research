@@ -633,8 +633,11 @@ function buildFilters(){
   fu.onclick = e => { const b = e.target.closest(".chip"); if (!b) return; const u = b.dataset.u;
     if (!u) S.units.clear(); else S.units.has(u) ? S.units.delete(u) : S.units.add(u);
     update(); };
-  $("#dl-people").innerHTML = [...P].sort((a,b)=>a.sort.localeCompare(b.sort)).map(p => `<option value="${esc(p.n)}">${esc(p.u.map(unitLabel).join(", "))}</option>`).join("");
-  $("#f-person").onchange = e => { const p = P.find(p => p.n.toLowerCase() === e.target.value.trim().toLowerCase()); S.person = p ? p.i : null; if (!p) e.target.value = ""; update(); };
+  // people can be found by the roster name or by any other name they publish under (p.aka, from OpenAlex or the roster)
+  $("#dl-people").innerHTML = [...P].sort((a,b)=>a.sort.localeCompare(b.sort)).map(p => `<option value="${esc(p.n)}">${esc(p.u.map(unitLabel).join(", ") + (p.aka && p.aka.length ? " · also " + p.aka.join(", ") : ""))}</option>`).join("");
+  const nameKey = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z ]/g, " ").split(/\s+/).filter(Boolean).sort().join(" ");
+  const findPerson = v => { const k = nameKey(v); return k ? P.find(p => nameKey(p.n) === k || (p.aka || []).some(a => nameKey(a) === k)) : null; };
+  $("#f-person").onchange = e => { const p = findPerson(e.target.value); S.person = p ? p.i : null; e.target.value = p ? p.n : ""; update(); };
   let tt; $("#f-topic").oninput = e => { clearTimeout(tt); tt = setTimeout(() => { S.topic = e.target.value.trim(); update(); }, 250); };
   const ys = d3.range(Y0, Y1 + 1).map(y => `<option>${y}</option>`).join("");
   $("#f-y0").innerHTML = ys; $("#f-y1").innerHTML = ys; $("#f-y0").value = S.y0; $("#f-y1").value = S.y1;
@@ -1253,10 +1256,10 @@ const TOOLS = [
       return r.map(x => ({ name: x.p.n, units: x.p.u, ...(UNI ? { faculties: x.p.fac, identified_from: x.p.ev } : {}), rank: x.p.rk, stream: x.p.st, admin_roles: x.p.ro, matches: x.n, latest: x.last, examples: x.ws.slice(-3).map(w => w.t) })); } },
   { name: "person_profile", description: "Get one researcher's profile: units, rank, roles, lifetime works, h-index, last-five-year output count, top topics, top Carleton co-authors, partner countries, their 15 most recent titles, and their NSERC grants (program, year, partner organizations, and the plain-language summary of planned work).",
     inputSchema: { type:"object", properties: { name: { type:"string" } }, required: ["name"] },
-    execute(inp){ const n = String(inp.name||"").toLowerCase(); const p = P.find(p => p.n.toLowerCase() === n) || P.find(p => p.n.toLowerCase().includes(n) || p.sort.toLowerCase().includes(n)); if (!p) throw new Error("No researcher by that name in the Faculty list");
+    execute(inp){ const n = String(inp.name||"").toLowerCase(); const names = p => [p.n, ...(p.aka || [])].map(x => x.toLowerCase()); const p = P.find(p => names(p).includes(n)) || P.find(p => names(p).some(x => x.includes(n)) || p.sort.toLowerCase().includes(n)); if (!p) throw new Error("No researcher by that name in the Faculty list");
       log(`reading ${p.n}'s profile`); const ws = p.works.filter(w => !w.pre); const coll = {}; ws.forEach(w => w.f.forEach(j => { if (j !== p.i) coll[P[j].n] = (coll[P[j].n]||0) + 1; }));
       const ct = {}; ws.filter(w => !w.big).forEach(w => w.co.forEach(c => { if (c !== "CA") ct[c] = (ct[c]||0) + 1; }));
-      return { name: p.n, units: p.u, ...(UNI ? { faculties: p.fac, identified_from: p.ev, web_title: p.title || null } : {}), rank: p.rk, stream: p.st, roles: p.ro, lifetime_works: p.lw, h_index: p.h, outputs_last_five_years: ws.length, large_collaboration_outputs: ws.filter(w => w.big).length,
+      return { name: p.n, ...(p.aka ? { also_published_as: p.aka } : {}), units: p.u, ...(UNI ? { faculties: p.fac, identified_from: p.ev, web_title: p.title || null } : {}), rank: p.rk, stream: p.st, roles: p.ro, lifetime_works: p.lw, h_index: p.h, outputs_last_five_years: ws.length, large_collaboration_outputs: ws.filter(w => w.big).length,
         top_topics: d3.rollups(ws.filter(w => w.T), v => v.length, w => w.T[0]).sort((a,b) => b[1]-a[1]).slice(0, 6), coauthors: Object.entries(coll).sort((a,b) => b[1]-a[1]).slice(0, 8), countries: Object.entries(ct).sort((a,b) => b[1]-a[1]).slice(0, 8),
         recent: [...ws].sort((a,b) => b.d.localeCompare(a.d)).slice(0, 15).map(w => `${w.d} ${w.t} (${w.v})`),
         nserc_grants: SG && SG.nserc && SG.nserc[p.i] ? SG.nserc[p.i].grants : "not available" }; } },

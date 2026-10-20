@@ -105,6 +105,28 @@ def name_matches(display, last, first):
     return bool(toks) and bool(F) and first_ok(toks[0], F)
 
 
+def split_aka(r):
+    """Other names a person publishes or is funded under, from the optional roster column 'aka' (separated by ';')."""
+    return [x.strip() for x in (r.get("aka") or "").split(";") if x.strip()]
+
+
+def add_aka(p, names):
+    """Keep OpenAlex name variants that are full names and differ from the roster name beyond accents, case,
+    initials or 'Last, First' order, so the dashboards can find people by the name on their papers."""
+    seen = {" ".join(sorted(norm(p["n"]).split()))} | {" ".join(sorted(norm(x).split())) for x in p["aka"]}
+    for nm in names:
+        if "," in nm:
+            last, _, first = nm.partition(",")
+            nm = f"{first.strip()} {last.strip()}"
+        t = norm(nm).split()
+        key = " ".join(sorted(t))
+        if len(t) < 2 or any(len(x) == 1 for x in t) or key in seen:
+            continue
+        seen.add(key)
+        p["aka"].append(" ".join(nm.split()))
+    p["aka"] = p["aka"][:4]
+
+
 def load_roster():
     with open(ROOT / "config/roster.csv", encoding="utf-8") as f:
         return list(csv.DictReader(f))
@@ -152,16 +174,17 @@ def build_data(rows, y0):
     for r in rows:
         people.append({"n": r["name"], "sort": r["sort_name"], "u": [u.strip() for u in r["units"].split(";") if u.strip()], "rk": r["rank"], "st": r["stream"],
                        "ro": [x.strip() for x in r["roles"].split(";") if x.strip()], "oa": r["openalex_ids"].split(), "h": 0, "i10": 0, "lw": 0, "lc": 0,
-                       "orc": f"https://orcid.org/{r['orcid']}" if r.get("orcid") else None})
+                       "orc": f"https://orcid.org/{r['orcid']}" if r.get("orcid") else None, "aka": split_aka(r)})
     # lifetime metrics (single-entity lookups are free on OpenAlex)
     for p in people:
         for aid in p["oa"]:
             try:
-                a = oa_get(f"authors/{aid}", {"select": "works_count,cited_by_count,summary_stats"})
+                a = oa_get(f"authors/{aid}", {"select": "display_name,display_name_alternatives,works_count,cited_by_count,summary_stats"})
             except Exception as e:
                 log("author lookup failed", aid, e)
                 continue
             ss = a.get("summary_stats") or {}
+            add_aka(p, [a.get("display_name") or ""] + (a.get("display_name_alternatives") or []))
             p["lw"] += a.get("works_count") or 0
             p["lc"] += a.get("cited_by_count") or 0
             p["h"] = max(p["h"], ss.get("h_index") or 0)
@@ -235,6 +258,9 @@ def build_data(rows, y0):
                          sorted(set(inst_ix)), 1 if (w.get("open_access") or {}).get("is_oa") else 0, [], sorted(rec["lead"])])
     rows_out.sort(key=lambda r: r[2], reverse=True)
     inv = lambda d: [v for _, v in sorted(d.values(), key=lambda x: x[0])]
+    for p in people:
+        if not p["aka"]:
+            del p["aka"]
     data = {"gen": dt.date.today().isoformat(), "people": people, "works": rows_out,
             "topics": inv(topics), "venues": [k for k, _ in sorted(venues.items(), key=lambda kv: kv[1][0])], "insts": inv(insts), "types": TYPES}
     return data, works

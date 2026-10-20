@@ -24,7 +24,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import signals as SIG  # noqa: E402
-from update import (CARLETON, DROP_TYPES, ROOT, SELECT, TYPES, load_roster, log, name_matches, norm, oa_get, oa_pages)  # noqa: E402
+from update import (CARLETON, DROP_TYPES, ROOT, SELECT, TYPES, add_aka, load_roster, log, name_matches, norm, oa_get, oa_pages, split_aka)  # noqa: E402
 
 OUT = ROOT / "docs/university"
 CFG = json.loads((ROOT / "config/university_units.json").read_text())
@@ -282,7 +282,7 @@ def build_people(authors, dirx, grants, today):
         taken |= set(ids)
         people.append({"n": r["name"], "sort": r["sort_name"], "u": [u.strip() for u in r["units"].split(";") if u.strip()], "rk": r["rank"],
                        "st": r["stream"], "ro": [x.strip() for x in r["roles"].split(";") if x.strip()], "oa": ids, "ev": ["roster"],
-                       "orc": f"https://orcid.org/{r['orcid']}" if r.get("orcid") else None})
+                       "orc": f"https://orcid.org/{r['orcid']}" if r.get("orcid") else None, "aka": split_aka(r)})
     sci_names = {norm(p["n"]) for p in people}
     # department web listings
     unmatched = 0
@@ -332,6 +332,10 @@ def build_people(authors, dirx, grants, today):
     log(f"people: {added} more found through NSERC/SSHRC grants; {len(people)} in total")
     for p in people:
         p["fac"] = sorted({unit_fac.get(u, "Other") for u in p["u"]})
+        p.setdefault("aka", [])
+        add_aka(p, [authors[a]["name"] for a in p["oa"] if a in authors])
+        if not p["aka"]:
+            del p["aka"]
     return people
 
 
