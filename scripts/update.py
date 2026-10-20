@@ -110,21 +110,39 @@ def split_aka(r):
     return [x.strip() for x in (r.get("aka") or "").split(";") if x.strip()]
 
 
+JUNK_NAME = re.compile(r"[;()/:@\d]|https?|\b(and|editors?|guest|school|dr|prof|university|carleton|ottawa)\b", re.I)
+
+
 def add_aka(p, names):
-    """Keep OpenAlex name variants that are full names and differ from the roster name beyond accents, case,
-    initials or 'Last, First' order, so the dashboards can find people by the name on their papers."""
+    """Keep OpenAlex name variants that are clearly the same person under a fuller or different form of the name
+    (same surname, matching first name, e.g. Sriram Subramanian -> Sriram Ganapathi Subramanian), so the dashboards
+    can find people by the name on their papers. Alternate-name lists in OpenAlex are noisy, so the filter is strict."""
+    last, _, first = p["sort"].partition(", ")
+    lt, ft = norm(last).split(), norm(first).split()
     seen = {" ".join(sorted(norm(p["n"]).split()))} | {" ".join(sorted(norm(x).split())) for x in p["aka"]}
     for nm in names:
+        nm = " ".join(nm.replace("\u2010", "-").split())
+        if JUNK_NAME.search(nm) or nm.count(",") > 1:
+            continue
         if "," in nm:
-            last, _, first = nm.partition(",")
-            nm = f"{first.strip()} {last.strip()}"
+            a, _, b = nm.partition(",")
+            nm = f"{b.strip()} {a.strip()}"
+        if nm.isupper():
+            nm = nm.title()
+        raw = nm.split()
         t = norm(nm).split()
+        if not 2 <= len(t) <= 5 or not lt or not ft or any(len(x) == 1 for x in t):
+            continue
+        if any(re.fullmatch(r"[A-Z]{2,3}\.?", x) for x in raw) or re.search(r"[a-z][A-Z]", raw[0]):
+            continue  # initials clusters ("SJ Cooke") and run-together names ("StevenJ")
+        if t[-1] != lt[-1] or not any(first_ok(t[0], f) for f in ft):
+            continue
         key = " ".join(sorted(t))
-        if len(t) < 2 or any(len(x) == 1 for x in t) or key in seen:
+        if key in seen:
             continue
         seen.add(key)
-        p["aka"].append(" ".join(nm.split()))
-    p["aka"] = p["aka"][:4]
+        p["aka"].append(nm)
+    p["aka"] = p["aka"][:3]
 
 
 def load_roster():
