@@ -69,5 +69,34 @@
   "outcome": "near miss",
   "title": "Intersectional genetic targeting of molecularly distinct melanin-concentrating hormone neuron subpopulations reveals distinct and overlapping subcircuit architecture",
   "why": "market: No product or buyer exists for an anatomical map of MCH neuron subpopulations; Carleton's role: Melissa Chee is a middle author. First and last authors are at University of Connecticut; evidence: Mouse line validation and anatomical tracing only. No performance data for a tool or therapy"
+ },
+ "W7223052209": {
+  "week_end": "2026-10-25",
+  "outcome": "act",
+  "heading": "Train segmentation models from class names, no real images"
+ },
+ "W7222865720": {
+  "week_end": "2026-10-25",
+  "outcome": "near miss",
+  "title": "Microbially-Induced Corrosion of Cobalt by Pseudomonas chlororaphis subspecies aureofaciens",
+  "why": "evidence: Tests used Co(0) wires and one model bacterium in lab incubations. No waste material was tested"
+ },
+ "W7223275860": {
+  "week_end": "2026-10-25",
+  "outcome": "near miss",
+  "title": "PFOS Is Detected in Human Pancreas and Dysregulates Glucose-Stimulated Insulin Secretion across Model Systems",
+  "why": "market: The result is exposure and toxicology data. No product or paying customer was identified for it"
+ },
+ "W7223095410": {
+  "week_end": "2026-10-25",
+  "outcome": "near miss",
+  "title": "DEFeAT: study protocol for a randomised controlled trial of a mineral-enriched powder for iron deficiency",
+  "why": "partner: No manufacturer or distributor of the powder was identified in search; evidence: This is a trial protocol. No efficacy results are reported"
+ },
+ "W7223202924": {
+  "week_end": "2026-10-25",
+  "outcome": "near miss",
+  "title": "Effects of a DNA Aptamer on α-Synuclein PFF–Induced Morphological Deficits in an in-vitro Model of Parkinson's Disease",
+  "why": "partner: No company active on this aptamer was verified in search; evidence: One SH-SY5Y cell line only. No difference reached statistical significance"
  }
 }

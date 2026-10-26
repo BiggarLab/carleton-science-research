@@ -1,0 +1,561 @@
+{
+ "issue": 4,
+ "week_start": "2026-10-19",
+ "week_end": "2026-10-25",
+ "lead": "Neuroscience had the most output this week with eight papers, seven of them in the Carleton undergraduate journal of science and one in PNAS on microglia in Alzheimer's disease. Physics had four papers from the ATLAS and CMS collaborations, and Computer Science had three, covering wildfire preparedness, computational geometry and image segmentation. Biology had two papers, and Chemistry, Health Sciences and Mathematics & Statistics each had one. The only cross-unit collaboration is a Biochemistry and Chemistry paper detecting PFOS in the human pancreas, and the Physics papers are part of large international collaborations.",
+ "units": [
+  {
+   "unit": "Biochemistry",
+   "items": [
+    {
+     "id": "W7223275860",
+     "who": [
+      [
+       "Jenny Bruin",
+       "Biochemistry"
+      ],
+      [
+       "Amy Rand",
+       "Chemistry"
+      ]
+     ],
+     "who_note": "",
+     "title": "PFOS Is Detected in Human Pancreas and Dysregulates Glucose-Stimulated Insulin Secretion across Model Systems",
+     "url": "https://doi.org/10.1021/acs.chemrestox.6c00404",
+     "venue": "Chemical Research in Toxicology",
+     "date": "2026-10-23",
+     "oa": true,
+     "big": false,
+     "cross": true,
+     "summary": "The team measured three PFAS chemicals in blood and pancreas samples from 88 human organ donors and found PFOS in 99% of the pancreas samples. They then tested PFOS on insulin-producing cells and islets from humans and mice, where prolonged high doses suppressed insulin release and acute high doses increased it in mouse islets and some human islets, which supports a direct effect on beta cells and shows that results depend on the model used."
+    }
+   ]
+  },
+  {
+   "unit": "Biology",
+   "items": [
+    {
+     "id": "W7223575141",
+     "who": [
+      [
+       "Steven Cooke",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "Energetic costs of catch and release angling in B rook T rout ( S alvelinus fontinalis ) at two temperatures",
+     "url": "https://doi.org/10.1111/jfb.70696",
+     "venue": "Journal of Fish Biology",
+     "date": "2026-10-25",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The researchers simulated catch and release angling on adult Brook Trout at 10°C and 15°C, measured how much oxygen the fish used to recover and how long they took to start feeding again, and used a model to predict effects on growth over 30 days. One simulated capture changed predicted growth by up to 4.1% and five captures by up to 21.0%, and the authors describe the energy costs of the moderate stressors tested as relatively small within the trout's optimal temperature range."
+    },
+    {
+     "id": "W7223131764",
+     "who": [
+      [
+       "Roslyn Dakin",
+       "Biology"
+      ],
+      [
+       "Christina Davy",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "A look inside the net: freshwater turtles assort with conspecifics in feeding aggregations",
+     "url": "https://doi.org/10.1007/s00265-026-03809-2",
+     "venue": "Behavioral Ecology and Sociobiology",
+     "date": "2026-10-21",
+     "oa": false,
+     "big": false,
+     "cross": false,
+     "summary": "From the title, this study looks at whether freshwater turtles gather with members of their own species when feeding in groups. No abstract was available, so the methods and findings cannot be described here."
+    }
+   ]
+  },
+  {
+   "unit": "Chemistry",
+   "items": [
+    {
+     "id": "W7222865720",
+     "who": [
+      [
+       "Daniel Grégoire",
+       "Chemistry"
+      ],
+      [
+       "Katherine Marczenko",
+       "Chemistry"
+      ],
+      [
+       "David McMullin",
+       "Chemistry"
+      ]
+     ],
+     "who_note": "",
+     "title": "Microbially‐Induced Corrosion of Cobalt by Pseudomonas chlororaphis subspecies aureofaciens Is Driven by the Complex Interplay Between Abiotic and Biotic Processes That Control Cobalt Solubility",
+     "url": "https://doi.org/10.1111/1462-2920.70441",
+     "venue": "Environmental Microbiology",
+     "date": "2026-10-01",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The study tested whether chemicals called phenazines, made by the bacterium Pseudomonas chlororaphis, are what corrode metallic cobalt. Mutants that could not make phenazines corroded as much cobalt as normal cells, so the corrosion depends on a mix of chemical and biological processes that control how much cobalt dissolves, which matters for protecting infrastructure and for recovering cobalt from solid waste."
+    }
+   ]
+  },
+  {
+   "unit": "Computer Science",
+   "items": [
+    {
+     "id": "W7223221303",
+     "who": [
+      [
+       "Edward Melcer",
+       "Computer Science"
+      ]
+     ],
+     "who_note": "",
+     "title": "Effectiveness of Game-Based Interventions: Risk Perception and Preparedness in a Wildfire-Prone University Setting",
+     "url": "https://doi.org/10.1145/3800965.3834290",
+     "venue": "Annual Symposium on Computer-Human Interaction in Play",
+     "date": "2026-10-22",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "This work-in-progress paper surveyed 100 undergraduates about wildfire risk perception and ran a small lab study with 12 students comparing a game-based and a website-based learning tool. Students spent longer with the game, most did not make a Go-Bag afterward, and a majority in both groups talked with friends or family about wildfire risk."
+    },
+    {
+     "id": "W7223106842",
+     "who": [
+      [
+       "Prosenjit Bose",
+       "Computer Science"
+      ]
+     ],
+     "who_note": "",
+     "title": "Computational aspects of disks enclosing many points",
+     "url": "https://doi.org/10.1016/j.dam.2026.10.019",
+     "venue": "Discrete Applied Mathematics",
+     "date": "2026-10-21",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The paper gives algorithms that find a pair of points in a set on a plane such that any disk containing that pair must also contain a guaranteed fraction of all the points. It reports running times and guaranteed fractions for several versions of the problem, including a linear-time method that guarantees at least one third of the points when the points are in convex position."
+    }
+   ]
+  },
+  {
+   "unit": "Neuroscience",
+   "items": [
+    {
+     "id": "W7223216441",
+     "who": [
+      [
+       "Kim Hellemans",
+       "Neuroscience"
+      ]
+     ],
+     "who_note": "",
+     "title": "Do Words Matter? A Vignette Study Exploring How Substance Use Descriptions Influence Perceptions of the Substance Involved in Police Encounters",
+     "url": "https://doi.org/10.22215/cujs.v7i1.5908",
+     "venue": "Carleton undergraduate journal of science.",
+     "date": "2026-10-22",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "About 1,049 Canadian adults read a police-encounter scenario describing substance use in one of five ways and then chose the characteristics of the person described. Most chose alcohol, a White person and a male, while Black and Indigenous identities were about half as likely as White to be chosen in some conditions, which the authors read as an implicit link between these groups and problematic use."
+    },
+    {
+     "id": "W7223250835",
+     "who": [
+      [
+       "Kim Hellemans",
+       "Neuroscience"
+      ]
+     ],
+     "who_note": "",
+     "title": "Understanding Cortisol Awakening Response (CAR) as a Mediator in the Perceived Stress and High-risk Cannabis Use Relationship",
+     "url": "https://doi.org/10.22215/cujs.v7i1.5935",
+     "venue": "Carleton undergraduate journal of science.",
+     "date": "2026-10-22",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The study collected saliva samples across one day from 95 Carleton undergraduates to test whether the cortisol awakening response explains the link between perceived stress and high-risk cannabis use. Stress, depression and anxiety scores were positively related to cannabis use scores, but the cortisol awakening response was not significantly related to cannabis use and did not act as a mediator."
+    },
+    {
+     "id": "W7223198513",
+     "who": [
+      [
+       "Argel Aguilar Valles",
+       "Neuroscience"
+      ]
+     ],
+     "who_note": "",
+     "title": "Amphetamine-Induced Activation of Phospho-4EBP's and c-Fos in Adult Schizophrenia-Mutant Mice",
+     "url": "https://doi.org/10.22215/cujs.v7i1.5874",
+     "venue": "Carleton undergraduate journal of science.",
+     "date": "2026-10-22",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The study gave amphetamine to mice carrying a schizophrenia-associated mutation in the 4E-BP2 gene and measured neuron activation markers and protein synthesis signalling in key brain regions. Male mutants had more DARPP-32 and c-Fos positive cells while females showed no difference, and the small signalling increase seen in normal mice was weaker in mutants, which suggests sex-specific effects."
+    },
+    {
+     "id": "W7223223361",
+     "who": [
+      [
+       "Argel Aguilar Valles",
+       "Neuroscience"
+      ]
+     ],
+     "who_note": "",
+     "title": "Translational Control of the Acute Stress Response by eIF4E Binding Proteins",
+     "url": "https://doi.org/10.22215/cujs.v7i1.5880",
+     "venue": "Carleton undergraduate journal of science.",
+     "date": "2026-10-22",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The study compared normal mice with mice lacking 4E-BP1 and 4E-BP2 in forebrain excitatory neurons, which raises protein synthesis, after 15 minutes of restraint stress, using self-grooming as the stress response. Normal males groomed more than the knockout males, females followed a similar pattern that was not statistically significant, and the authors conclude that increased translation in these neurons dampens the behavioural response to acute stress."
+    },
+    {
+     "id": "W7223239063",
+     "who": [
+      [
+       "Robyn McQuaid",
+       "Neuroscience"
+      ]
+     ],
+     "who_note": "",
+     "title": "Behavioural and Biological Predictors of Stress: Sleep, Growth Factors, and Sex",
+     "url": "https://doi.org/10.22215/cujs.v7i1.5948",
+     "venue": "Carleton undergraduate journal of science.",
+     "date": "2026-10-22",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "In 237 young adults, half of whom were exposed to a standard laboratory stress test, the researchers examined how sleep quality, two blood growth factors (BDNF and FGF-21) and sex relate to stress and anxiety. Poorer sleep went with higher perceived stress and anxiety, and tiredness was the strongest predictor of anxiety and fear responses to the stress test, with growth factor associations differing by sex."
+    },
+    {
+     "id": "W7223251411",
+     "who": [
+      [
+       "Natalina Salmaso",
+       "Neuroscience"
+      ]
+     ],
+     "who_note": "",
+     "title": "Exploring the effects of H₂O₂ on parkin activity in cellular models",
+     "url": "https://doi.org/10.22215/cujs.v7i1.5922",
+     "venue": "Carleton undergraduate journal of science.",
+     "date": "2026-10-22",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The study exposed cultured cells to hydrogen peroxide to mimic oxidative stress and looked at what happens to parkin, a protein linked to early-onset Parkinson's disease. Parkin moved to different locations in the cell and its solubility changed with dose, which fits oxidative modification of the protein and gives a basis for further work."
+    },
+    {
+     "id": "W7223202924",
+     "who": [
+      [
+       "Matthew Holahan",
+       "Neuroscience"
+      ]
+     ],
+     "who_note": "",
+     "title": "Effects of a DNA Aptamer on α-Synuclein PFF–Induced Morphological Deficits in an in-vitro Model of Parkinson’s Disease",
+     "url": "https://doi.org/10.22215/cujs.v7i1.5866",
+     "venue": "Carleton undergraduate journal of science.",
+     "date": "2026-10-22",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The study tested whether a DNA aptamer that blocks alpha-synuclein aggregation, a feature of Parkinson's disease, also protects the shape of cultured neuron-like cells exposed to toxic alpha-synuclein fibrils. The fibrils reduced cell body size and neurite length and the aptamer partly offset this, but none of the differences were statistically significant, so no clear protective effect was shown."
+    },
+    {
+     "id": "W7223081454",
+     "who": [
+      [
+       "Argel Aguilar Valles",
+       "Neuroscience"
+      ]
+     ],
+     "who_note": "",
+     "title": "Translational control of microglial metabolism, inflammatory responses, and survival by the eIF4E-binding proteins",
+     "url": "https://doi.org/10.1073/pnas.2610766123",
+     "venue": "Proceedings of the National Academy of Sciences",
+     "date": "2026-10-21",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The researchers examined a protein called 4E-BP1 in the immune cells of the brain, called microglia, in Alzheimer's disease. Higher levels of the protein in cerebrospinal fluid strengthened the link between a marker called soluble TREM2 and neurodegeneration, and in mouse microglia, deleting 4E-BP1 and 4E-BP2 increased mitochondrial mass, reduced inflammatory signalling and protected cells from amyloid-induced death."
+    }
+   ]
+  },
+  {
+   "unit": "Physics",
+   "items": [
+    {
+     "id": "W7223236928",
+     "who": [
+      [
+       "Jesse Heilman",
+       "Physics"
+      ],
+      [
+       "Thomas Koffas",
+       "Physics"
+      ]
+     ],
+     "who_note": "with a large collaboration",
+     "title": "Combination of ATLAS and CMS Searches for Higgs Boson Pair Production at $\\sqrt{s}$=13 TeV",
+     "url": "https://doi.org/10.5445/ir/1000198244",
+     "venue": "KITopen",
+     "date": "2026-10-22",
+     "oa": true,
+     "big": true,
+     "cross": false,
+     "summary": "ATLAS and CMS combined their Run 2 searches for Higgs boson pair production, using data from 126 to 140 fb^-1. The combined result is a signal strength of 0.8 (+0.9, -0.7) relative to the Standard Model at 1.1 standard deviations, so it is not an observation, and it sets limits on how strongly the Higgs boson couples to itself."
+    },
+    {
+     "id": "W7222916399",
+     "who": [
+      [
+       "Dag Gillberg",
+       "Physics"
+      ],
+      [
+       "Jesse Heilman",
+       "Physics"
+      ],
+      [
+       "Alain Bellerive",
+       "Physics"
+      ],
+      [
+       "Kevin Graham",
+       "Physics"
+      ],
+      [
+       "Thomas Koffas",
+       "Physics"
+      ],
+      [
+       "Manuella Vincter",
+       "Physics"
+      ]
+     ],
+     "who_note": "with a large collaboration",
+     "title": "Observation of pair production of longitudinally polarized Z bosons in four-lepton final state with the ATLAS detector",
+     "url": "https://doi.org/10.1103/sbzy-wrhr",
+     "venue": "Physical Review Letters",
+     "date": "2026-10-19",
+     "oa": false,
+     "big": true,
+     "cross": false,
+     "summary": "From the title, this is an ATLAS experiment paper reporting an observation of pairs of longitudinally polarized Z bosons produced in events with four leptons. No abstract was available, so the methods and results cannot be described here."
+    }
+   ]
+  }
+ ],
+ "innovation": {
+  "opportunities": [
+   {
+    "tier": "act",
+    "id": "W7223052209",
+    "heading": "Train segmentation models from class names, no real images",
+    "what": "The method trains a segmentation model on synthetic image-mask pairs generated from class names alone. It reports 35.0% mIoU on MS COCO and 66.3% on PASCAL VOC with DeepLabV3.",
+    "market_fit": "Teams that deploy vision models in new domains face high annotation costs. Synthetic data vendors already sell to them.",
+    "partners": [
+     {
+      "name": "Synetic AI",
+      "location": "Not confirmed in search",
+      "why": "Sells synthetic data as a service for training computer vision models."
+     }
+    ],
+    "next_step": "Call Yuhong Guo to confirm whether code will be released. Ask the innovation office to find an Ottawa vision company for a Mitacs Accelerate or NSERC Alliance project. The Canada and US grace period runs to 2027-10-17.",
+    "licensing_note": "Partnership. The preprint is public on arXiv, so a licence is weak. A know-how partnership fits better. Europe offers no grace period.",
+    "checks": {
+     "market": true,
+     "partner": true,
+     "carleton_role": true,
+     "evidence": true
+    },
+    "evidence": {
+     "market": "Teams building vision models for new domains already pay for pixel-level annotation or synthetic training data.",
+     "partner": "Synetic AI sells a synthetic data platform for vision models and presented at the 2026 Embedded Vision Summit.",
+     "carleton_role": "Ming is first author and Guo is last author; all three authors are Carleton.",
+     "evidence": "Reports 35.0% mIoU on MS COCO and 66.3% on PASCAL VOC using synthetic data only."
+    }
+   }
+  ],
+  "near_misses": [
+   {
+    "id": "W7222865720",
+    "title": "Microbially-Induced Corrosion of Cobalt by Pseudomonas chlororaphis subspecies aureofaciens",
+    "why": "evidence: Tests used Co(0) wires and one model bacterium in lab incubations. No waste material was tested",
+    "checks": {
+     "market": {
+      "pass": true,
+      "note": "Cobalt refiners and battery recyclers already spend on recovering cobalt from solid waste."
+     },
+     "partner": {
+      "pass": true,
+      "note": "Electra Battery Materials is building an Ontario cobalt sulfate refinery, with construction updates in 2026."
+     },
+     "carleton_role": {
+      "pass": true,
+      "note": "DeJager is first author and Grégoire is last author; all seven authors are Carleton."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "Tests used Co(0) wires and one model bacterium in lab incubations. No waste material was tested."
+     }
+    },
+    "would_change": "Tests on real e-waste or black mass leachate, run with a refiner."
+   },
+   {
+    "id": "W7223275860",
+    "title": "PFOS Is Detected in Human Pancreas and Dysregulates Glucose-Stimulated Insulin Secretion across Model Systems",
+    "why": "market: The result is exposure and toxicology data. No product or paying customer was identified for it",
+    "checks": {
+     "market": {
+      "pass": false,
+      "note": "The result is exposure and toxicology data. No product or paying customer was identified for it."
+     },
+     "partner": {
+      "pass": true,
+      "note": "SGS AXYS (Sidney, BC) tests PFAS in tissue and received EPA 1633 accreditation in 2022."
+     },
+     "carleton_role": {
+      "pass": true,
+      "note": "Palaniyandi is first author and Bruin is last author, both Carleton."
+     },
+     "evidence": {
+      "pass": true,
+      "note": "Used 88 human donors, a mouse model, INS-1 cells, and human and mouse islets."
+     }
+    },
+    "would_change": "A pancreatic PFOS biomarker or intervention with a named buyer."
+   },
+   {
+    "id": "W7223095410",
+    "title": "DEFeAT: study protocol for a randomised controlled trial of a mineral-enriched powder for iron deficiency",
+    "why": "partner: No manufacturer or distributor of the powder was identified in search; evidence: This is a trial protocol. No efficacy results are reported",
+    "checks": {
+     "market": {
+      "pass": true,
+      "note": "Iron supplements and fortification products for women of reproductive age already sell."
+     },
+     "partner": {
+      "pass": false,
+      "note": "No manufacturer or distributor of the powder was identified in search."
+     },
+     "carleton_role": {
+      "pass": true,
+      "note": "Burns is first author and Connor is last author, both Carleton."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "This is a trial protocol. No efficacy results are reported."
+     }
+    },
+    "would_change": "Trial efficacy results plus a named manufacturer or formulator."
+   },
+   {
+    "id": "W7223202924",
+    "title": "Effects of a DNA Aptamer on α-Synuclein PFF–Induced Morphological Deficits in an in-vitro Model of Parkinson's Disease",
+    "why": "partner: No company active on this aptamer was verified in search; evidence: One SH-SY5Y cell line only. No difference reached statistical significance",
+    "checks": {
+     "market": {
+      "pass": true,
+      "note": "Parkinson's drug developers and α-synuclein diagnostic makers already spend on this target."
+     },
+     "partner": {
+      "pass": false,
+      "note": "No company active on this aptamer was verified in search."
+     },
+     "carleton_role": {
+      "pass": true,
+      "note": "Minanengiyeofori is first author and Holahan is last author, both Carleton."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "One SH-SY5Y cell line only. No difference reached statistical significance."
+     }
+    },
+    "would_change": "Significant rescue in primary neurons or animals, plus a company partner."
+   }
+  ],
+  "skipped": [
+   {
+    "id": "W7223131764",
+    "reason": "basic behavioural ecology"
+   },
+   {
+    "id": "W7223575141",
+    "reason": "fisheries ecology, no product angle"
+   },
+   {
+    "id": "W7223221303",
+    "reason": "preliminary education study, middle author"
+   },
+   {
+    "id": "W7223106842",
+    "reason": "pure algorithm theory"
+   },
+   {
+    "id": "W7223041302",
+    "reason": "queueing theory, simulation only"
+   },
+   {
+    "id": "W7223216441",
+    "reason": "social science survey"
+   },
+   {
+    "id": "W7223250835",
+    "reason": "undergraduate psychology study, null result"
+   },
+   {
+    "id": "W7223081454",
+    "reason": "basic neuroscience, Carleton middle author"
+   },
+   {
+    "id": "W7223198513",
+    "reason": "basic neuroscience, undergraduate study"
+   },
+   {
+    "id": "W7223223361",
+    "reason": "basic neuroscience, undergraduate study"
+   },
+   {
+    "id": "W7223239063",
+    "reason": "observational psychology study"
+   },
+   {
+    "id": "W7223251411",
+    "reason": "basic cell biology, Carleton middle author"
+   }
+  ],
+  "screened": "",
+  "counts": {
+   "papers": 21,
+   "large_collaborations": 4,
+   "screened": 5,
+   "skipped": 12
+  }
+ },
+ "also_title": "Preprints",
+ "also": [
+  "Yuhong Guo (Computer Science): ZeroDSS: Semantic Segmentation from Class Names Alone. arXiv (Cornell University), 2026-10-17.",
+  "Kristin Connor (Health Sciences): Dietary Enhancement for Iron Deficiency and Anaemia Treatment (DEFeAT): study protocol for a randomised controlled trial to assess the effect of a mineral-enriched powder on iron deficiency in women of reproductive age. medRxiv, 2026-10-21.",
+  "Yiqiang Zhao (Mathematics & Statistics): Direct Sample-Average Learning for Queueing Control: Gradient-Free Top-$K$ Coarse-to-Fine Optimization. arXiv (Cornell University), 2026-10-19.",
+  "Thomas Koffas (Physics): Observation of single top-quark production in the $s$-channel in proton--proton collisions at $\\sqrt{s}=13$ TeV with the ATLAS detector. HAL, 2026-10-21.",
+  "Thomas Koffas (Physics): Search for charged-lepton-flavour violating $eμtq$ interactions at $\\sqrt{s}=13$ TeV with the ATLAS detector. HAL, 2026-10-20."
+ ]
+}
