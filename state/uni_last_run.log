@@ -1,18 +1,58 @@
+directory: sce: 53 faculty listings
+directory: doe: 28 faculty listings
+directory: mae: 51 faculty listings
+directory: cee: 41 faculty listings
+directory: architecture: 28 faculty listings
+directory: engineering: 180 faculty listings
+directory: cognitivescience: 39 faculty listings
+directory: english: 36 faculty listings
+directory: french: 14 faculty listings
+directory: geography: 11 faculty listings
+directory: history: 37 faculty listings
+directory: chum: 68 faculty listings
+directory: icslac: 1 faculty listings
+directory: arthistory: 10 faculty listings
+directory: filmstudies: 10 faculty listings
+directory: music: 23 faculty listings
+directory: ssac: 0 faculty listings
+directory: fist: 50 faculty listings
+directory: slals: 38 faculty listings
+directory: philosophy: 5 faculty listings
+directory: psychology: 68 faculty listings
+directory: socanth: 42 faculty listings
+directory: economics: 42 faculty listings
+directory: polisci: 1 faculty listings
+directory: npsia: 23 faculty listings
+directory: sppa: 31 faculty listings
+directory: spa: 31 faculty listings
+directory: socialwork: 17 faculty listings
+directory: law: 31 faculty listings
+directory: criminology: 21 faculty listings
+directory: politicaleconomy: 68 faculty listings
+directory: eurus: 19 faculty listings
+directory: globalstudies: 10 faculty listings
+directory: akcollege: 5 faculty listings
+directory: sprott: 63 faculty listings
+directory: 840 faculty across 35 department sites
 works: 2000 read
-works: 4000 read
-works: 6000 read
-works: 8000 read
-works: 10000 read
-works: 12000 read
-works: 14000 read
-works: 16000 read
-works: 18000 read
-works: 20000 read
-works: 19382 Carleton outputs since 2021, 7863 Carleton-affiliated author profiles
-people: 767 so far; 269 web-listed faculty had no Carleton outputs in OpenAlex for these years
-people: 62 more found through NSERC/SSHRC grants; 829 in total
-world baseline: 2320 topics, 91,708,185 works worldwide 2021-2026
-university data.json: 829 people, 19382 outputs, 6.3 MB
-company citers: 2547 company links across 1270 papers (212 batches)
-patents: USPTO: 17 Carleton applications and patents -> 15 matched to 11 researchers
-university signals.json: 1303 research lines
+Traceback (most recent call last):
+  File "/home/runner/work/carleton-science-research/carleton-science-research/scripts/university.py", line 472, in <module>
+    main()
+  File "/home/runner/work/carleton-science-research/carleton-science-research/scripts/university.py", line 391, in main
+    works, authors = fetch_works(y0)
+                     ^^^^^^^^^^^^^^^
+  File "/home/runner/work/carleton-science-research/carleton-science-research/scripts/university.py", line 220, in fetch_works
+    for w in oa_pages("works", {"filter": f"institutions.id:{CARLETON.split('/')[-1]},from_publication_date:{y0}-01-01", "select": SELECT}):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/carleton-science-research/carleton-science-research/scripts/update.py", line 77, in oa_pages
+    d = oa_get(path, {**params, "per_page": 100, "cursor": cursor})
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/carleton-science-research/carleton-science-research/scripts/update.py", line 63, in oa_get
+    return json.loads(r.read())
+                      ^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/http/client.py", line 510, in read
+    s = self._safe_read(self.length)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/http/client.py", line 671, in _safe_read
+    raise IncompleteRead(data, amt - len(data))
+http.client.IncompleteRead: IncompleteRead(62605 bytes read, 1332356 more expected)

@@ -1,5 +1,5 @@
 {
-"fetched": "2026-10-19",
+"fetched": "2026-10-26",
 "items": [
 {
 "first": "Abdullah",
@@ -3010,7 +3010,7 @@
 "first": "Frenand",
 "last": "Léger",
 "name": "Frenand Léger",
-"title": "Associate Professor (Teaching Stream) and Language Courses Coordinator",
+"title": "Associate Professor/Professeur agrégé (Teaching Stream) and Language Courses Coordinator",
 "units": [
 "French"
 ],
@@ -3779,8 +3779,7 @@
 "name": "Peter Coffman",
 "title": "Associate Professor, History and Theory of Architecture",
 "units": [
-"Humanities",
-"Art History, Film and Music"
+"Humanities"
 ],
 "orcid": ""
 },
@@ -4046,26 +4045,6 @@
 "orcid": ""
 },
 {
-"first": "Partha",
-"last": "Mitter",
-"name": "Partha Mitter",
-"title": "Adjunt Reseach Professor",
-"units": [
-"Art History, Film and Music"
-],
-"orcid": ""
-},
-{
-"first": "Carmen",
-"last": "Robertson",
-"name": "Carmen Robertson",
-"title": "Full Professor",
-"units": [
-"Art History, Film and Music"
-],
-"orcid": ""
-},
-{
 "first": "Birgit",
 "last": "Hopfener",
 "name": "Birgit Hopfener",
@@ -4099,7 +4078,7 @@
 "first": "Stéphane",
 "last": "Roy",
 "name": "Stéphane Roy",
-"title": "On leave - Assistant Professor",
+"title": "Assistant Professor",
 "units": [
 "Art History, Film and Music"
 ],
@@ -4119,27 +4098,7 @@
 "first": "Carol",
 "last": "Payne",
 "name": "Carol Payne",
-"title": "Full Professor; Associate Dean, Research and International, Faculty of Arts and Social Sciences",
-"units": [
-"Art History, Film and Music"
-],
-"orcid": ""
-},
-{
-"first": "Randi",
-"last": "Klebanoff",
-"name": "Randi Klebanoff",
-"title": "Assistant Professor",
-"units": [
-"Art History, Film and Music"
-],
-"orcid": ""
-},
-{
-"first": "Jill",
-"last": "Carrick",
-"name": "Jill Carrick",
-"title": "Associate Professor",
+"title": "Full Professor",
 "units": [
 "Art History, Film and Music"
 ],
@@ -4356,6 +4315,16 @@
 "orcid": ""
 },
 {
+"first": "Antonio",
+"last": "Llaca",
+"name": "Antonio Llaca",
+"title": "Lecturer, Teaching Stream and Director of Choral Activities",
+"units": [
+"Art History, Film and Music"
+],
+"orcid": ""
+},
+{
 "first": "Kathy",
 "last": "Armstrong",
 "name": "Kathy Armstrong",
@@ -4370,6 +4339,16 @@
 "last": "Higney",
 "name": "John Higney",
 "title": "Associate Professor (Teaching Stream); Supervisor of Performance Studies (SPS)",
+"units": [
+"Art History, Film and Music"
+],
+"orcid": ""
+},
+{
+"first": "Mark",
+"last": "Ferguson",
+"name": "Mark Ferguson",
+"title": "Jazz Camp Instructor",
 "units": [
 "Art History, Film and Music"
 ],
@@ -4431,6 +4410,16 @@
 "last": "Echard",
 "name": "William Echard",
 "title": "Full Professor; Undergraduate Supervisor",
+"units": [
+"Art History, Film and Music"
+],
+"orcid": ""
+},
+{
+"first": "James",
+"last": "Deaville",
+"name": "James Deaville",
+"title": "Professor",
 "units": [
 "Art History, Film and Music"
 ],
@@ -4645,16 +4634,6 @@
 "title": "Associate Professor, School of Industrial Design",
 "units": [
 "Feminist Institute of Social Transformation"
-],
-"orcid": ""
-},
-{
-"first": "James",
-"last": "Deaville",
-"name": "James Deaville",
-"title": "Professor, Music",
-"units": [
-"Art History, Film and Music"
 ],
 "orcid": ""
 },
@@ -5265,9 +5244,9 @@
 },
 {
 "first": "Chad",
-"last": "Danyluck (Sabbatical)",
-"name": "Chad Danyluck (Sabbatical)",
-"title": "Associate Professor",
+"last": "Danyluck",
+"name": "Chad Danyluck",
+"title": "Associate Professor (sabbatical)",
 "units": [
 "Psychology"
 ],
@@ -5275,9 +5254,9 @@
 },
 {
 "first": "Kirk",
-"last": "Luther (Sabbatical)",
-"name": "Kirk Luther (Sabbatical)",
-"title": "Associate Professor",
+"last": "Luther",
+"name": "Kirk Luther",
+"title": "Associate Professor (sabbatical)",
 "units": [
 "Psychology"
 ],
@@ -5375,9 +5354,9 @@
 },
 {
 "first": "Marina",
-"last": "Milyavskaya, Associate Chair",
-"name": "Marina Milyavskaya, Associate Chair",
-"title": "Professor",
+"last": "Milyavskaya",
+"name": "Marina Milyavskaya",
+"title": "Associate Chair, Professor",
 "units": [
 "Psychology"
 ],
@@ -5405,9 +5384,9 @@
 },
 {
 "first": "Andrea",
-"last": "Howard (Sabbatical)",
-"name": "Andrea Howard (Sabbatical)",
-"title": "Professor",
+"last": "Howard",
+"name": "Andrea Howard",
+"title": "Professor (sabbatical)",
 "units": [
 "Psychology"
 ],
@@ -5415,9 +5394,9 @@
 },
 {
 "first": "Johanna",
-"last": "Peetz, Graduate Chair",
-"name": "Johanna Peetz, Graduate Chair",
-"title": "Professor",
+"last": "Peetz",
+"name": "Johanna Peetz",
+"title": "Graduate Chair, Professor",
 "units": [
 "Psychology"
 ],
@@ -5525,9 +5504,9 @@
 },
 {
 "first": "Joanna",
-"last": "Pozzulo, Acting Chair",
-"name": "Joanna Pozzulo, Acting Chair",
-"title": "Chancellor's Professor",
+"last": "Pozzulo",
+"name": "Joanna Pozzulo",
+"title": "Acting Chair, Chancellor's Professor",
 "units": [
 "Psychology"
 ],
@@ -5535,9 +5514,9 @@
 },
 {
 "first": "Kevin",
-"last": "Nunes (Sabbatical)",
-"name": "Kevin Nunes (Sabbatical)",
-"title": "Professor",
+"last": "Nunes",
+"name": "Kevin Nunes",
+"title": "Professor (sabbatical)",
 "units": [
 "Psychology"
 ],
@@ -5545,9 +5524,9 @@
 },
 {
 "first": "Chris",
-"last": "Motz (Sabbatical)",
-"name": "Chris Motz (Sabbatical)",
-"title": "Associate Professor, Teaching Stream",
+"last": "Motz",
+"name": "Chris Motz",
+"title": "Associate Professor, Teaching Stream (sabbatical)",
 "units": [
 "Psychology"
 ],
@@ -5594,16 +5573,6 @@
 "orcid": ""
 },
 {
-"first": "Guy",
-"last": "Lacroix, Chair (Sabbatical)",
-"name": "Guy Lacroix, Chair (Sabbatical)",
-"title": "Associate Professor",
-"units": [
-"Psychology"
-],
-"orcid": ""
-},
-{
 "first": "Connie",
 "last": "Kristiansen",
 "name": "Connie Kristiansen",
@@ -5635,9 +5604,9 @@
 },
 {
 "first": "Robert",
-"last": "Coplan, Undergraduate Chair",
-"name": "Robert Coplan, Undergraduate Chair",
-"title": "Chancellor's Professor",
+"last": "Coplan",
+"name": "Robert Coplan",
+"title": "Undergraduate Chair, Chancellor's Professor",
 "units": [
 "Psychology"
 ],
@@ -7317,7 +7286,7 @@
 "first": "Natasha",
 "last": "Stirrett",
 "name": "Natasha Stirrett",
-"title": "Assistant Professor",
+"title": "Associate Professor",
 "units": [
 "Criminology and Criminal Justice"
 ],
