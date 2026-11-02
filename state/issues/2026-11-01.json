@@ -1,0 +1,218 @@
+{
+ "issue": 5,
+ "week_start": "2026-10-26",
+ "week_end": "2026-11-01",
+ "lead": "Seven publications this week. Biology had three, on conservation agreements, invasive bass removal in Gatineau Park, and permit spawning in the Florida Keys. Health Sciences had two, on corticosteroid treatment for Duchenne muscular dystrophy and on care for Inuit travelling from the Qikiqtani region to Ottawa. Neuroscience had one on maternal stress and infant development, and Physics had one ATLAS search with six Carleton authors. The records show no collaborations between Carleton units this week, and the ATLAS paper is the only large-collaboration work.",
+ "units": [
+  {
+   "unit": "Biology",
+   "items": [
+    {
+     "id": "W7224091915",
+     "who": [
+      [
+       "Joe Bennett",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "The enduring benefits of temporary conservation agreements",
+     "url": "https://doi.org/10.1016/j.biocon.2026.112177",
+     "venue": "Biological Conservation",
+     "date": "2026-10-28",
+     "oa": false,
+     "big": false,
+     "cross": false,
+     "summary": "The title indicates a paper in Biological Conservation on the lasting benefits of temporary conservation agreements. No abstract was available, so the methods and findings cannot be described here."
+    },
+    {
+     "id": "W7223882046",
+     "who": [
+      [
+       "Steven Cooke",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "A case study on attempts to remove invasive Largemouth Bass from two small lakes in Québec",
+     "url": "https://doi.org/10.1093/najfmt/vqag089",
+     "venue": "North American Journal of Fisheries Management",
+     "date": "2026-10-27",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "Researchers and community partners spent three years removing invasive Largemouth Bass from two small lakes in Gatineau Park, using nest destruction, angling, seining and traps. Active nests in Lac Kingsmere fell from 25 to 0 and catches dropped by over 90% in abundance, but eradication would need several more years of monitoring, and community participation was important for early detection and sustained effort."
+    },
+    {
+     "id": "W7223882755",
+     "who": [
+      [
+       "Steven Cooke",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "Spawning site residency and connectivity patterns of permit (Trachinotus falcatus) in response to a seasonal fishing closure in the Florida Keys",
+     "url": "https://doi.org/10.1007/s10641-026-01928-3",
+     "venue": "Environmental Biology of Fishes",
+     "date": "2026-10-27",
+     "oa": false,
+     "big": false,
+     "cross": false,
+     "summary": "The title indicates a study of how permit (a sport fish) stay at and move between spawning sites in the Florida Keys in response to a seasonal fishing closure. No abstract was available, so the methods and findings cannot be described here."
+    }
+   ]
+  },
+  {
+   "unit": "Health Sciences",
+   "items": [
+    {
+     "id": "W7224225180",
+     "who": [
+      [
+       "Utkarsh Dang",
+       "Health Sciences"
+      ]
+     ],
+     "who_note": "",
+     "title": "Muscle function, linear growth, and bone health during 30 months of vamorolone, prednisone, and deflazacort treatment for Duchenne muscular dystrophy: a comparative study",
+     "url": "https://doi.org/10.1093/jbmr/zjag154",
+     "venue": "Journal of Bone and Mineral Research",
+     "date": "2026-10-29",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "This study compared 30 months of vamorolone treatment in boys with Duchenne muscular dystrophy against matched boys on prednisone or deflazacort, the standard corticosteroids, using data from separate non-randomized trials. Motor function did not differ significantly between the drugs, but height stayed stable on vamorolone and fell on the other two, and vertebral fractures were about half as frequent."
+    }
+   ]
+  },
+  {
+   "unit": "Neuroscience",
+   "items": [
+    {
+     "id": "W7224552353",
+     "who": [
+      [
+       "Robyn McQuaid",
+       "Neuroscience"
+      ]
+     ],
+     "who_note": "",
+     "title": "Timing matters: Maternal stress and mental health symptoms from pregnancy to postpartum in shaping infant development",
+     "url": "https://doi.org/10.1016/j.psyneuen.2026.108066",
+     "venue": "Psychoneuroendocrinology",
+     "date": "2026-10-29",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The study followed 146 Pakistani mother-infant pairs from pregnancy to postpartum and linked maternal stress, depressive symptoms and a physiological stress measure to poorer infant fine motor skills. Higher social support after birth weakened the link between prenatal stress and fine motor skills, which suggests that support and lower postpartum stress could help, though the findings are associations."
+    }
+   ]
+  },
+  {
+   "unit": "Physics",
+   "items": [
+    {
+     "id": "W7168375921",
+     "who": [
+      [
+       "Dag Gillberg",
+       "Physics"
+      ],
+      [
+       "Jesse Heilman",
+       "Physics"
+      ],
+      [
+       "Alain Bellerive",
+       "Physics"
+      ],
+      [
+       "Kevin Graham",
+       "Physics"
+      ],
+      [
+       "Thomas Koffas",
+       "Physics"
+      ],
+      [
+       "Manuella Vincter",
+       "Physics"
+      ]
+     ],
+     "who_note": "with a large collaboration",
+     "title": "Search for dark photons from Higgs boson decays in the gluon-gluon fusion channel in proton-proton collisions at $$ \\sqrt{s}=13.6 $$ TeV with the ATLAS detector",
+     "url": "https://doi.org/10.1007/jhep10(2026)270",
+     "venue": "Journal of High Energy Physics",
+     "date": "2026-10-28",
+     "oa": true,
+     "big": true,
+     "cross": false,
+     "summary": "The ATLAS collaboration searched 135 fb-1 of 2023 and 2024 collision data for Higgs bosons decaying into a photon and a dark photon, using a trigger with lower energy thresholds introduced in 2023. No significant excess over Standard Model predictions was found, so the result sets an upper limit of 1.4% on how often this decay occurs, tightened to 0.9% when combined with earlier Run 2 searches."
+    }
+   ]
+  }
+ ],
+ "innovation": {
+  "opportunities": [],
+  "near_misses": [
+   {
+    "id": "W7224225180",
+    "title": "Muscle function, linear growth, and bone health during 30 months of vamorolone, prednisone, and deflazacort treatment for Duchenne muscular dystrophy: a comparative study",
+    "why": "Carleton's role: Carleton author is third of 16. First author is at uOttawa and last author is at Binghamton",
+    "checks": {
+     "market": {
+      "pass": true,
+      "note": "Duchenne muscular dystrophy corticosteroids are an existing drug market; vamorolone is already approved and sold."
+     },
+     "partner": {
+      "pass": true,
+      "note": "Santhera and ReveraGen co-author the paper. Both are real and active, with Santhera holding vamorolone licences in 2026."
+     },
+     "carleton_role": {
+      "pass": false,
+      "note": "Carleton author is third of 16. First author is at uOttawa and last author is at Binghamton."
+     },
+     "evidence": {
+      "pass": true,
+      "note": "30-month trial data compared with propensity-matched controls. Reported fewer vertebral fractures and stable height."
+     }
+    },
+    "would_change": "Carleton first or last authorship, or a Carleton-led analysis, on a follow-up study."
+   }
+  ],
+  "skipped": [
+   {
+    "id": "W7224091915",
+    "reason": "conservation policy paper, no abstract"
+   },
+   {
+    "id": "W7223882046",
+    "reason": "invasive species field case study, no product"
+   },
+   {
+    "id": "W7223882755",
+    "reason": "fisheries telemetry ecology, no abstract"
+   },
+   {
+    "id": "W7224881152",
+    "reason": "qualitative health services study"
+   },
+   {
+    "id": "W7224552353",
+    "reason": "observational cohort, no product or intervention"
+   }
+  ],
+  "screened": "",
+  "counts": {
+   "papers": 7,
+   "large_collaborations": 1,
+   "screened": 1,
+   "skipped": 5
+  }
+ },
+ "also_title": "Preprints",
+ "also": [
+  "Janet Jull (Health Sciences): “It’s Trust. That’s Everything”: Care providers’ experiences supporting Inuit participation across the Qikiqtani–Ottawa care journey. Research Square, 2026-10-30."
+ ]
+}

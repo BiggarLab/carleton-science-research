@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>html.gated body>*:not(#gate){visibility:hidden}#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+background:#f3f4f6;font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;color:#15171c}#gate form{background:#fff;border:1px solid #d9dce1;border-radius:6px;padding:22px;
+width:min(340px,calc(100vw - 32px));display:flex;flex-direction:column;gap:10px}#gate input{padding:8px 10px;border:1px solid #d9dce1;border-radius:4px;font:inherit}
+#gate button{padding:8px;border:0;border-radius:4px;background:#15171c;color:#fff;font:inherit;cursor:pointer}#gate small{color:#b0162b;min-height:1em}
+@media (prefers-color-scheme:dark){#gate{background:#111316;color:#eceef1}#gate form{background:#191c20;border-color:#2e3238}#gate input{background:#111316;color:#eceef1;border-color:#2e3238}#gate button{background:#eceef1;color:#111316}}</style>
+<script>(function(){var R="../../",K="cs-gate",S="carleton-research-dashboard",d=document.documentElement;d.classList.add("gated");
+function open(){d.classList.remove("gated");var g=document.getElementById("gate");if(g)g.remove();}
+async function h(t){var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(S+t));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("");}
+fetch(R+"gate.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(g){
+ var want=g&&g.sha256;var have="";try{have=localStorage.getItem(K)||""}catch(e){}
+ if(!want||have===want)return open();
+ var show=function(){var w=document.createElement("div");w.id="gate";w.innerHTML='<form><b>Password</b><input type="password" autocomplete="current-password" aria-label="Password" autofocus><button>Open</button><small></small></form>';
+  document.body.appendChild(w);var f=w.querySelector("form"),i=w.querySelector("input");i.focus();
+  f.onsubmit=async function(e){e.preventDefault();var x=await h(i.value);if(x===want){try{localStorage.setItem(K,x)}catch(e){}open();}else{w.querySelector("small").textContent="That password didn't work.";i.select();}};};
+ if(document.body)show();else document.addEventListener("DOMContentLoaded",show);});})();</script>
+<title>Science Weekly Digest</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap"><style>
+:root{--bg:#f3f4f6;--paper:#ffffff;--ink:#15171c;--ink-2:#4a4f5a;--muted:#6e7380;--line:#d9dce1;--line-2:#ebedf0;--accent:#b0162b;--accent-soft:#f7e3e6;
+--f-display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;--f-body:"IBM Plex Sans",system-ui,sans-serif;--f-read:"IBM Plex Serif",Georgia,serif;--f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#111316;--paper:#191c20;--ink:#eceef1;--ink-2:#c1c5cd;--muted:#9298a3;--line:#2e3238;--line-2:#262a30;--accent:#ec5a6d;--accent-soft:#3a1d22;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111316;--paper:#191c20;--ink:#eceef1;--ink-2:#c1c5cd;--muted:#9298a3;--line:#2e3238;--line-2:#262a30;--accent:#ec5a6d;--accent-soft:#3a1d22;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;margin:0}
+.col{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:28px 56px}
+.sheet{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:clamp(18px,4vw,40px)}
+.logo{display:block;width:clamp(160px,30vw,220px);height:auto;background:#fff;border-radius:4px;padding:6px 8px;margin:0 0 18px -8px}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px;align-items:center}
+.eyebrow i{display:inline-block;width:10px;height:10px;background:var(--accent)}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(28px,5vw,40px);line-height:1.05;margin:8px 0 6px;text-wrap:balance}
+.dates{font-family:var(--f-mono);font-size:13px;color:var(--ink-2)}
+.prep{font-size:13px;color:var(--ink-2);margin-top:4px}
+.stats{display:flex;flex-wrap:wrap;gap:6px 22px;margin:18px 0 0;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats div{display:flex;flex-direction:column}
+.stats b{font-family:var(--f-display);font-size:26px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.stats span{font-size:12px;color:var(--muted)}
+.lead{font-family:var(--f-read);font-size:17px;line-height:1.6;margin:20px 0 0;max-width:62ch}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:18px}
+.btn{border:1px solid var(--line);background:var(--paper);border-radius:4px;padding:6px 11px;cursor:pointer;font:inherit;font-size:13px;font-weight:500;color:var(--ink);text-decoration:none}
+.btn:hover{border-color:var(--ink-2)}
+.note{font-size:12.5px;color:var(--muted)}
+h2{font-family:var(--f-display);font-weight:600;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);margin:34px 0 4px;padding-bottom:6px;border-bottom:2px solid var(--ink);display:flex;justify-content:space-between;gap:12px}
+h2 span{font-family:var(--f-mono);font-weight:400;letter-spacing:0;text-transform:none;color:var(--muted)}
+.item{padding:16px 0;border-bottom:1px solid var(--line-2)}
+.item:last-child{border-bottom:0}
+.item .who{font-size:13px;font-weight:600;color:var(--accent)}
+.item .who small{font-weight:400;color:var(--muted)}
+.item h3{font-family:var(--f-body);font-size:16px;font-weight:600;line-height:1.35;margin:4px 0 6px}
+.item h3 a{color:inherit;text-decoration:none}
+.item h3 a:hover{text-decoration:underline}
+.item p{font-family:var(--f-read);font-size:15.5px;line-height:1.6;margin:0;max-width:64ch}
+.item .src{font-size:12.5px;color:var(--muted);margin-top:6px}
+.tag{display:inline-block;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--accent-soft);color:var(--ink);margin-left:4px;vertical-align:1px}
+.opp{margin-top:34px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:4px;padding:16px 18px;background:var(--bg)}
+.opp h2{margin:0 0 10px;border-bottom:0;padding-bottom:0}
+.opp h4{font-size:15px;margin:14px 0 4px;font-weight:600}
+.opp h4:first-of-type{margin-top:0}
+.opp p,.opp li{font-size:14px;line-height:1.55;margin:0 0 8px;max-width:66ch}
+.opp ul{padding-left:1.1em;margin:4px 0 8px}
+.opp .k{font-weight:600}
+.tier{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:3px;margin-right:6px;vertical-align:2px;letter-spacing:.02em}
+.tier.act{background:var(--accent);color:#fff}
+.tier.conversation{background:var(--accent-soft);color:var(--ink)}
+.opp .tally{font-family:var(--f-mono);font-size:12px;color:var(--ink-2);margin:0 0 6px}
+.opp .rule{font-size:12.5px;color:var(--muted);margin:0 0 4px}
+.opp h4.sub{font-family:var(--f-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin:16px 0 6px;font-weight:600}
+.opp h4.sub span{font-family:var(--f-body);text-transform:none;letter-spacing:0;font-weight:400;color:var(--muted)}
+.opp .none{color:var(--ink-2)}
+.opp .rec{border:1px solid var(--line);border-radius:4px;padding:12px 14px;background:var(--paper);margin:0 0 10px}
+.opp .rw{font-size:13px;font-weight:600;color:var(--accent)}
+.opp .rec .sig{font-size:12px;color:var(--muted);margin:0 0 6px}
+.opp .rec h5{font-size:15px;margin:0 0 4px}.opp .rec h5 a{color:inherit}
+.opp dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 12px;margin:8px 0 0;font-size:13.5px}
+.opp dt{font-weight:600}.opp dd{margin:0}.opp dd ul{margin:0;padding-left:1.1em}.opp dd li{margin:0 0 4px}
+.opp .nm{padding:10px 0;border-top:1px solid var(--line-2)}
+.opp .nt{font-size:14px;font-weight:600;line-height:1.35}.opp .nt a{color:inherit}
+.opp .nw{font-size:12.5px;color:var(--muted);margin:2px 0 6px}
+.opp .chips{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px}
+.opp .chk{font-size:11.5px;padding:1px 7px;border-radius:3px;border:1px solid var(--line)}
+.opp .chk.y{color:#1d6b3a;border-color:#b9dcc6;background:#eef7f1}
+.opp .chk.n{color:var(--accent);border-color:#f0c2c9;background:#fbeef0}
+.opp .nm ul{margin:0;padding-left:1.1em}.opp .nm li{font-size:13.5px;margin:0 0 3px}
+.opp .wc{font-size:13px;margin:4px 0 0;color:var(--ink-2)}
+.opp .more{font-size:12.5px;color:var(--muted);margin:10px 0 0}
+.opp .screened{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line-2);padding-top:10px;margin-top:10px}
+.also{font-size:14px}
+.also ul{padding-left:1.1em;margin:10px 0 0}
+.also li{margin:0 0 10px}
+.foot{margin-top:28px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.foot a,.arch a{color:var(--accent)}
+.arch{margin-top:10px;font-size:12.5px;color:var(--muted)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style></head><body>
+<div class="col"><article class="sheet" id="digest">
+<div class="eyebrow"><i></i>Research digest</div>
+<h1>New from Carleton Science</h1>
+<div class="dates">Week of October 26 to November 1, 2026 · issue 5</div>
+<div class="prep">Independent summary built from public data (OpenAlex, NSERC, SSHRC). Not an official Carleton University publication.</div>
+<div class="stats"><div><b>6</b><span>new outputs this week</span></div><div><b>10</b><span>Faculty researchers</span></div><div><b>4</b><span>units</span></div><div><b>0</b><span>cross-unit papers</span></div></div>
+<p class="lead">Seven publications this week. Biology had three, on conservation agreements, invasive bass removal in Gatineau Park, and permit spawning in the Florida Keys. Health Sciences had two, on corticosteroid treatment for Duchenne muscular dystrophy and on care for Inuit travelling from the Qikiqtani region to Ottawa. Neuroscience had one on maternal stress and infant development, and Physics had one ATLAS search with six Carleton authors. The records show no collaborations between Carleton units this week, and the ATLAS paper is the only large-collaboration work.</p>
+<div class="tools"><button class="btn" id="copy">Copy as email text</button><a class="btn" href="../../">Open the research dashboard</a><span class="note" id="copy-note"></span></div>
+<h2>Biology <span>3</span></h2>
+<div class="item"><div class="who">Joe Bennett <small>Biology</small></div><h3><a href="https://doi.org/10.1016/j.biocon.2026.112177" target="_blank" rel="noopener">The enduring benefits of temporary conservation agreements</a></h3><p>The title indicates a paper in Biological Conservation on the lasting benefits of temporary conservation agreements. No abstract was available, so the methods and findings cannot be described here.</p><div class="src">Biological Conservation · Oct 28</div></div>
+<div class="item"><div class="who">Steven Cooke <small>Biology</small></div><h3><a href="https://doi.org/10.1093/najfmt/vqag089" target="_blank" rel="noopener">A case study on attempts to remove invasive Largemouth Bass from two small lakes in Québec</a></h3><p>Researchers and community partners spent three years removing invasive Largemouth Bass from two small lakes in Gatineau Park, using nest destruction, angling, seining and traps. Active nests in Lac Kingsmere fell from 25 to 0 and catches dropped by over 90% in abundance, but eradication would need several more years of monitoring, and community participation was important for early detection and sustained effort.</p><div class="src">North American Journal of Fisheries Management · Oct 27 · open access</div></div>
+<div class="item"><div class="who">Steven Cooke <small>Biology</small></div><h3><a href="https://doi.org/10.1007/s10641-026-01928-3" target="_blank" rel="noopener">Spawning site residency and connectivity patterns of permit (Trachinotus falcatus) in response to a seasonal fishing closure in the Florida Keys</a></h3><p>The title indicates a study of how permit (a sport fish) stay at and move between spawning sites in the Florida Keys in response to a seasonal fishing closure. No abstract was available, so the methods and findings cannot be described here.</p><div class="src">Environmental Biology of Fishes · Oct 27</div></div>
+<h2>Health Sciences <span>1</span></h2>
+<div class="item"><div class="who">Utkarsh Dang <small>Health Sciences</small></div><h3><a href="https://doi.org/10.1093/jbmr/zjag154" target="_blank" rel="noopener">Muscle function, linear growth, and bone health during 30 months of vamorolone, prednisone, and deflazacort treatment for Duchenne muscular dystrophy: a comparative study</a></h3><p>This study compared 30 months of vamorolone treatment in boys with Duchenne muscular dystrophy against matched boys on prednisone or deflazacort, the standard corticosteroids, using data from separate non-randomized trials. Motor function did not differ significantly between the drugs, but height stayed stable on vamorolone and fell on the other two, and vertebral fractures were about half as frequent.</p><div class="src">Journal of Bone and Mineral Research · Oct 29 · open access</div></div>
+<h2>Neuroscience <span>1</span></h2>
+<div class="item"><div class="who">Robyn McQuaid <small>Neuroscience</small></div><h3><a href="https://doi.org/10.1016/j.psyneuen.2026.108066" target="_blank" rel="noopener">Timing matters: Maternal stress and mental health symptoms from pregnancy to postpartum in shaping infant development</a></h3><p>The study followed 146 Pakistani mother-infant pairs from pregnancy to postpartum and linked maternal stress, depressive symptoms and a physiological stress measure to poorer infant fine motor skills. Higher social support after birth weakened the link between prenatal stress and fine motor skills, which suggests that support and lower postpartum stress could help, though the findings are associations.</p><div class="src">Psychoneuroendocrinology · Oct 29 · open access</div></div>
+<h2>Physics <span>1</span></h2>
+<div class="item"><div class="who">Dag Gillberg <small>Physics</small>, Jesse Heilman <small>Physics</small>, Alain Bellerive <small>Physics</small>, Kevin Graham <small>Physics</small>, Thomas Koffas <small>Physics</small>, Manuella Vincter <small>Physics</small> <small>with a large collaboration</small></div><h3><a href="https://doi.org/10.1007/jhep10(2026)270" target="_blank" rel="noopener">Search for dark photons from Higgs boson decays in the gluon-gluon fusion channel in proton-proton collisions at $$ \sqrt{s}=13.6 $$ TeV with the ATLAS detector</a></h3><p>The ATLAS collaboration searched 135 fb-1 of 2023 and 2024 collision data for Higgs bosons decaying into a photon and a dark photon, using a trigger with lower energy thresholds introduced in 2023. No significant excess over Standard Model predictions was found, so the result sets an upper limit of 1.4% on how often this decay occurs, tightened to 0.9% when combined with earlier Run 2 searches.</p><div class="src">Journal of High Energy Physics · Oct 28 · open access · large collaboration</div></div>
+<section class="opp" id="opp"><h2>Innovation and partnering <span>nothing to act on</span></h2>
+<p class="tally">Screened 1 of 7 papers · 0 recommended · 1 near miss · 5 with no commercial angle · 1 large collaboration not screened</p>
+<p class="rule">Four checks: <b>Market</b> (someone buys this today), <b>Partner</b> (a named, active company, Canadian preferred), <b>Carleton-led</b> (first, last or corresponding author), <b>Evidence</b> (a working result, not just an idea). A paper is recommended only when all four pass.</p>
+<h4 class="sub">Recommended</h4>
+<p class="none">Nothing this week. No paper passed all four checks.</p>
+<h4 class="sub">Near misses <span>closest first</span></h4><div class="nm"><div class="nt"><a href="https://doi.org/10.1093/jbmr/zjag154" target="_blank" rel="noopener">Muscle function, linear growth, and bone health during 30 months of vamorolone, prednisone, and deflazacort treatment for Duchenne muscular dystrophy: a comparative study</a></div><div class="nw">Utkarsh Dang (Health Sciences)</div><div class="chips"><span class="chk y">✓ Market</span><span class="chk y">✓ Partner</span><span class="chk n">✗ Carleton-led</span><span class="chk y">✓ Evidence</span></div><ul><li><b>Carleton-led:</b> Carleton author is third of 16. First author is at uOttawa and last author is at Binghamton.</li></ul><p class="wc"><b>Would change the call:</b> Carleton first or last authorship, or a Carleton-led analysis, on a follow-up study.</p></div>
+<p class="more"><b>No commercial angle:</b> The enduring benefits of temporary conservation agreements (conservation policy paper, no abstract); A case study on attempts to remove invasive Largemouth Bass from two small lakes in Québec (invasive species field case study, no product); Spawning site residency and connectivity patterns of permit (Trachinotus falcatus) in response to a seasonal fishing closure in the Florida Keys (fisheries telemetry ecology, no abstract);  (qualitative health services study); Timing matters: Maternal stress and mental health symptoms from pregnancy to postpartum in shaping infant development (observational cohort, no product or intervention).</p>
+</section>
+<h2>Preprints</h2><div class="also"><ul><li>Janet Jull (Health Sciences): “It’s Trust. That’s Everything”: Care providers’ experiences supporting Inuit participation across the Qikiqtani–Ottawa care journey. Research Square, 2026-10-30.</li></ul></div>
+<div class="foot">Summaries and the innovation section were written by Claude from each paper's abstract and public company information, so check the paper and the company before acting. The innovation section screens every paper on the same four checks and recommends one only when all four pass, so most weeks nothing is recommended. Papers are matched to the Faculty list using OpenAlex, which can miss outputs or lag a few weeks behind publication.</div><div class="arch">All issues: <a href="2026-11-01.html">2026-11-01</a> · <a href="2026-10-25.html">2026-10-25</a> · <a href="2026-10-18.html">2026-10-18</a> · <a href="2026-10-11.html">2026-10-11</a> · <a href="2026-10-04.html">2026-10-04</a></div>
+</article></div>
+<script>
+document.getElementById("copy").onclick = async () => {
+  const txt = "New from Carleton Science: Week of October 26 to November 1, 2026 (issue 5)\nIndependent summary built from public data (OpenAlex, NSERC, SSHRC). Not an official Carleton University publication.\n\nSeven publications this week. Biology had three, on conservation agreements, invasive bass removal in Gatineau Park, and permit spawning in the Florida Keys. Health Sciences had two, on corticosteroid treatment for Duchenne muscular dystrophy and on care for Inuit travelling from the Qikiqtani region to Ottawa. Neuroscience had one on maternal stress and infant development, and Physics had one ATLAS search with six Carleton authors. The records show no collaborations between Carleton units this week, and the ATLAS paper is the only large-collaboration work.\n\nBIOLOGY\nThe enduring benefits of temporary conservation agreements\nJoe Bennett (Biology)\nThe title indicates a paper in Biological Conservation on the lasting benefits of temporary conservation agreements. No abstract was available, so the methods and findings cannot be described here.\nhttps://doi.org/10.1016/j.biocon.2026.112177  Biological Conservation, Oct 28\n\nA case study on attempts to remove invasive Largemouth Bass from two small lakes in Qu\u00e9bec\nSteven Cooke (Biology)\nResearchers and community partners spent three years removing invasive Largemouth Bass from two small lakes in Gatineau Park, using nest destruction, angling, seining and traps. Active nests in Lac Kingsmere fell from 25 to 0 and catches dropped by over 90% in abundance, but eradication would need several more years of monitoring, and community participation was important for early detection and sustained effort.\nhttps://doi.org/10.1093/najfmt/vqag089  North American Journal of Fisheries Management, Oct 27\n\nSpawning site residency and connectivity patterns of permit (Trachinotus falcatus) in response to a seasonal fishing closure in the Florida Keys\nSteven Cooke (Biology)\nThe title indicates a study of how permit (a sport fish) stay at and move between spawning sites in the Florida Keys in response to a seasonal fishing closure. No abstract was available, so the methods and findings cannot be described here.\nhttps://doi.org/10.1007/s10641-026-01928-3  Environmental Biology of Fishes, Oct 27\n\nHEALTH SCIENCES\nMuscle function, linear growth, and bone health during 30 months of vamorolone, prednisone, and deflazacort treatment for Duchenne muscular dystrophy: a comparative study\nUtkarsh Dang (Health Sciences)\nThis study compared 30 months of vamorolone treatment in boys with Duchenne muscular dystrophy against matched boys on prednisone or deflazacort, the standard corticosteroids, using data from separate non-randomized trials. Motor function did not differ significantly between the drugs, but height stayed stable on vamorolone and fell on the other two, and vertebral fractures were about half as frequent.\nhttps://doi.org/10.1093/jbmr/zjag154  Journal of Bone and Mineral Research, Oct 29\n\nNEUROSCIENCE\nTiming matters: Maternal stress and mental health symptoms from pregnancy to postpartum in shaping infant development\nRobyn McQuaid (Neuroscience)\nThe study followed 146 Pakistani mother-infant pairs from pregnancy to postpartum and linked maternal stress, depressive symptoms and a physiological stress measure to poorer infant fine motor skills. Higher social support after birth weakened the link between prenatal stress and fine motor skills, which suggests that support and lower postpartum stress could help, though the findings are associations.\nhttps://doi.org/10.1016/j.psyneuen.2026.108066  Psychoneuroendocrinology, Oct 29\n\nPHYSICS\nSearch for dark photons from Higgs boson decays in the gluon-gluon fusion channel in proton-proton collisions at $$ \\sqrt{s}=13.6 $$ TeV with the ATLAS detector\nDag Gillberg (Physics), Jesse Heilman (Physics), Alain Bellerive (Physics), Kevin Graham (Physics), Thomas Koffas (Physics), Manuella Vincter (Physics) with a large collaboration\nThe ATLAS collaboration searched 135 fb-1 of 2023 and 2024 collision data for Higgs bosons decaying into a photon and a dark photon, using a trigger with lower energy thresholds introduced in 2023. No significant excess over Standard Model predictions was found, so the result sets an upper limit of 1.4% on how often this decay occurs, tightened to 0.9% when combined with earlier Run 2 searches.\nhttps://doi.org/10.1007/jhep10(2026)270  Journal of High Energy Physics, Oct 28\n\nINNOVATION AND PARTNERING\nScreened 1 of 7 papers \u00b7 0 recommended \u00b7 1 near miss \u00b7 5 with no commercial angle \u00b7 1 large collaboration not screened\n\nRECOMMENDED\nNothing this week. No paper passed all four checks.\n\nNEAR MISSES (closest first)\nMuscle function, linear growth, and bone health during 30 months of vamorolone, prednisone, and deflazacort treatment for Duchenne muscular dystrophy: a comparative study\nUtkarsh Dang (Health Sciences)\n\u2713 Market   \u2713 Partner   \u2717 Carleton-led   \u2713 Evidence\n- Carleton-led: Carleton author is third of 16. First author is at uOttawa and last author is at Binghamton.\nWould change the call: Carleton first or last authorship, or a Carleton-led analysis, on a follow-up study.\n\nNo commercial angle: The enduring benefits of temporary conservation agreements (conservation policy paper, no abstract); A case study on attempts to remove invasive Largemouth Bass from two small lakes in Qu\u00e9bec (invasive species field case study, no product); Spawning site residency and connectivity patterns of permit (Trachinotus falcatus) in response to a seasonal fishing closure in the Florida Keys (fisheries telemetry ecology, no abstract);  (qualitative health services study); Timing matters: Maternal stress and mental health symptoms from pregnancy to postpartum in shaping infant development (observational cohort, no product or intervention)\n\n- Janet Jull (Health Sciences): \u201cIt\u2019s Trust. That\u2019s Everything\u201d: Care providers\u2019 experiences supporting Inuit participation across the Qikiqtani\u2013Ottawa care journey. Research Square, 2026-10-30.\n\nDashboard: ../../\n\nSummaries written by Claude from abstracts; check the paper before quoting.";
+  const note = document.getElementById("copy-note");
+  try { await navigator.clipboard.writeText(txt); note.textContent = "Copied. Paste into an email."; }
+  catch { const ta = document.createElement("textarea"); ta.value = txt; ta.rows = 8; ta.style.width = "100%"; document.querySelector(".tools").after(ta); ta.select(); note.textContent = "Copy was blocked. Select the text below and copy it."; }
+};
+</script></body></html>
