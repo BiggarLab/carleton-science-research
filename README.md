@@ -126,6 +126,8 @@ Departments, their Faculty and the websites read are in `config/university_units
 - **Emerging**: real volume in the latest two full years, publishing at least 1.5x faster per year than before, with 2+ researchers.
 - **Cross-Faculty**: researchers from two or more Faculties, or many outputs co-authored across Faculties.
 
+**Citation impact (FWCI)** is reported for research areas only, never for an individual researcher. An area's mean FWCI is shown only when at least 5 researchers and 20 papers are behind it, and is hidden whenever a single researcher is selected in the filters (`FW_MIN_PPL` and `FW_MIN_N` in `docs/index.html`). The Established rule still uses the area's FWCI internally.
+
 To run it now: **Actions → University-wide update → Run workflow**.
 
 ## Password screen

@@ -755,6 +755,7 @@ function overview(){
    Established: enough outputs, specialised relative to world output, cited at least at world average, several researchers.
    Emerging: the two latest full years publish clearly faster than the years before, with real volume and more than one researcher.
    Cross-Faculty: researchers from two or more Faculties each have 2+ outputs in the area, or many outputs are co-authored across Faculties. */
+const FW_MIN_PPL = 5, FW_MIN_N = 20; // an area's mean FWCI is shown only with at least this many researchers and papers
 const ST = { topic: { est: 30, rca: 1.5, emg: 8, xf: 5 }, sub: { est: 120, rca: 1.2, emg: 25, xf: 15 } };
 function stAreas(){
   const lv = S.stLevel, R = ST[lv];
@@ -773,14 +774,16 @@ function stAreas(){
   const out = [...A.values()].map(a => {
     const wn = lv === "topic" ? (D.world.topics[a.k] || 0) : (WSUB.get(a.k) || 0);
     a.rca = wn ? (a.n / N) / (wn / D.world.total) : null;
-    a.fw = a.fws.length >= 5 ? d3.mean(a.fws) : null;
+    a.fwRule = a.fws.length >= 5 ? d3.mean(a.fws) : null; // used only for the Established rule
+    // Shown only for a real group, so an area figure can never stand in for one researcher's score.
+    a.fw = S.person == null && a.ppl.size >= FW_MIN_PPL && a.fws.length >= FW_MIN_N ? d3.mean(a.fws) : null;
     const core = [...a.ppl].filter(([, n]) => n >= 2).map(([i]) => i);
     a.res = core.length;
     a.facP = new Map(); core.forEach(i => P[i].fac.forEach(f => a.facP.set(f, (a.facP.get(f) || 0) + 1)));
     a.nf = a.facP.size;
     const rr = a.recent / rY, er = eY ? a.early / eY : 0;
     a.g = er ? rr / er : (a.recent ? Infinity : 0);
-    a.est = a.n >= R.est && a.rca != null && a.rca >= R.rca && (a.fw == null || a.fw >= 1) && a.res >= 3;
+    a.est = a.n >= R.est && a.rca != null && a.rca >= R.rca && (a.fwRule == null || a.fwRule >= 1) && a.res >= 3;
     a.emg = !a.est && eY > 0 && a.recent >= R.emg && a.g >= 1.5 && a.res >= 2;
     a.xfOn = a.nf >= 2 || a.xf >= R.xf;
     return a; });
@@ -793,7 +796,7 @@ function strengths(){
     .map(([v, k]) => `<div class="kpi"><span class="v">${v}</span><span class="k">${k}</span></div>`).join("");
   $("#st-rule").innerHTML = `<b>Established</b>: ${R.est}+ outputs, at least ${R.rca}× the world share of output in this area, mean FWCI of 1.0 or more, and 3+ researchers with 2+ outputs each. ` +
     `<b>Emerging</b>: ${R.emg}+ outputs in ${rf}–${y1}, published at least 1.5× faster per year than ${S.y0}–${rf - 1}, with 2+ researchers. ` +
-    `<b>Cross-Faculty</b>: researchers from 2+ Faculties, or ${R.xf}+ outputs co-authored across Faculties. Uses the filters on the left.${eY ? "" : " Pick a wider year range to see growth."}`;
+    `<b>Cross-Faculty</b>: researchers from 2+ Faculties, or ${R.xf}+ outputs co-authored across Faculties. Mean FWCI is shown only for areas with ${FW_MIN_PPL}+ researchers and ${FW_MIN_N}+ papers, and never for a single researcher. Uses the filters on the left.${eY ? "" : " Pick a wider year range to see growth."}`;
   $("#st-leg").innerHTML = FACS.map(f => `<span><i style="background:${facColor(f)}"></i>${esc(f)}</span>`).join("");
   let L = areas.filter(a => a.n >= 5);
   if (S.stShow === "est") L = L.filter(a => a.est); else if (S.stShow === "emg") L = L.filter(a => a.emg); else if (S.stShow === "xf") L = L.filter(a => a.xfOn && (a.est || a.emg));
@@ -804,7 +807,7 @@ function strengths(){
   const mix = a => { const tot = d3.sum([...a.facW.values()]) || 1; return `<span class="fmix" title="${esc([...a.facW].map(([f, n]) => `${f}: ${n}`).join(" · "))}">${FACS.filter(f => a.facW.get(f)).map(f => `<span style="width:${100 * a.facW.get(f) / tot}%;background:${facColor(f)}"></span>`).join("")}</span>`; };
   const gtxt = a => !eY ? "–" : a.early === 0 ? (a.recent ? "new" : "–") : `×${a.g.toFixed(1)}`;
   if (S.stSel == null || !L.some(a => a.k === S.stSel)) S.stSel = L.length ? L[0].k : null;
-  $("#st-tbl").innerHTML = `<thead><tr><th>Area</th><th class="r">Outputs</th><th>Per year</th><th class="r" title="Per-year rate, latest two full years vs earlier years">Growth</th><th class="r" title="Carleton's share of its output in this area divided by the world's share">Specialisation</th><th class="r">FWCI</th><th class="r">Researchers</th><th>Faculties</th></tr></thead><tbody>` +
+  $("#st-tbl").innerHTML = `<thead><tr><th>Area</th><th class="r">Outputs</th><th>Per year</th><th class="r" title="Per-year rate, latest two full years vs earlier years">Growth</th><th class="r" title="Carleton's share of its output in this area divided by the world's share">Specialisation</th><th class="r" title="Mean field-weighted citation impact, 1.0 = world average. Shown only for areas with ${FW_MIN_PPL}+ researchers and ${FW_MIN_N}+ papers.">FWCI</th><th class="r">Researchers</th><th>Faculties</th></tr></thead><tbody>` +
     (L.length ? L.map(a => `<tr class="clk${a.k === S.stSel ? " on" : ""}" data-k="${esc(a.k)}"><td class="st-nm">${esc(a.name)}<small>${esc(a.sub || "")}</small>${a.est ? `<span class="badge est">Established</span>` : ""}${a.emg ? `<span class="badge emg">Emerging</span>` : ""}${a.xfOn && (a.est || a.emg) ? `<span class="badge xf">Cross-Faculty</span>` : ""}</td>
       <td class="r num">${fmt(a.n)}</td><td>${spark(a)}</td><td class="r num">${gtxt(a)}</td><td class="r num">${a.rca == null ? "–" : a.rca.toFixed(1) + "×"}</td><td class="r num">${a.fw == null ? "–" : a.fw.toFixed(2)}</td><td class="r num">${a.res}</td><td>${mix(a)}</td></tr>`).join("")
       : `<tr><td colspan="8" class="empty">No areas match. Try “All”, broad areas, or fewer filters.</td></tr>`) + `</tbody>`;
@@ -1005,19 +1008,18 @@ function opps(){
 
 function personStats(i, ws){
   const mine = ws.filter(w => wf(w).includes(i)); const small = mine.filter(w => !w.big);
-  const fws = mine.map(w => w.fw).filter(v => v != null);
   const tc = d3.rollups(mine.filter(w => w.T), v => v.length, w => w.T[0]).sort((a,b) => b[1]-a[1]);
-  return { mine, n: mine.length, cit: d3.sum(mine, w => w.c), fw: fws.length ? d3.mean(fws) : null, intl: small.length ? small.filter(w => w.intl).length / small.length : null, top: tc.slice(0,3).map(d => d[0]), big: mine.filter(w => w.big).length };
+  return { mine, n: mine.length, cit: d3.sum(mine, w => w.c), intl: small.length ? small.filter(w => w.intl).length / small.length : null, top: tc.slice(0,3).map(d => d[0]), big: mine.filter(w => w.big).length };
 }
 function people(){
   const ws = sel({ noPerson: true });
   const rows = P.filter(p => inScopePerson(p.i) && (S.person == null || p.i === S.person)).map(p => ({ p, ...personStats(p.i, ws) })).filter(r => !S.topic || r.n > 0);
-  const K = { name: r => r.p.sort, unit: r => r.p.u[0], rank: r => r.p.rk, n: r => r.n, cit: r => r.cit, fw: r => r.fw ?? -1, intl: r => r.intl ?? -1, lw: r => r.p.lw, h: r => r.p.h };
+  const K = { name: r => r.p.sort, unit: r => r.p.u[0], rank: r => r.p.rk, n: r => r.n, cit: r => r.cit, intl: r => r.intl ?? -1, lw: r => r.p.lw, h: r => r.p.h };
   const f = K[pplSort.k] || K.n; rows.sort((a,b) => { const x = f(a), y = f(b); return (x > y ? 1 : x < y ? -1 : 0) * pplSort.dir; });
   const col = (k, l, r) => `<th data-k="${k}" class="${r?"r":""}" aria-sort="${pplSort.k===k ? (pplSort.dir<0?"descending":"ascending") : "none"}">${l}</th>`;
-  $("#ppl-note").textContent = `${rows.length} researchers · ${S.lead ? "lead-author papers only · " : ""}FWCI from OpenAlex, 1.0 = world average · lifetime figures and h-index from OpenAlex across all years`;
-  $("#ppl").innerHTML = `<thead><tr>${col("name","Name")}${col("unit","Unit")}${col("rank","Rank")}${col("n","Outputs",1)}${col("cit","Citations",1)}${col("fw","Mean FWCI",1)}${col("intl","Intl. share",1)}${col("lw","Lifetime works",1)}${col("h","h-index",1)}<th>Main topics</th></tr></thead><tbody>` +
-    rows.map(r => `<tr class="clk" data-p="${r.p.i}"><td><span class="pn">${esc(r.p.n)}</span>${r.p.ro.length ? `<br><small>${esc(r.p.ro.join("; "))}</small>` : ""}</td><td>${esc(r.p.u.map(unitLabel).join(", "))}${UNI ? `<br><small class="muted">${esc(r.p.fac.join(", "))}</small>` : ""}</td><td><small>${esc(r.p.rk)}</small>${UNI ? `<br><span class="ev">${esc(r.p.ev.map(x => EVL[x]).join(", "))}</span>` : ""}</td><td class="r num">${fmt(r.n)}${r.big ? `<br><small title="includes large-collaboration outputs">${r.big} large</small>` : ""}</td><td class="r num">${fmt(r.cit)}</td><td class="r num">${r.fw == null ? "–" : r.fw.toFixed(2)}</td><td class="r num">${r.intl == null ? "–" : Math.round(r.intl*100) + "%"}</td><td class="r num">${fmt(r.p.lw)}</td><td class="r num">${r.p.oa.length ? r.p.h : "–"}</td><td><small>${esc(r.top.join(" · "))}</small></td></tr>`).join("") + `</tbody>`;
+  $("#ppl-note").textContent = `${rows.length} researchers · ${S.lead ? "lead-author papers only · " : ""}lifetime figures and h-index from OpenAlex across all years`;
+  $("#ppl").innerHTML = `<thead><tr>${col("name","Name")}${col("unit","Unit")}${col("rank","Rank")}${col("n","Outputs",1)}${col("cit","Citations",1)}${col("intl","Intl. share",1)}${col("lw","Lifetime works",1)}${col("h","h-index",1)}<th>Main topics</th></tr></thead><tbody>` +
+    rows.map(r => `<tr class="clk" data-p="${r.p.i}"><td><span class="pn">${esc(r.p.n)}</span>${r.p.ro.length ? `<br><small>${esc(r.p.ro.join("; "))}</small>` : ""}</td><td>${esc(r.p.u.map(unitLabel).join(", "))}${UNI ? `<br><small class="muted">${esc(r.p.fac.join(", "))}</small>` : ""}</td><td><small>${esc(r.p.rk)}</small>${UNI ? `<br><span class="ev">${esc(r.p.ev.map(x => EVL[x]).join(", "))}</span>` : ""}</td><td class="r num">${fmt(r.n)}${r.big ? `<br><small title="includes large-collaboration outputs">${r.big} large</small>` : ""}</td><td class="r num">${fmt(r.cit)}</td><td class="r num">${r.intl == null ? "–" : Math.round(r.intl*100) + "%"}</td><td class="r num">${fmt(r.p.lw)}</td><td class="r num">${r.p.oa.length ? r.p.h : "–"}</td><td><small>${esc(r.top.join(" · "))}</small></td></tr>`).join("") + `</tbody>`;
   $("#ppl").onclick = e => { const th = e.target.closest("th[data-k]"); if (th){ const k = th.dataset.k; pplSort = { k, dir: pplSort.k === k ? -pplSort.dir : (["name","unit","rank"].includes(k) ? 1 : -1) }; return people(); }
     const tr = e.target.closest("tr[data-p]"); if (tr) openProfile(+tr.dataset.p); };
 }
@@ -1116,7 +1118,7 @@ function openProfile(i){
   dr.innerHTML = `<div class="dhead"><div><h2>${esc(p.n)}</h2><div class="dsub">${esc(p.u.map(unitLabel).join(", "))}${UNI ? " · " + esc(p.fac.join(", ")) : ""} · ${esc(p.rk)}${p.st ? " · " + esc(p.st) + " stream" : ""}</div>${UNI ? `<div class="dsub ev">Identified from: ${esc(p.ev.map(x => EVL[x]).join(", "))}${p.title ? " · listed as " + esc(p.title) : ""}</div>` : ""}${p.ro.length ? `<div class="dsub"><span class="tag a">${esc(p.ro.join("; "))}</span></div>` : ""}</div><button class="x" id="dr-x" aria-label="Close">×</button></div>
     <div class="mgrid">
       <div><b>${fmt(st.n)}</b><span>Outputs ${S.y0}–${S.y1}</span></div><div><b>${fmt(st.cit)}</b><span>Citations to these</span></div>
-      <div><b>${st.fw == null ? "–" : st.fw.toFixed(2)}</b><span>Mean FWCI</span></div><div><b>${st.intl == null ? "–" : Math.round(st.intl*100) + "%"}</b><span>International</span></div>
+      <div><b>${st.intl == null ? "–" : Math.round(st.intl*100) + "%"}</b><span>International</span></div>
       <div><b>${p.oa.length ? fmt(p.lw) : "–"}</b><span>Lifetime works</span></div><div><b>${p.oa.length ? p.h : "–"}</b><span>h-index</span></div>
       <div><b>${p.oa.length ? p.i10 : "–"}</b><span>i10-index</span></div><div><b>${fmt(xu)}</b><span>With other units</span></div>
     </div>
@@ -1282,7 +1284,7 @@ const TOOLS = [
         most_active: Object.entries(who).sort((a,b) => b[1]-a[1]).slice(0, 12), countries: Object.entries(ct).sort((a,b) => b[1]-a[1]).slice(0, 10),
         most_cited: [...ws].sort((a,b) => b.c - a.c).slice(0, 8).map(w => ({ title: w.t, year: w.y, citations: w.c, authors: w.f.map(i => P[i].n) })) }; } }
 ];
-if (UNI) TOOLS.push({ name: "research_strengths", description: "Carleton's research strengths by OpenAlex topic or broad area (subfield): outputs, growth, specialisation relative to world output, mean FWCI, number of researchers, Faculties involved, and whether the area counts as Established, Emerging or Cross-Faculty under the dashboard's fixed rules. Filter by Faculty or keywords.",
+if (UNI) TOOLS.push({ name: "research_strengths", description: "Carleton's research strengths by OpenAlex topic or broad area (subfield): outputs, growth, specialisation relative to world output, mean FWCI (areas with 5+ researchers and 20+ papers only, never for one researcher), number of researchers, Faculties involved, and whether the area counts as Established, Emerging or Cross-Faculty under the dashboard's fixed rules. Filter by Faculty or keywords.",
   inputSchema: { type:"object", properties: { level: { type:"string", description:"topic (default) or broad" }, show: { type:"string", description:"all, established, emerging or cross_faculty" }, faculty: { type:"string" }, query: { type:"string" }, limit: { type:"integer" } } },
   execute(inp){ log("checking research strengths"); const save = { lv: S.stLevel, f: new Set(S.facs), u: new Set(S.units), t: S.topic, p: S.person };
     S.stLevel = /broad|sub/i.test(inp.level || "") ? "sub" : "topic"; S.units.clear(); S.person = null; S.topic = inp.query ? String(inp.query) : "";
@@ -1306,6 +1308,7 @@ function chatSystem(){
   return `You are the research assistant for the Associate Dean of Research, International and Innovation in Carleton University's Faculty of Science (Ottawa, Canada)${UNI ? ", working here with data for the whole university" : ""}. You help with matching researchers to industry partners and grant opportunities, preparing for meetings at short notice, finding expertise for committees, and spotting research strengths.
 
 ${scope} Publications from OpenAlex, ${Y0} to ${GEN}. Large collaborations (100+ authors) and preprints are excluded from searches. Use the tools for anything about Carleton people or papers; never rely on memory about them, and never invent names, papers or numbers.
+Do not calculate, estimate or quote a citation-impact score (FWCI or similar) for an individual researcher, and do not rank researchers by citation impact; mean FWCI is reported only for research areas with enough researchers and papers behind it.
 ${webOn() ? "You can search the web. Use it to learn what a company does (products, R&D focus, Canadian presence) or what a grant program requires (eligibility, partner rules, team size, deadlines) before matching researchers to it. Say where facts came from." : "Web search is not available in this view; say so if a question needs current outside information."}
 
 How to work:
