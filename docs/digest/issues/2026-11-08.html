@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>html.gated body>*:not(#gate){visibility:hidden}#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+background:#f3f4f6;font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;color:#15171c}#gate form{background:#fff;border:1px solid #d9dce1;border-radius:6px;padding:22px;
+width:min(340px,calc(100vw - 32px));display:flex;flex-direction:column;gap:10px}#gate input{padding:8px 10px;border:1px solid #d9dce1;border-radius:4px;font:inherit}
+#gate button{padding:8px;border:0;border-radius:4px;background:#15171c;color:#fff;font:inherit;cursor:pointer}#gate small{color:#b0162b;min-height:1em}
+@media (prefers-color-scheme:dark){#gate{background:#111316;color:#eceef1}#gate form{background:#191c20;border-color:#2e3238}#gate input{background:#111316;color:#eceef1;border-color:#2e3238}#gate button{background:#eceef1;color:#111316}}</style>
+<script>(function(){var R="../../",K="cs-gate",S="carleton-research-dashboard",d=document.documentElement;d.classList.add("gated");
+function open(){d.classList.remove("gated");var g=document.getElementById("gate");if(g)g.remove();}
+async function h(t){var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(S+t));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("");}
+fetch(R+"gate.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(g){
+ var want=g&&g.sha256;var have="";try{have=localStorage.getItem(K)||""}catch(e){}
+ if(!want||have===want)return open();
+ var show=function(){var w=document.createElement("div");w.id="gate";w.innerHTML='<form><b>Password</b><input type="password" autocomplete="current-password" aria-label="Password" autofocus><button>Open</button><small></small></form>';
+  document.body.appendChild(w);var f=w.querySelector("form"),i=w.querySelector("input");i.focus();
+  f.onsubmit=async function(e){e.preventDefault();var x=await h(i.value);if(x===want){try{localStorage.setItem(K,x)}catch(e){}open();}else{w.querySelector("small").textContent="That password didn't work.";i.select();}};};
+ if(document.body)show();else document.addEventListener("DOMContentLoaded",show);});})();</script>
+<title>Science Weekly Digest</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap"><style>
+:root{--bg:#f3f4f6;--paper:#ffffff;--ink:#15171c;--ink-2:#4a4f5a;--muted:#6e7380;--line:#d9dce1;--line-2:#ebedf0;--accent:#b0162b;--accent-soft:#f7e3e6;
+--f-display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;--f-body:"IBM Plex Sans",system-ui,sans-serif;--f-read:"IBM Plex Serif",Georgia,serif;--f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#111316;--paper:#191c20;--ink:#eceef1;--ink-2:#c1c5cd;--muted:#9298a3;--line:#2e3238;--line-2:#262a30;--accent:#ec5a6d;--accent-soft:#3a1d22;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111316;--paper:#191c20;--ink:#eceef1;--ink-2:#c1c5cd;--muted:#9298a3;--line:#2e3238;--line-2:#262a30;--accent:#ec5a6d;--accent-soft:#3a1d22;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;margin:0}
+.col{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:28px 56px}
+.sheet{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:clamp(18px,4vw,40px)}
+.logo{display:block;width:clamp(160px,30vw,220px);height:auto;background:#fff;border-radius:4px;padding:6px 8px;margin:0 0 18px -8px}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px;align-items:center}
+.eyebrow i{display:inline-block;width:10px;height:10px;background:var(--accent)}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(28px,5vw,40px);line-height:1.05;margin:8px 0 6px;text-wrap:balance}
+.dates{font-family:var(--f-mono);font-size:13px;color:var(--ink-2)}
+.prep{font-size:13px;color:var(--ink-2);margin-top:4px}
+.stats{display:flex;flex-wrap:wrap;gap:6px 22px;margin:18px 0 0;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats div{display:flex;flex-direction:column}
+.stats b{font-family:var(--f-display);font-size:26px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.stats span{font-size:12px;color:var(--muted)}
+.lead{font-family:var(--f-read);font-size:17px;line-height:1.6;margin:20px 0 0;max-width:62ch}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:18px}
+.btn{border:1px solid var(--line);background:var(--paper);border-radius:4px;padding:6px 11px;cursor:pointer;font:inherit;font-size:13px;font-weight:500;color:var(--ink);text-decoration:none}
+.btn:hover{border-color:var(--ink-2)}
+.note{font-size:12.5px;color:var(--muted)}
+h2{font-family:var(--f-display);font-weight:600;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);margin:34px 0 4px;padding-bottom:6px;border-bottom:2px solid var(--ink);display:flex;justify-content:space-between;gap:12px}
+h2 span{font-family:var(--f-mono);font-weight:400;letter-spacing:0;text-transform:none;color:var(--muted)}
+.item{padding:16px 0;border-bottom:1px solid var(--line-2)}
+.item:last-child{border-bottom:0}
+.item .who{font-size:13px;font-weight:600;color:var(--accent)}
+.item .who small{font-weight:400;color:var(--muted)}
+.item h3{font-family:var(--f-body);font-size:16px;font-weight:600;line-height:1.35;margin:4px 0 6px}
+.item h3 a{color:inherit;text-decoration:none}
+.item h3 a:hover{text-decoration:underline}
+.item p{font-family:var(--f-read);font-size:15.5px;line-height:1.6;margin:0;max-width:64ch}
+.item .src{font-size:12.5px;color:var(--muted);margin-top:6px}
+.tag{display:inline-block;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--accent-soft);color:var(--ink);margin-left:4px;vertical-align:1px}
+.opp{margin-top:34px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:4px;padding:16px 18px;background:var(--bg)}
+.opp h2{margin:0 0 10px;border-bottom:0;padding-bottom:0}
+.opp h4{font-size:15px;margin:14px 0 4px;font-weight:600}
+.opp h4:first-of-type{margin-top:0}
+.opp p,.opp li{font-size:14px;line-height:1.55;margin:0 0 8px;max-width:66ch}
+.opp ul{padding-left:1.1em;margin:4px 0 8px}
+.opp .k{font-weight:600}
+.tier{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:3px;margin-right:6px;vertical-align:2px;letter-spacing:.02em}
+.tier.act{background:var(--accent);color:#fff}
+.tier.conversation{background:var(--accent-soft);color:var(--ink)}
+.opp .tally{font-family:var(--f-mono);font-size:12px;color:var(--ink-2);margin:0 0 6px}
+.opp .rule{font-size:12.5px;color:var(--muted);margin:0 0 4px}
+.opp h4.sub{font-family:var(--f-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin:16px 0 6px;font-weight:600}
+.opp h4.sub span{font-family:var(--f-body);text-transform:none;letter-spacing:0;font-weight:400;color:var(--muted)}
+.opp .none{color:var(--ink-2)}
+.opp .rec{border:1px solid var(--line);border-radius:4px;padding:12px 14px;background:var(--paper);margin:0 0 10px}
+.opp .rw{font-size:13px;font-weight:600;color:var(--accent)}
+.opp .rec .sig{font-size:12px;color:var(--muted);margin:0 0 6px}
+.opp .rec h5{font-size:15px;margin:0 0 4px}.opp .rec h5 a{color:inherit}
+.opp dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 12px;margin:8px 0 0;font-size:13.5px}
+.opp dt{font-weight:600}.opp dd{margin:0}.opp dd ul{margin:0;padding-left:1.1em}.opp dd li{margin:0 0 4px}
+.opp .nm{padding:10px 0;border-top:1px solid var(--line-2)}
+.opp .nt{font-size:14px;font-weight:600;line-height:1.35}.opp .nt a{color:inherit}
+.opp .nw{font-size:12.5px;color:var(--muted);margin:2px 0 6px}
+.opp .chips{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px}
+.opp .chk{font-size:11.5px;padding:1px 7px;border-radius:3px;border:1px solid var(--line)}
+.opp .chk.y{color:#1d6b3a;border-color:#b9dcc6;background:#eef7f1}
+.opp .chk.n{color:var(--accent);border-color:#f0c2c9;background:#fbeef0}
+.opp .nm ul{margin:0;padding-left:1.1em}.opp .nm li{font-size:13.5px;margin:0 0 3px}
+.opp .wc{font-size:13px;margin:4px 0 0;color:var(--ink-2)}
+.opp .more{font-size:12.5px;color:var(--muted);margin:10px 0 0}
+.opp .screened{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line-2);padding-top:10px;margin-top:10px}
+.also{font-size:14px}
+.also ul{padding-left:1.1em;margin:10px 0 0}
+.also li{margin:0 0 10px}
+.foot{margin-top:28px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.foot a,.arch a{color:var(--accent)}
+.arch{margin-top:10px;font-size:12.5px;color:var(--muted)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style></head><body>
+<div class="col"><article class="sheet" id="digest">
+<div class="eyebrow"><i></i>Research digest</div>
+<h1>New from Carleton Science</h1>
+<div class="dates">Week of November 2 to November 8, 2026 · issue 6</div>
+<div class="prep">Independent summary built from public data (OpenAlex, NSERC, SSHRC). Not an official Carleton University publication.</div>
+<div class="stats"><div><b>3</b><span>new outputs this week</span></div><div><b>3</b><span>Faculty researchers</span></div><div><b>3</b><span>units</span></div><div><b>0</b><span>cross-unit papers</span></div></div>
+<p class="lead">Six publications this week came from four units. Biology has two: Joe Bennett on conservation planning for eastern Canadian birds, and Ashkan Golshani on a lupin reference genome. Computer Science has two (Edward Melcer on game-based clinical exams, Evangelos Kranakis on robot search), Earth Sciences has one (Hillary Maddin on Carboniferous tetrapods), and Physics has one (Razvan Gornea, as part of the large nEXO collaboration). Each paper lists a single Carleton author, so no cross-unit collaborations within Carleton are evident this week. Four of the six are preprints or repository postings (bioRxiv, Zenodo, and two on arXiv).</p>
+<div class="tools"><button class="btn" id="copy">Copy as email text</button><a class="btn" href="../../">Open the research dashboard</a><span class="note" id="copy-note"></span></div>
+<h2>Biology <span>1</span></h2>
+<div class="item"><div class="who">Ashkan Golshani <small>Biology</small></div><h3><a href="https://doi.org/10.5281/zenodo.23878936" target="_blank" rel="noopener">Chromosome-scale reference assembly of New World lupin Lupinus mexicanus</a></h3><p>The authors assembled a chromosome-scale reference genome for Lupinus mexicanus, a lupin native to central Mexico. The assembly spans 837 Mb on 24 chromosomes and includes 36,575 protein-coding genes. It gives researchers a resource for studying New World lupins, which are less studied than Old World species, as potential high-protein crops.</p><div class="src">Zenodo (CERN European Organization for Nuclear Research) · Nov 2 · open access</div></div>
+<h2>Computer Science <span>1</span></h2>
+<div class="item"><div class="who">Edward Melcer <small>Computer Science</small></div><h3><a href="https://doi.org/10.1145/3831334" target="_blank" rel="noopener">Comparing Game-Based and Virtual Objective Structured Clinical Examination Formats: Perceived Fairness and Achievement Emotions in Clinical Competency Examinations for Low- and Middle-Income Countries</a></h3><p>This study compared a digital game-based assessment platform (ENTRUST) with virtual in-person-style clinical exams (OSCEs) during a high-stakes surgical certification exam for trainees across sub-Saharan Africa. Examinees reported lower anxiety, higher enjoyment and stronger perceptions of fairness with the game-based format, and the authors conclude that how an assessment is designed shapes how fair and stressful it feels.</p><div class="src">Proceedings of the ACM on Human-Computer Interaction · Nov 3 · open access</div></div>
+<h2>Earth Sciences <span>1</span></h2>
+<div class="item"><div class="who">Hillary Maddin <small>Earth Sciences</small></div><h3><a href="https://doi.org/10.1017/pab.2026.10119" target="_blank" rel="noopener">Estimation of body-mass distributions of Carboniferous tetrapod communities and comparison with modern coastal tropical wetlands</a></h3><p>The authors estimated body masses for 21 tetrapods from Pennsylvanian sites at Joggins and Point Aconi, Nova Scotia, using the surface area of vertebrae, and compared the size distributions with modern coastal tropical wetland communities. They conclude that bias in which animals get preserved explains some of the differences, and that the limited range of diets among Carboniferous tetrapods may explain others.</p><div class="src">Paleobiology · Nov 4 · open access</div></div>
+<section class="opp" id="opp"><h2>Innovation and partnering <span>1 to act on</span></h2>
+<p class="tally">Screened 3 of 6 papers · 1 recommended · 2 near misses · 2 with no commercial angle · 1 large collaboration not screened</p>
+<p class="rule">Four checks: <b>Market</b> (someone buys this today), <b>Partner</b> (a named, active company, Canadian preferred), <b>Carleton-led</b> (first, last or corresponding author), <b>Evidence</b> (a working result, not just an idea). A paper is recommended only when all four pass.</p>
+<h4 class="sub">Recommended</h4>
+<div class="rec"><h5>Game-based surgical exam rated fairer and less stressful than virtual OSCEs</h5><p>Melcer&#x27;s team compared the ENTRUST game-based platform with virtual OSCEs in a surgical certification exam. Examinees reported lower anxiety, more enjoyment and stronger perceptions of fairness with ENTRUST.</p><dl><dt>Route</dt><dd>Partnership. Stanford leads the platform and its authoring tools. Carleton&#x27;s contribution is design and evaluation know-how, so this is not a clean licence.</dd><dt>Market</dt><dd>Certification bodies, medical boards and exam vendors already buy assessment delivery. Oral and OSCE exams are costly and resource intensive. ENTRUST is positioned as an alternative format.</dd><dt>Partners</dt><dd><ul><li>Prometric (Baltimore, USA): Large exam vendor with a VR skills and simulation assessment offering.</li><li>Intuitive Surgical (USA): Already linked to ENTRUST through its surgical education learners forum.</li></ul></dd><dt>Carleton lead</dt><dd>. Melcer (Computer Science) is first author and helped create the ENTRUST platform.</dd><dt>Evidence</dt><dd>ENTRUST was compared with virtual OSCEs in a real high-stakes surgical certification exam across sub-Saharan Africa.</dd><dt>Next step</dt><dd>Call Melcer and Dana Lin at Stanford first to settle who owns ENTRUST IP. Then approach an assessment vendor with a Mitacs Accelerate or NSERC Alliance proposal. Stanford is a co-owner.</dd></dl></div>
+<h4 class="sub">Near misses <span>closest first</span></h4><div class="nm"><div class="nt">Optimal Conservation Prioritization for Waterfowl and Other Birds in Eastern Canada</div><div class="nw"></div><div class="chips"><span class="chk y">✓ Market</span><span class="chk y">✓ Partner</span><span class="chk y">✓ Carleton-led</span><span class="chk n">✗ Evidence</span></div><ul><li><b>Evidence:</b> Abstract reports regional maps only. No comparison with existing tools or adoption by the joint venture.</li></ul><p class="wc"><b>Would change the call:</b> A comparison with current EHJV or prioritizr results, or adoption by EHJV.</p></div><div class="nm"><div class="nt"><a href="https://doi.org/10.5281/zenodo.23878936" target="_blank" rel="noopener">Chromosome-scale reference assembly of New World lupin Lupinus mexicanus</a></div><div class="nw">Ashkan Golshani (Biology)</div><div class="chips"><span class="chk n">✗ Market</span><span class="chk y">✓ Partner</span><span class="chk n">✗ Carleton-led</span><span class="chk n">✗ Evidence</span></div><ul><li><b>Market:</b> No buyer identified for a wild lupin species genome. Lupin crops sold today are other species.</li><li><b>Carleton-led:</b> First and last authors are at Agriculture and Agri-Food Canada. Golshani is a middle author.</li><li><b>Evidence:</b> Reference assembly only, with 98% BUSCO completeness. No crop improvement method or trait validation.</li></ul><p class="wc"><b>Would change the call:</b> Carleton-led trait mapping in lupin, validated with a breeder.</p></div>
+<p class="more"><b>No commercial angle:</b>  (theoretical algorithm, no product); Estimation of body-mass distributions of Carboniferous tetrapod communities and comparison with modern coastal tropical wetlands (fossil body-mass paleontology).</p>
+</section>
+<h2>Preprints</h2><div class="also"><ul><li>Joe Bennett (Biology): Optimal Conservation Prioritization for Waterfowl and Other Birds in Eastern Canada. bioRxiv (Cold Spring Harbor Laboratory), 2026-11-02.</li><li>Evangelos Kranakis (Computer Science): Searching the Plane in the Segment Visibility Model. arXiv (Cornell University), 2026-11-02.</li><li>Razvan Gornea (Physics): Estimating cosmogenic backgrounds in nEXO at SNOLAB using Geant4 and FLUKA. arXiv (Cornell University), 2026-10-31.</li></ul></div>
+<div class="foot">Summaries and the innovation section were written by Claude from each paper's abstract and public company information, so check the paper and the company before acting. The innovation section screens every paper on the same four checks and recommends one only when all four pass, so most weeks nothing is recommended. Papers are matched to the Faculty list using OpenAlex, which can miss outputs or lag a few weeks behind publication.</div><div class="arch">All issues: <a href="2026-11-08.html">2026-11-08</a> · <a href="2026-11-01.html">2026-11-01</a> · <a href="2026-10-25.html">2026-10-25</a> · <a href="2026-10-18.html">2026-10-18</a> · <a href="2026-10-11.html">2026-10-11</a> · <a href="2026-10-04.html">2026-10-04</a></div>
+</article></div>
+<script>
+document.getElementById("copy").onclick = async () => {
+  const txt = "New from Carleton Science: Week of November 2 to November 8, 2026 (issue 6)\nIndependent summary built from public data (OpenAlex, NSERC, SSHRC). Not an official Carleton University publication.\n\nSix publications this week came from four units. Biology has two: Joe Bennett on conservation planning for eastern Canadian birds, and Ashkan Golshani on a lupin reference genome. Computer Science has two (Edward Melcer on game-based clinical exams, Evangelos Kranakis on robot search), Earth Sciences has one (Hillary Maddin on Carboniferous tetrapods), and Physics has one (Razvan Gornea, as part of the large nEXO collaboration). Each paper lists a single Carleton author, so no cross-unit collaborations within Carleton are evident this week. Four of the six are preprints or repository postings (bioRxiv, Zenodo, and two on arXiv).\n\nBIOLOGY\nChromosome-scale reference assembly of New World lupin Lupinus mexicanus\nAshkan Golshani (Biology)\nThe authors assembled a chromosome-scale reference genome for Lupinus mexicanus, a lupin native to central Mexico. The assembly spans 837 Mb on 24 chromosomes and includes 36,575 protein-coding genes. It gives researchers a resource for studying New World lupins, which are less studied than Old World species, as potential high-protein crops.\nhttps://doi.org/10.5281/zenodo.23878936  Zenodo (CERN European Organization for Nuclear Research), Nov 2\n\nCOMPUTER SCIENCE\nComparing Game-Based and Virtual Objective Structured Clinical Examination Formats: Perceived Fairness and Achievement Emotions in Clinical Competency Examinations for Low- and Middle-Income Countries\nEdward Melcer (Computer Science)\nThis study compared a digital game-based assessment platform (ENTRUST) with virtual in-person-style clinical exams (OSCEs) during a high-stakes surgical certification exam for trainees across sub-Saharan Africa. Examinees reported lower anxiety, higher enjoyment and stronger perceptions of fairness with the game-based format, and the authors conclude that how an assessment is designed shapes how fair and stressful it feels.\nhttps://doi.org/10.1145/3831334  Proceedings of the ACM on Human-Computer Interaction, Nov 3\n\nEARTH SCIENCES\nEstimation of body-mass distributions of Carboniferous tetrapod communities and comparison with modern coastal tropical wetlands\nHillary Maddin (Earth Sciences)\nThe authors estimated body masses for 21 tetrapods from Pennsylvanian sites at Joggins and Point Aconi, Nova Scotia, using the surface area of vertebrae, and compared the size distributions with modern coastal tropical wetland communities. They conclude that bias in which animals get preserved explains some of the differences, and that the limited range of diets among Carboniferous tetrapods may explain others.\nhttps://doi.org/10.1017/pab.2026.10119  Paleobiology, Nov 4\n\nINNOVATION AND PARTNERING\nScreened 3 of 6 papers \u00b7 1 recommended \u00b7 2 near misses \u00b7 2 with no commercial angle \u00b7 1 large collaboration not screened\n\nRECOMMENDED\nGame-based surgical exam rated fairer and less stressful than virtual OSCEs\n\nMelcer's team compared the ENTRUST game-based platform with virtual OSCEs in a surgical certification exam. Examinees reported lower anxiety, more enjoyment and stronger perceptions of fairness with ENTRUST.\nRoute: Partnership. Stanford leads the platform and its authoring tools. Carleton's contribution is design and evaluation know-how, so this is not a clean licence.\nMarket: Certification bodies, medical boards and exam vendors already buy assessment delivery. Oral and OSCE exams are costly and resource intensive. ENTRUST is positioned as an alternative format.\nPartners: Prometric (Baltimore, USA): Large exam vendor with a VR skills and simulation assessment offering.; Intuitive Surgical (USA): Already linked to ENTRUST through its surgical education learners forum.\nCarleton lead: . Melcer (Computer Science) is first author and helped create the ENTRUST platform.\nEvidence: ENTRUST was compared with virtual OSCEs in a real high-stakes surgical certification exam across sub-Saharan Africa.\nNext step: Call Melcer and Dana Lin at Stanford first to settle who owns ENTRUST IP. Then approach an assessment vendor with a Mitacs Accelerate or NSERC Alliance proposal. Stanford is a co-owner.\n\n\nNEAR MISSES (closest first)\nOptimal Conservation Prioritization for Waterfowl and Other Birds in Eastern Canada\n\u2713 Market   \u2713 Partner   \u2713 Carleton-led   \u2717 Evidence\n- Evidence: Abstract reports regional maps only. No comparison with existing tools or adoption by the joint venture.\nWould change the call: A comparison with current EHJV or prioritizr results, or adoption by EHJV.\n\nChromosome-scale reference assembly of New World lupin Lupinus mexicanus\nAshkan Golshani (Biology)\n\u2717 Market   \u2713 Partner   \u2717 Carleton-led   \u2717 Evidence\n- Market: No buyer identified for a wild lupin species genome. Lupin crops sold today are other species.\n- Carleton-led: First and last authors are at Agriculture and Agri-Food Canada. Golshani is a middle author.\n- Evidence: Reference assembly only, with 98% BUSCO completeness. No crop improvement method or trait validation.\nWould change the call: Carleton-led trait mapping in lupin, validated with a breeder.\n\nNo commercial angle:  (theoretical algorithm, no product); Estimation of body-mass distributions of Carboniferous tetrapod communities and comparison with modern coastal tropical wetlands (fossil body-mass paleontology)\n\n- Joe Bennett (Biology): Optimal Conservation Prioritization for Waterfowl and Other Birds in Eastern Canada. bioRxiv (Cold Spring Harbor Laboratory), 2026-11-02.\n- Evangelos Kranakis (Computer Science): Searching the Plane in the Segment Visibility Model. arXiv (Cornell University), 2026-11-02.\n- Razvan Gornea (Physics): Estimating cosmogenic backgrounds in nEXO at SNOLAB using Geant4 and FLUKA. arXiv (Cornell University), 2026-10-31.\n\nDashboard: ../../\n\nSummaries written by Claude from abstracts; check the paper before quoting.";
+  const note = document.getElementById("copy-note");
+  try { await navigator.clipboard.writeText(txt); note.textContent = "Copied. Paste into an email."; }
+  catch { const ta = document.createElement("textarea"); ta.value = txt; ta.rows = 8; ta.style.width = "100%"; document.querySelector(".tools").after(ta); ta.select(); note.textContent = "Copy was blocked. Select the text below and copy it."; }
+};
+</script></body></html>

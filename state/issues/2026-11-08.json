@@ -1,0 +1,187 @@
+{
+ "issue": 6,
+ "week_start": "2026-11-02",
+ "week_end": "2026-11-08",
+ "lead": "Six publications this week came from four units. Biology has two: Joe Bennett on conservation planning for eastern Canadian birds, and Ashkan Golshani on a lupin reference genome. Computer Science has two (Edward Melcer on game-based clinical exams, Evangelos Kranakis on robot search), Earth Sciences has one (Hillary Maddin on Carboniferous tetrapods), and Physics has one (Razvan Gornea, as part of the large nEXO collaboration). Each paper lists a single Carleton author, so no cross-unit collaborations within Carleton are evident this week. Four of the six are preprints or repository postings (bioRxiv, Zenodo, and two on arXiv).",
+ "units": [
+  {
+   "unit": "Biology",
+   "items": [
+    {
+     "id": "W7225120063",
+     "who": [
+      [
+       "Ashkan Golshani",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "Chromosome-scale reference assembly of New World lupin Lupinus mexicanus",
+     "url": "https://doi.org/10.5281/zenodo.23878936",
+     "venue": "Zenodo (CERN European Organization for Nuclear Research)",
+     "date": "2026-11-02",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The authors assembled a chromosome-scale reference genome for Lupinus mexicanus, a lupin native to central Mexico. The assembly spans 837 Mb on 24 chromosomes and includes 36,575 protein-coding genes. It gives researchers a resource for studying New World lupins, which are less studied than Old World species, as potential high-protein crops."
+    }
+   ]
+  },
+  {
+   "unit": "Computer Science",
+   "items": [
+    {
+     "id": "W7225155640",
+     "who": [
+      [
+       "Edward Melcer",
+       "Computer Science"
+      ]
+     ],
+     "who_note": "",
+     "title": "Comparing Game-Based and Virtual Objective Structured Clinical Examination Formats: Perceived Fairness and Achievement Emotions in Clinical Competency Examinations for Low- and Middle-Income Countries",
+     "url": "https://doi.org/10.1145/3831334",
+     "venue": "Proceedings of the ACM on Human-Computer Interaction",
+     "date": "2026-11-03",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "This study compared a digital game-based assessment platform (ENTRUST) with virtual in-person-style clinical exams (OSCEs) during a high-stakes surgical certification exam for trainees across sub-Saharan Africa. Examinees reported lower anxiety, higher enjoyment and stronger perceptions of fairness with the game-based format, and the authors conclude that how an assessment is designed shapes how fair and stressful it feels."
+    }
+   ]
+  },
+  {
+   "unit": "Earth Sciences",
+   "items": [
+    {
+     "id": "W7225250128",
+     "who": [
+      [
+       "Hillary Maddin",
+       "Earth Sciences"
+      ]
+     ],
+     "who_note": "",
+     "title": "Estimation of body-mass distributions of Carboniferous tetrapod communities and comparison with modern coastal tropical wetlands",
+     "url": "https://doi.org/10.1017/pab.2026.10119",
+     "venue": "Paleobiology",
+     "date": "2026-11-04",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The authors estimated body masses for 21 tetrapods from Pennsylvanian sites at Joggins and Point Aconi, Nova Scotia, using the surface area of vertebrae, and compared the size distributions with modern coastal tropical wetland communities. They conclude that bias in which animals get preserved explains some of the differences, and that the limited range of diets among Carboniferous tetrapods may explain others."
+    }
+   ]
+  }
+ ],
+ "innovation": {
+  "opportunities": [
+   {
+    "tier": "act",
+    "id": "W7155640",
+    "heading": "Game-based surgical exam rated fairer and less stressful than virtual OSCEs",
+    "what": "Melcer's team compared the ENTRUST game-based platform with virtual OSCEs in a surgical certification exam. Examinees reported lower anxiety, more enjoyment and stronger perceptions of fairness with ENTRUST.",
+    "market_fit": "Certification bodies, medical boards and exam vendors already buy assessment delivery. Oral and OSCE exams are costly and resource intensive. ENTRUST is positioned as an alternative format.",
+    "partners": [
+     {
+      "name": "Prometric",
+      "location": "Baltimore, USA",
+      "why": "Large exam vendor with a VR skills and simulation assessment offering."
+     },
+     {
+      "name": "Intuitive Surgical",
+      "location": "USA",
+      "why": "Already linked to ENTRUST through its surgical education learners forum."
+     }
+    ],
+    "next_step": "Call Melcer and Dana Lin at Stanford first to settle who owns ENTRUST IP. Then approach an assessment vendor with a Mitacs Accelerate or NSERC Alliance proposal. Stanford is a co-owner.",
+    "licensing_note": "Partnership. Stanford leads the platform and its authoring tools. Carleton's contribution is design and evaluation know-how, so this is not a clean licence.",
+    "checks": {
+     "market": true,
+     "partner": true,
+     "carleton_role": true,
+     "evidence": true
+    },
+    "evidence": {
+     "market": "Medical certification bodies and exam vendors already pay for high-stakes assessment design and delivery.",
+     "partner": "Prometric sells assessment design and delivery, including VR skills evaluation. It is operating today.",
+     "carleton_role": "Melcer (Computer Science) is first author and helped create the ENTRUST platform.",
+     "evidence": "ENTRUST was compared with virtual OSCEs in a real high-stakes surgical certification exam across sub-Saharan Africa."
+    }
+   }
+  ],
+  "near_misses": [
+   {
+    "id": "W7225107471",
+    "title": "Optimal Conservation Prioritization for Waterfowl and Other Birds in Eastern Canada",
+    "why": "evidence: Abstract reports regional maps only. No comparison with existing tools or adoption by the joint venture",
+    "checks": {
+     "market": {
+      "pass": true,
+      "note": "Conservation agencies and NGOs already use paid GIS software, such as ArcGIS, for conservation prioritization."
+     },
+     "partner": {
+      "pass": true,
+      "note": "Esri Canada is operating and funds conservation work. Esri also cites Bennett's research line."
+     },
+     "carleton_role": {
+      "pass": true,
+      "note": "Dylewsky is first author and Bennett is last author, both at Carleton."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "Abstract reports regional maps only. No comparison with existing tools or adoption by the joint venture."
+     }
+    },
+    "would_change": "A comparison with current EHJV or prioritizr results, or adoption by EHJV."
+   },
+   {
+    "id": "W7225120063",
+    "title": "Chromosome-scale reference assembly of New World lupin Lupinus mexicanus",
+    "why": "market: No buyer identified for a wild lupin species genome. Lupin crops sold today are other species; Carleton's role: First and last authors are at Agriculture and Agri-Food Canada. Golshani is a middle author; evidence: Reference assembly only, with 98% BUSCO completeness. No crop improvement method or trait validation",
+    "checks": {
+     "market": {
+      "pass": false,
+      "note": "No buyer identified for a wild lupin species genome. Lupin crops sold today are other species."
+     },
+     "partner": {
+      "pass": true,
+      "note": "Lupin Platform Inc. sells lupin flour and protein isolate in Canada and holds seed distribution rights."
+     },
+     "carleton_role": {
+      "pass": false,
+      "note": "First and last authors are at Agriculture and Agri-Food Canada. Golshani is a middle author."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "Reference assembly only, with 98% BUSCO completeness. No crop improvement method or trait validation."
+     }
+    },
+    "would_change": "Carleton-led trait mapping in lupin, validated with a breeder."
+   }
+  ],
+  "skipped": [
+   {
+    "id": "W7225182774",
+    "reason": "theoretical algorithm, no product"
+   },
+   {
+    "id": "W7225250128",
+    "reason": "fossil body-mass paleontology"
+   }
+  ],
+  "screened": "",
+  "counts": {
+   "papers": 6,
+   "large_collaborations": 1,
+   "screened": 3,
+   "skipped": 2
+  }
+ },
+ "also_title": "Preprints",
+ "also": [
+  "Joe Bennett (Biology): Optimal Conservation Prioritization for Waterfowl and Other Birds in Eastern Canada. bioRxiv (Cold Spring Harbor Laboratory), 2026-11-02.",
+  "Evangelos Kranakis (Computer Science): Searching the Plane in the Segment Visibility Model. arXiv (Cornell University), 2026-11-02.",
+  "Razvan Gornea (Physics): Estimating cosmogenic backgrounds in nEXO at SNOLAB using Geant4 and FLUKA. arXiv (Cornell University), 2026-10-31."
+ ]
+}

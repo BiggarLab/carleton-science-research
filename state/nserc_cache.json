@@ -1,19 +1,19 @@
 {
 "people": {
 "Bezaire, Veronic": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Mullally, Martha": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Pettit, Alexandra": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Biggar, Kyle": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Biggar, Kyle",
@@ -94,11 +94,27 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "808317"
+},
+{
+"name": "Biggar, Kyle",
+"title": "Systematic discovery and functional characterization of non-histone substrates for the KDM5 family of lysine demethylase enzymes",
+"amount": 40000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "828328"
+},
+{
+"name": "Biggar, Kyle",
+"title": "Acquisition of a Modern SPR Instrument for High-Precision Biomolecular Interaction Analysis",
+"amount": 144256.0,
+"year": "2025-2026",
+"program": "Research Tools and Instruments",
+"id": "833397"
 }
 ]
 },
 "Bruin, Jenny": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Bruin, Jennifer",
@@ -139,11 +155,19 @@
 "year": "2022-2023",
 "program": "Research Tools and Instruments",
 "id": "745630"
+},
+{
+"name": "Bruin, Jennifer",
+"title": "Role of the aryl hydrocarbon receptor in islet cell development",
+"amount": 80000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831352"
 }
 ]
 },
 "Rowland, Owen": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Rowland, Owen",
@@ -176,11 +200,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "808325"
+},
+{
+"name": "Rowland, Owen",
+"title": "The regulated biosynthesis and protective functions of plant surface lipids",
+"amount": 51000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "828337"
 }
 ]
 },
 "Willmore, William": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Willmore, William",
@@ -213,15 +245,23 @@
 "year": "2022-2023",
 "program": "Discovery Grants Program - Individual",
 "id": "744290"
+},
+{
+"name": "Willmore, William",
+"title": "Oxygen-Dependent Structural Alterations In Extracellular Matrix Synthesized By Cancer-Associated Fibroblasts",
+"amount": 50000.0,
+"year": "2025-2026",
+"program": "Discovery Horizons",
+"id": "823369"
 }
 ]
 },
 "Szereszewski, Kama": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Brady, Allyson": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Brady, Allyson",
@@ -246,11 +286,27 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "808318"
+},
+{
+"name": "Brady, Allyson",
+"title": "Deciphering biogeochemical controls on microplastic biodegradation in wetlands",
+"amount": 117084.0,
+"year": "2025-2026",
+"program": "Alliance Grants",
+"id": "820258"
+},
+{
+"name": "Brady, Allyson",
+"title": "Exploring microbial biodiversity and interactions within complex ecosystems to inform astrobiology and drive innovative biotechnology development",
+"amount": 30000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "828329"
 }
 ]
 },
 "Fletcher, Eugene": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Fletcher, Eugene",
@@ -267,31 +323,56 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "809352"
+},
+{
+"name": "Fletcher, Eugene",
+"title": "Exploring synthetic metabolic pathways to make yeast upcycle plastic waste and lignin-derived aromatic compounds",
+"amount": 38000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "829358"
 }
 ]
 },
 "Hanna, Dalal": {
-"fetched": "2026-10-07",
-"awards": []
+"fetched": "2026-11-09",
+"awards": [
+{
+"name": "Hanna, Dalal",
+"title": "Beyond formal boundaries: Understanding the effects of watershed-scale protection and land-use to inform freshwater conservation",
+"amount": 12500.0,
+"year": "2025-2026",
+"program": "Discovery Launch Supplement",
+"id": "822986"
+},
+{
+"name": "Hanna, Dalal",
+"title": "Beyond formal boundaries: Understanding the effects of watershed-scale protection and land-use to inform freshwater conservation",
+"amount": 38000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831787"
+}
+]
 },
 "Riva, Federico": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Bulte, Gregory": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "McKinnell, Iain": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Waltho, Nigel": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Buxton, Rachel": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Buxton, Rachel",
@@ -326,6 +407,22 @@
 "id": "807086"
 },
 {
+"name": "Buxton, Rachel",
+"title": "Guiding more effective greening and biodiversity-friendly infrastructure in Canadian cities",
+"amount": 20500.0,
+"year": "2025-2026",
+"program": "Alliance Grants",
+"id": "814274"
+},
+{
+"name": "Buxton, Rachel",
+"title": "Solutions-oriented conservation science in the Anthropocene: biodiversity outcomes of urban interventions",
+"amount": 76000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "827107"
+},
+{
 "name": "Buxton, Rachel RT",
 "title": "Guiding more effective greening and biodiversity-friendly infrastructure in Canadian cities",
 "amount": 20000.0,
@@ -336,11 +433,11 @@
 ]
 },
 "Cheetham, James": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Cullingham, Catherine": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Cullingham, Catherine",
@@ -391,6 +488,14 @@
 "id": "803087"
 },
 {
+"name": "Cullingham, Catherine",
+"title": "Identifying genetic variation associated with pathogen susceptibility in pines using population genomics",
+"amount": 66000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "824049"
+},
+{
 "name": "Cullingham, Catherine CI",
 "title": "Tracking the transmission of zoonotic arboviruses: A landscape genomics approach for targeted mosquito-borne disease surveillance in Canada",
 "amount": 286985.0,
@@ -401,7 +506,7 @@
 ]
 },
 "Dakin, Roslyn": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Dakin, Roslyn",
@@ -442,11 +547,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "802187"
+},
+{
+"name": "Dakin, Roslyn",
+"title": "The Integrative Biology of Animal Flight",
+"amount": 66000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "823745"
 }
 ]
 },
 "Davy, Christina": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Davy, Christina",
@@ -471,15 +584,23 @@
 "year": "2023-2024",
 "program": "Discovery Grants Program - Individual",
 "id": "768046"
+},
+{
+"name": "Davy, Christina",
+"title": "Effects of urbanization on health and behaviour of endangered bats",
+"amount": 49000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831576"
 }
 ]
 },
 "Dawson, Jeff": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "MacMillan, Heath": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "MacMillan, Heath",
@@ -514,6 +635,22 @@
 "id": "768215"
 },
 {
+"name": "MacMillan, Heath",
+"title": "The negative physiological effects of plastic additives on terrestrial insects",
+"amount": 37600.0,
+"year": "2025-2026",
+"program": "Alliance Grants",
+"id": "814379"
+},
+{
+"name": "MacMillan, Heath",
+"title": "Ionoregulatory collapse at insect thermal limits",
+"amount": 65000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831457"
+},
+{
 "name": "MacMillan, Heath HA",
 "title": "Leveraging thermal biology to optimise cricket rearing",
 "amount": 76486.0,
@@ -532,7 +669,7 @@
 ]
 },
 "McKay, Bruce": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "McKay, Bruce",
@@ -565,34 +702,42 @@
 "year": "2023-2024",
 "program": "Discovery Grants Program - Individual",
 "id": "770783"
+},
+{
+"name": "McKay, Bruce",
+"title": "Identification and characterization of pathways activated by splicing stressors",
+"amount": 49000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831458"
 }
 ]
 },
 "Nguyen, Vivian": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Xing, Tim": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Bertram, Sue": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Bennett, Joe": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Cooke, Steven": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Cooke, Steven",
 "title": "Towards sustainable recreational fisheries in Kenauk Nature Reserve",
 "amount": 80000.0,
 "year": "2020-2021",
-"program": "Collaborative Research and Development Grants",
+"program": "Collaborative Research and Development Grants - Project",
 "id": "696171"
 },
 {
@@ -600,7 +745,7 @@
 "title": "Supporting sustainable hydropower operation and development in British Columbia through research on fish entrainment and fish responses to gas supersaturation",
 "amount": 106334.0,
 "year": "2020-2021",
-"program": "Collaborative Research and Development Grants",
+"program": "Collaborative Research and Development Grants - Project",
 "id": "696221"
 },
 {
@@ -666,6 +811,38 @@
 "year": "2023-2024",
 "program": "Discovery Grants Program - Individual",
 "id": "770776"
+},
+{
+"name": "Cooke, Steven",
+"title": "Enhancing Recreational Fisheries Management and Stocking at Kenauk Nature",
+"amount": 30000.0,
+"year": "2025-2026",
+"program": "Alliance Grants",
+"id": "812751"
+},
+{
+"name": "Cooke, Steven",
+"title": "Black Bass Removal and Monitoring Project to Restore Ecosystem Integrity in Kingsmere Lake and Mulvihill Lake",
+"amount": 20000.0,
+"year": "2025-2026",
+"program": "Alliance Grants",
+"id": "814277"
+},
+{
+"name": "Cooke, Steven",
+"title": "Development of stressor responses for fish in watersheds where BC Hydro operates to inform restoration activities",
+"amount": 75000.0,
+"year": "2025-2026",
+"program": "Alliance Grants",
+"id": "816184"
+},
+{
+"name": "Cooke, Steven",
+"title": "Habitat Quality and the Energetics of Freshwater Fishes",
+"amount": 80000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831455"
 },
 {
 "name": "Cooke, Steven SJ",
@@ -742,7 +919,7 @@
 ]
 },
 "Fahrig, Lenore": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Fahrig, Lenore",
@@ -777,6 +954,22 @@
 "id": "804710"
 },
 {
+"name": "Fahrig, Lenore",
+"title": "Nominated for the NSERC Herzberg Medal",
+"amount": 135000.0,
+"year": "2025-2026",
+"program": "Gerhard Herzberg Canada Gold Medal for Science and Engineering",
+"id": "811612"
+},
+{
+"name": "Fahrig, Lenore",
+"title": "Disentangling the roles of mobility and propagule pressure in species responses to landscape structure",
+"amount": 130000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "824763"
+},
+{
 "name": "Fahrig, Lenore L",
 "title": "Nominated for the NSERC Herzberg Medal",
 "amount": 135000.0,
@@ -803,7 +996,7 @@
 ]
 },
 "Golshani, Ashkan": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Golshani, Ashkan",
@@ -836,15 +1029,23 @@
 "year": "2023-2024",
 "program": "Discovery Grants Program - Individual",
 "id": "770782"
+},
+{
+"name": "Golshani, Ashkan",
+"title": "Regulation of Gene Expression in Budding Yeast",
+"amount": 56000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831786"
 }
 ]
 },
 "Gorelick, Root": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Hepworth, Shelley": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Hepworth, Shelley",
@@ -879,6 +1080,22 @@
 "id": "767189"
 },
 {
+"name": "Hepworth, Shelley",
+"title": "Development of triploid hemp for enhanced cannabinoid production and pollination resistance",
+"amount": 57000.0,
+"year": "2025-2026",
+"program": "Alliance Grants",
+"id": "815925"
+},
+{
+"name": "Hepworth, Shelley",
+"title": "How organ boundaries regulate plant architecture and abscission",
+"amount": 55000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831353"
+},
+{
 "name": "Hepworth, Shelley SR",
 "title": "Polyploidization of Industrial Hemp Plants",
 "amount": 30000.0,
@@ -889,8 +1106,16 @@
 ]
 },
 "Rodrigue, Nicolas": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
+{
+"name": "Rodrigue, Nicolas",
+"title": "Modeling the evolution in protein-coding genes with site-dependent mutation-selection codon substitution models",
+"amount": 44000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831578"
+},
 {
 "name": "Rodrigue, Nicolas",
 "title": "Integrative mutation-selection models of protein-coding sequence evolution",
@@ -926,11 +1151,11 @@
 ]
 },
 "Sherratt, Tom": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Simons, Andrew": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Simons, Andrew",
@@ -971,15 +1196,23 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "805477"
+},
+{
+"name": "Simons, Andrew",
+"title": "The evolutionary consequences of environmental uncertainty",
+"amount": 80000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "825514"
 }
 ]
 },
 "Smith, Myron": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Wong, Alex": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Wong, Alex",
@@ -1020,11 +1253,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "810154"
+},
+{
+"name": "Wong, Alex",
+"title": "Evolutionary Panoramas - Fitness Landscapes in Deep Time",
+"amount": 54000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830160"
 }
 ]
 },
 "Yack, Jayne": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Yack, Jayne",
@@ -1069,7 +1310,7 @@
 ]
 },
 "Gregoire, Daniel": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Grégoire, Daniel",
@@ -1102,12 +1343,36 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "807088"
+},
+{
+"name": "Grégoire, Daniel",
+"title": "Mitigating the negative impacts of e-waste from the mine to the municipality using the power of microbes",
+"amount": 48000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "827109"
 }
 ]
 },
 "Hu, Yaxi": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
+{
+"name": "Hu, Yaxi",
+"title": "Advancing the bio-reclamation techniques for plastics in e-waste with the power of Raman spectroscopy",
+"amount": 30000.0,
+"year": "2025-2026",
+"program": "Alliance Grants",
+"id": "816058"
+},
+{
+"name": "Hu, Yaxi",
+"title": "Advancing analytical techniques for per- and polyfluoroalkyl substances in the agri-food systems",
+"amount": 62530.0,
+"year": "2025-2026",
+"program": "Alliance Grants",
+"id": "820821"
+},
 {
 "name": "Hu, Yaxi",
 "title": "Metabolomic-guided comprehensive food analysis and smart food traceability",
@@ -1120,9 +1385,25 @@
 "name": "Hu, Yaxi",
 "title": "Metabolomic-guided comprehensive food analysis and smart food traceability",
 "amount": 33000.0,
+"year": "2022-2023",
+"program": "Discovery Grants Program - Individual",
+"id": "747913"
+},
+{
+"name": "Hu, Yaxi",
+"title": "Metabolomic-guided comprehensive food analysis and smart food traceability",
+"amount": 33000.0,
 "year": "2023-2024",
 "program": "Discovery Grants Program - Individual",
 "id": "772381"
+},
+{
+"name": "Hu, Yaxi",
+"title": "Metabolomic-guided comprehensive food analysis and smart food traceability",
+"amount": 66000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "827110"
 },
 {
 "name": "Hu, Yaxi",
@@ -1131,14 +1412,6 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "807089"
-},
-{
-"name": "Hu, Yaxi",
-"title": "Metabolomic-guided comprehensive food analysis and smart food traceability",
-"amount": 33000.0,
-"year": "2022-2023",
-"program": "Discovery Grants Program - Individual",
-"id": "747913"
 },
 {
 "name": "Hu, Yaxi",
@@ -1151,7 +1424,7 @@
 ]
 },
 "Marczenko, Katherine": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Marczenko, Katherine",
@@ -1168,15 +1441,23 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "810138"
+},
+{
+"name": "Marczenko, Katherine",
+"title": "Towards Photochemical Activation of Green Energetic Materials",
+"amount": 36000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830144"
 }
 ]
 },
 "Brock, David": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Avis, Tyler": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Avis, Tyler",
@@ -1221,7 +1502,7 @@
 ]
 },
 "McMullin, David": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "McMullin, David",
@@ -1262,11 +1543,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "805474"
+},
+{
+"name": "McMullin, David",
+"title": "Unraveling the diversity and biological activity of cyanobacteria natural products",
+"amount": 48000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "825511"
 }
 ]
 },
 "Rand, Amy": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Rand, Amy",
@@ -1307,11 +1596,27 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "801396"
+},
+{
+"name": "Rand, Amy",
+"title": "The role of environmental organohalogenated contaminants on lipid metabolism and biological action",
+"amount": 48000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "823502"
+},
+{
+"name": "Rand, Amy",
+"title": "GC-MS Infrastructure Renewal for Trace-Level Chemical Characterization",
+"amount": 149379.0,
+"year": "2025-2026",
+"program": "Research Tools and Instruments",
+"id": "833399"
 }
 ]
 },
 "Rowley, Christopher": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Rowley, Christopher",
@@ -1346,6 +1651,14 @@
 "id": "801817"
 },
 {
+"name": "Rowley, Christopher",
+"title": "Machine Learned Interatomic Potentials for Chemical Discovery",
+"amount": 74000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831462"
+},
+{
 "name": "Rowley, Christopher CNM",
 "title": "New Treatments for Chronic Pain Through Molecular Simulations of Ion Channel Blockades",
 "amount": 20000.0,
@@ -1364,7 +1677,7 @@
 ]
 },
 "Sabatino, David": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Sabatino, David",
@@ -1373,11 +1686,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "810148"
+},
+{
+"name": "Sabatino, David",
+"title": "Supramolecular Ribonucleic Acid Chemistry",
+"amount": 36000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830154"
 }
 ]
 },
 "DeRosa, Maria": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "DeRosa, Maria",
@@ -1442,18 +1763,34 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "805469"
+},
+{
+"name": "DeRosa, Maria",
+"title": "Development of boar taint detection kits for use in commercial packing plants; phase II",
+"amount": 80000.0,
+"year": "2025-2026",
+"program": "Alliance Grants",
+"id": "820877"
+},
+{
+"name": "DeRosa, Maria",
+"title": "Nucleic acid aptamers for molecular recognition applications in agriculture",
+"amount": 94000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "825506"
 }
 ]
 },
 "Barry, Sean": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Barry, Sean",
 "title": "Molecular Layer Deposition (MLD) of CapturePhos - A Barrier for Flexible Electronics",
 "amount": 154800.0,
 "year": "2020-2021",
-"program": "Collaborative Research and Development Grants",
+"program": "Collaborative Research and Development Grants - Project",
 "id": "699708"
 },
 {
@@ -1487,15 +1824,31 @@
 "year": "2023-2024",
 "program": "Discovery Grants Program - Individual",
 "id": "770839"
+},
+{
+"name": "Barry, Sean",
+"title": "Ligands and Small Molecules for Tuning Surface Energy",
+"amount": 89000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831370"
+},
+{
+"name": "Barry, Sean",
+"title": "A Variable Pressure Scanning Electron Microscope for Multidisciplinary Research and Training",
+"amount": 150000.0,
+"year": "2025-2026",
+"program": "Research Tools and Instruments",
+"id": "833396"
 }
 ]
 },
 "Burk, Robert": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Hosseinian, Farah": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Hosseinian, Farah",
@@ -1540,7 +1893,7 @@
 ]
 },
 "Ianoul, Anatoli": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Ianoul, Anatoli",
@@ -1573,11 +1926,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "810130"
+},
+{
+"name": "Ianoul, Anatoli",
+"title": "Collective properties of plasmonic nanoparticle ensembles.",
+"amount": 36000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830136"
 }
 ]
 },
 "Lai, Edward": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Lai, Edward",
@@ -1606,7 +1967,7 @@
 ]
 },
 "Manthorpe, Jeff": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Manthorpe, Jeffrey",
@@ -1635,7 +1996,7 @@
 ]
 },
 "Smith, Jeff": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Smith, Jeffrey",
@@ -1680,7 +2041,7 @@
 ]
 },
 "Tsopmo, Apollinaire": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Tsopmo, Apollinaire",
@@ -1721,27 +2082,44 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "808329"
+},
+{
+"name": "Tsopmo, Apollinaire",
+"title": "Structures and mechanisms of hydrolyzed food proteins and peptides with tyrosine phosphatase amylase/glucosidase inhibitory, and glucagon like peptide 1 regulatory properties",
+"amount": 44000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "828341"
 }
 ]
 },
 "Lanthier, Mark": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Obraztsova, Svetlana": {
-"fetched": "2026-10-07",
-"awards": []
+"fetched": "2026-11-09",
+"awards": [
+{
+"name": "Obraztsova, Svetlana",
+"title": "Advanced game theory applications in social choice",
+"amount": 37000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831354"
+}
+]
 },
 "Rabinovich, Zinovi": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Subramanian, Sriram": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Wen, Junfeng": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Wen, Junfeng",
@@ -1758,47 +2136,55 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "810153"
+},
+{
+"name": "Wen, Junfeng",
+"title": "Effective and Efficient Policy Optimization in Reinforcement Learning",
+"amount": 31000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830159"
 }
 ]
 },
 "Collier, Robert": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Hill, Darryl": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Hinek, Jason": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Laurendeau, Christine": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "McKenney, Ava": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Runka, Andrew": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Shaikhet, Alina": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Sharp, Alexa": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Corriveau, Jean-Pierre": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Abdou, AbdelRahman": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Abdou, AbdelRahman",
@@ -1843,7 +2229,7 @@
 ]
 },
 "Barrera, David": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Barrera, David",
@@ -1880,7 +2266,7 @@
 ]
 },
 "Baysal, Olga": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Baysal, Olga",
@@ -1921,11 +2307,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "805462"
+},
+{
+"name": "Baysal, Olga",
+"title": "Understanding and Leveraging Context in Code Review",
+"amount": 35000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "825499"
 }
 ]
 },
 "El-Roby, Ahmed": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "El-Roby, Ahmed",
@@ -1966,11 +2360,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "805471"
+},
+{
+"name": "El-Roby, Ahmed",
+"title": "Querying Heterogeneous Data for Non-Expert Users",
+"amount": 48000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "825508"
 }
 ]
 },
 "Holden, Matthew": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Holden, Matthew",
@@ -2019,11 +2421,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "803636"
+},
+{
+"name": "Holden, Matthew",
+"title": "Data Science for Improved Outcomes in Interventional Healthcare",
+"amount": 24000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "824276"
 }
 ]
 },
 "Komeili, Majid": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Komeili, Majid",
@@ -2090,6 +2500,14 @@
 "id": "804314"
 },
 {
+"name": "Komeili, Majid",
+"title": "Machine learning methods that make sense to humans",
+"amount": 58000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "824562"
+},
+{
 "name": "Komeili, Majid M",
 "title": "Towards making graphics accessible to blind people",
 "amount": 45000.0,
@@ -2108,11 +2526,11 @@
 ]
 },
 "Melcer, Edward": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Moacdieh, Nadine Marie": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Moacdieh, Nadine Marie",
@@ -2129,15 +2547,23 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "810141"
+},
+{
+"name": "Moacdieh, Nadine Marie",
+"title": "Developing a model of clutter for car augmented reality head-up displays",
+"amount": 36000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830147"
 }
 ]
 },
 "Somayaji, Anil": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Stobert, Elizabeth": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Stobert, Elizabeth",
@@ -2186,15 +2612,23 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "804244"
+},
+{
+"name": "Stobert, Elizabeth",
+"title": "Cognition-Informed Authentication",
+"amount": 48000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "824531"
 }
 ]
 },
 "Tsang, Koon-Ho Alan": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "van Kaick, Oliver": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "van Kaick, Oliver",
@@ -2235,11 +2669,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "807096"
+},
+{
+"name": "van Kaick, Oliver",
+"title": "High-quality Shape Synthesis with User-guided Deep Neural Networks",
+"amount": 58000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "827117"
 }
 ]
 },
 "Zhao, Lianying": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Zhao, Lianying",
@@ -2306,6 +2748,14 @@
 "id": "803092"
 },
 {
+"name": "Zhao, Lianying",
+"title": "From Trusted Computing to Trustworthy Execution",
+"amount": 58000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "824050"
+},
+{
 "name": "Zhao, Lianying L",
 "title": "Towards 5G-ready Security Evaluation",
 "amount": 30000.0,
@@ -2316,7 +2766,7 @@
 ]
 },
 "Bose, Prosenjit": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Bose, Prosenjit",
@@ -2349,11 +2799,19 @@
 "year": "2023-2024",
 "program": "Discovery Grants Program - Individual",
 "id": "771146"
+},
+{
+"name": "Bose, Prosenjit",
+"title": "Geometric Algorithms and Structures",
+"amount": 81000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831452"
 }
 ]
 },
 "Kranakis, Evangelos": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Kranakis, Evangelos",
@@ -2378,11 +2836,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "810134"
+},
+{
+"name": "Kranakis, Evangelos",
+"title": "Distributed Fault Tolerant Group Search and Delivery in Mobile Agent Computing",
+"amount": 48000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830140"
 }
 ]
 },
 "Barbeau, Michel": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Barbeau, Michel",
@@ -2415,11 +2881,19 @@
 "year": "2023-2024",
 "program": "Discovery Grants Program - Individual",
 "id": "770795"
+},
+{
+"name": "Barbeau, Michel",
+"title": "Communications and Networking Extreme Environments",
+"amount": 37000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831351"
 }
 ]
 },
 "Chiasson, Sonia": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Chiasson, Sonia",
@@ -2478,11 +2952,27 @@
 "id": "808319"
 },
 {
+"name": "Chiasson, Sonia",
+"title": "EDIT-STEM: A technological platform for advancing equity, diversity, and inclusion in the natural sciences and engineering",
+"amount": 131000.0,
+"year": "2025-2026",
+"program": "Alliance Grants",
+"id": "819872"
+},
+{
+"name": "Chiasson, Sonia",
+"title": "Improving Usable Privacy and Security through Universal Design",
+"amount": 52000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "828330"
+},
+{
 "name": "Chiasson, Sonia SA",
 "title": "2022 Arthur B. McDonald Fellowship - Supplement",
 "amount": 215000.0,
 "year": "2023-2024",
-"program": "EWR Steacie Fellowships - Supplement",
+"program": "Arthur B. McDonald Fellowships - Supplement",
 "id": "772561"
 },
 {
@@ -2490,13 +2980,13 @@
 "title": "2022 Arthur B. McDonald Fellowship - Supplement",
 "amount": 215000.0,
 "year": "2022-2023",
-"program": "EWR Steacie Fellowships - Supplement",
+"program": "Arthur B. McDonald Fellowships - Supplement",
 "id": "750296"
 }
 ]
 },
 "Guo, Yuhong": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Guo, Yuhong",
@@ -2577,19 +3067,35 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "808538"
+},
+{
+"name": "Guo, Yuhong",
+"title": "Machine Learning",
+"amount": 100000.0,
+"year": "2025-2026",
+"program": "Canada Research Chairs",
+"id": "822080"
+},
+{
+"name": "Guo, Yuhong",
+"title": "Overcoming Barriers to Machine Learning via Deeper Data Exploitation",
+"amount": 46000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "828550"
 }
 ]
 },
 "Howe, Douglas": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Lalonde, Wilf": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Maheshwari, Anil": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Maheshwari, Anil",
@@ -2630,11 +3136,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "805473"
+},
+{
+"name": "Maheshwari, Anil",
+"title": "Design and analysis of algorithms for problems in computational geometry",
+"amount": 55000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "825510"
 }
 ]
 },
 "Morin, Patrick": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Morin, Pat",
@@ -2651,6 +3165,14 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "810142"
+},
+{
+"name": "Morin, Pat",
+"title": "Sparse Graphs: Structure and Algorithms",
+"amount": 55000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830148"
 },
 {
 "name": "Morin, Patrick",
@@ -2679,7 +3201,7 @@
 ]
 },
 "Mould, David": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Mould, David",
@@ -2712,11 +3234,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "801460"
+},
+{
+"name": "Mould, David",
+"title": "Surface detail in non-photorealistic and realistic images",
+"amount": 28000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "823528"
 }
 ]
 },
 "Smid, Michiel": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Smid, Michiel",
@@ -2757,11 +3287,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "808326"
+},
+{
+"name": "Smid, Michiel",
+"title": "Optimization Problems in Computational Geometry",
+"amount": 46000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "828338"
 }
 ]
 },
 "Van Oorschot, Paul": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Van Oorschot, Paul",
@@ -2838,19 +3376,44 @@
 ]
 },
 "Benjamin, Sean": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Hillen, Connor": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Skierszkan, Elliott": {
-"fetched": "2026-10-07",
-"awards": []
+"fetched": "2026-11-09",
+"awards": [
+{
+"name": "Skierszkan, Elliott",
+"title": "Metal(loid) mobilization from thawing permafrost",
+"amount": 12500.0,
+"year": "2025-2026",
+"program": "Discovery Launch Supplement",
+"id": "823254"
+},
+{
+"name": "Skierszkan, Elliott",
+"title": "Metal(loid) mobilization from thawing permafrost",
+"amount": 41000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831582"
+},
+{
+"name": "Skierszkan, Elliott",
+"title": "Metal(loid) mobilization from thawing permafrost",
+"amount": 17500.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Northern Research Supplement",
+"id": "833273"
+}
+]
 },
 "Crockford, Peter": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Crockford, Peter",
@@ -2875,15 +3438,23 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "808320"
+},
+{
+"name": "Crockford, Peter",
+"title": "Carbon cycling through time",
+"amount": 30000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "828331"
 }
 ]
 },
 "Lawley, Christopher": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Maddin, Hillary": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Maddin, Hillary",
@@ -2960,7 +3531,7 @@
 ]
 },
 "Rizo Garza, Hanika": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Rizo Garza, Hanika",
@@ -2987,6 +3558,14 @@
 "id": "765318"
 },
 {
+"name": "Rizo Garza, Hanika",
+"title": "Combined 182W and 142Nd investigations of Archean to early Proterozoic rocks to elucidate early Earth processes",
+"amount": 45000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831788"
+},
+{
 "name": "Rizo Garza, Hanika HL",
 "title": "Discovery of the Earth's oldest mantle section: geological investigation of the Saglek-Hebron Gneiss Complex in Northern Labrador",
 "amount": 15000.0,
@@ -3005,7 +3584,7 @@
 ]
 },
 "Amos, Richard": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Amos, Richard",
@@ -3027,17 +3606,41 @@
 "name": "Amos, Richard",
 "title": "Quantifying the impacts of coupled physical and bio-geochemical processes on metal transport in groundwater",
 "amount": 30000.0,
-"year": "2021-2022",
+"year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
-"id": "742725"
+"id": "805460"
+},
+{
+"name": "Amos, Richard",
+"title": "Investigation of corrosion processes affecting copper barriers on used nuclear fuel containers for deep geological repositories",
+"amount": 23000.0,
+"year": "2025-2026",
+"program": "Alliance Grants",
+"id": "812770"
+},
+{
+"name": "Amos, Richard",
+"title": "Sorption of Organo-Selenium Complexes to Iron and Manganese Oxides in Mine-Impacted Waters",
+"amount": 20000.0,
+"year": "2025-2026",
+"program": "Alliance Grants",
+"id": "820769"
 },
 {
 "name": "Amos, Richard",
 "title": "Quantifying the impacts of coupled physical and bio-geochemical processes on metal transport in groundwater",
 "amount": 30000.0,
-"year": "2024-2025",
+"year": "2025-2026",
 "program": "Discovery Grants Program - Individual",
-"id": "805460"
+"id": "825497"
+},
+{
+"name": "Amos, Richard",
+"title": "Quantifying the impacts of coupled physical and bio-geochemical processes on metal transport in groundwater",
+"amount": 30000.0,
+"year": "2021-2022",
+"program": "Discovery Grants Program - Individual",
+"id": "742725"
 },
 {
 "name": "Amos, Richard RT",
@@ -3066,7 +3669,7 @@
 ]
 },
 "Gaidies, Fred": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Gaidies, Fred",
@@ -3111,7 +3714,7 @@
 ]
 },
 "Motazedian, Dariush": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Motazedian, Dariush",
@@ -3140,7 +3743,7 @@
 ]
 },
 "Mungall, James": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Mungall, James",
@@ -3175,6 +3778,14 @@
 "id": "810145"
 },
 {
+"name": "Mungall, James",
+"title": "Creating the next generation of mineral deposits",
+"amount": 80350.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830151"
+},
+{
 "name": "Mungall, James JE",
 "title": "Petrogenesis and structure of the Tamarack Ni-Cu-Co-PGE deposit",
 "amount": 84267.0,
@@ -3193,7 +3804,7 @@
 ]
 },
 "Patterson, Tim": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Patterson, Tim",
@@ -3234,23 +3845,40 @@
 "year": "2024-2025",
 "program": "Research Tools and Instruments",
 "id": "811241"
+},
+{
+"name": "Patterson, Tim",
+"title": "Integrated tools for tracking the impact of natural and anthropogenic stressors on vulnerable northern lakes",
+"amount": 43000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830153"
 }
 ]
 },
 "Gulati, Sonia": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Pickell, Laura": {
-"fetched": "2026-10-07",
-"awards": []
+"fetched": "2026-11-09",
+"awards": [
+{
+"name": "Pickell, Laura",
+"title": "Expanding the power of the Tiny Earth Project to inspire persistence and diversity in science",
+"amount": 18800.0,
+"year": "2025-2026",
+"program": "PromoScience",
+"id": "820763"
+}
+]
 },
 "Sawler, Scott": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Cassol, Edana": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Cassol, Edana",
@@ -3295,7 +3923,7 @@
 ]
 },
 "Connor, Kristin": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Connor, Kristin",
@@ -3332,8 +3960,16 @@
 ]
 },
 "Dang, Utkarsh": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
+{
+"name": "Dang, Utkarsh",
+"title": "Model-based learning on high-dimensional biological data",
+"amount": 38000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "827108"
+},
 {
 "name": "Dang, Utkarsh",
 "title": "Model-based learning on high-dimensional biological data",
@@ -3369,15 +4005,15 @@
 ]
 },
 "Darroch, Francine": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Jull, Janet": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Oudhoff, Menno": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Oudhoff, Menno",
@@ -3386,11 +4022,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "810146"
+},
+{
+"name": "Oudhoff, Menno",
+"title": "Using automated imaging to assess epigenetic regulation of intestinal epithelial development",
+"amount": 55000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830152"
 }
 ]
 },
 "Overhage, Joerg": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Overhage, Joerg",
@@ -3423,19 +4067,27 @@
 "year": "2023-2024",
 "program": "Discovery Grants Program - Individual",
 "id": "770945"
+},
+{
+"name": "Overhage, Joerg",
+"title": "Molecular determinants of bacterial stress responses to reactive chlorine species",
+"amount": 36000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "823762"
 }
 ]
 },
 "Peters, Paul": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Ysseldyk, Renate": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Holcik, Martin": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Holcik, Martin",
@@ -3488,15 +4140,15 @@
 ]
 },
 "Landsman, Sean": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Aitken, Susan": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Vermaire, Jesse": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Vermaire, Jesse",
@@ -3537,35 +4189,60 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "807300"
+},
+{
+"name": "Vermaire, Jesse",
+"title": "Ecological change in freshwater ecosystems during the Anthropocene: The impacts of legacy pollution and emerging environmental stressors",
+"amount": 86000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "827318"
 }
 ]
 },
 "Mahdi, Esam": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Elmasri, Mohamad": {
-"fetched": "2026-10-07",
-"awards": []
+"fetched": "2026-11-09",
+"awards": [
+{
+"name": "Elmasri, Mohamad",
+"title": "Processes over graphs for transportation applications",
+"amount": 12500.0,
+"year": "2025-2026",
+"program": "Discovery Launch Supplement",
+"id": "823055"
+},
+{
+"name": "Elmasri, Mohamad",
+"title": "Processes over graphs for transportation applications",
+"amount": 35000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831785"
+}
+]
 },
 "Almaskut, Ahmed": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Devdariani, Elena": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Fodden, Brandon": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Horn, Wayne": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Amundsen, David": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Amundsen, David",
@@ -3602,7 +4279,7 @@
 ]
 },
 "Bumagin, Inna": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Bumagin, Inna",
@@ -3623,7 +4300,7 @@
 ]
 },
 "Cai, Song": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Cai, Song",
@@ -3652,28 +4329,12 @@
 ]
 },
 "Cheung, Kevin": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Crann, Jason": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
-{
-"name": "Crann, Jason",
-"title": "Operator Modules, Quantum Groups and Quantum Information",
-"amount": 21000.0,
-"year": "2020-2021",
-"program": "Discovery Grants Program - Individual",
-"id": "711450"
-},
-{
-"name": "Crann, Jason",
-"title": "Operator Modules, Quantum Groups and Quantum Information",
-"amount": 21000.0,
-"year": "2021-2022",
-"program": "Discovery Grants Program - Individual",
-"id": "734815"
-},
 {
 "name": "Crann, Jason",
 "title": "Operator Modules, Quantum Groups and Quantum Information",
@@ -3699,6 +4360,30 @@
 "id": "808600"
 },
 {
+"name": "Crann, Jason",
+"title": "Operator modules in quantum theory",
+"amount": 30000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "828610"
+},
+{
+"name": "Crann, Jason",
+"title": "Operator Modules, Quantum Groups and Quantum Information",
+"amount": 21000.0,
+"year": "2020-2021",
+"program": "Discovery Grants Program - Individual",
+"id": "711450"
+},
+{
+"name": "Crann, Jason",
+"title": "Operator Modules, Quantum Groups and Quantum Information",
+"amount": 21000.0,
+"year": "2021-2022",
+"program": "Discovery Grants Program - Individual",
+"id": "734815"
+},
+{
 "name": "Crann, Jason JA",
 "title": "Non-commutative analysis of non-local games and quantum security",
 "amount": 24850.0,
@@ -3709,27 +4394,36 @@
 ]
 },
 "Dang, Sanjeena": {
-"fetched": "2026-10-07",
-"awards": []
+"fetched": "2026-11-09",
+"awards": [
+{
+"name": "Dang, Sanjeena",
+"title": "Model-based clustering of high dimensional discrete data and compositional data",
+"amount": 21000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "825502"
+}
+]
 },
 "Mills, Shirley": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Nielsen, Jason": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Ould Mohamed Abdel Haye, Moham": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Shaikhet, Gennady": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Starling, Charles": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Starling, Charles",
@@ -3770,11 +4464,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "805478"
+},
+{
+"name": "Starling, Charles",
+"title": "New directions in C*-algebras, Groupoids, and Inverse Semigroups",
+"amount": 26000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "825515"
 }
 ]
 },
 "Wei, Yunran": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Wei, Yunran",
@@ -3799,11 +4501,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "808331"
+},
+{
+"name": "Wei, Yunran",
+"title": "Statistical Modelling of Risk Functionals",
+"amount": 27000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "828343"
 }
 ]
 },
 "Ingalls, Colin": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Ingalls, Colin",
@@ -3836,11 +4546,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "810132"
+},
+{
+"name": "Ingalls, Colin",
+"title": "Noncommutative Algebra and Algebraic Geometry",
+"amount": 44000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830138"
 }
 ]
 },
 "Neufang, Matthias": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Neufang, Matthias",
@@ -3885,7 +4603,7 @@
 ]
 },
 "Zhao, Yiqiang": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Zhao, Yiqiang",
@@ -3914,6 +4632,14 @@
 {
 "name": "Zhao, Yiqiang",
 "title": "Modelling, Performance, and Decision Making of Queues for Wireless Networks and Beyond",
+"amount": 104000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "827126"
+},
+{
+"name": "Zhao, Yiqiang",
+"title": "Modelling, Performance, and Decision Making of Queues for Wireless Networks and Beyond",
 "amount": 52000.0,
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
@@ -3930,7 +4656,7 @@
 ]
 },
 "Alaca, Ayse": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Alaca, Ayse",
@@ -3967,11 +4693,11 @@
 ]
 },
 "Alaca, Saban": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Billig, Yuly": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Billig, Yuly",
@@ -4004,11 +4730,19 @@
 "year": "2023-2024",
 "program": "Discovery Grants Program - Individual",
 "id": "770808"
+},
+{
+"name": "Billig, Yuly",
+"title": "Infinite-dimensional Lie algebras and applications",
+"amount": 30500.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831575"
 }
 ]
 },
 "Campbell, Dave": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Campbell, David",
@@ -4045,7 +4779,7 @@
 ]
 },
 "Campbell, Lucy": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Campbell, Lucy",
@@ -4074,15 +4808,15 @@
 ]
 },
 "Farrell, Patrick": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Gao, Zhicheng": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Huang, Minyi": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Huang, Minyi",
@@ -4119,11 +4853,11 @@
 ]
 },
 "Lorin de la Grandmaison, Emman": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Mezo, Paul": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Mezo, Paul",
@@ -4156,15 +4890,23 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "810140"
+},
+{
+"name": "Mezo, Paul",
+"title": "Arthur packets from the sheaf-theoretic perspective",
+"amount": 28000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830146"
 }
 ]
 },
 "Mingarelli, Angelo": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Momeni, Abbas": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Momeni, Abbas",
@@ -4197,11 +4939,19 @@
 "year": "2023-2024",
 "program": "Discovery Grants Program - Individual",
 "id": "770812"
+},
+{
+"name": "Momeni, Abbas",
+"title": "Variational principles and their applications in nonlinear differential equations and optimal mass transportation",
+"amount": 37000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "831459"
 }
 ]
 },
 "Panario, Daniel": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Panario, Daniel",
@@ -4234,12 +4984,28 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "810144"
+},
+{
+"name": "Panario, Daniel",
+"title": "Functions in finite fields and applications in cryptography and coding theory",
+"amount": 62000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830150"
 }
 ]
 },
 "Sinha, Sanjoy": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
+{
+"name": "Sinha, Sanjoy",
+"title": "Robust and efficient methods for analyzing complex longitudinal and survival data",
+"amount": 36000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "827115"
+},
 {
 "name": "Sinha, Sanjoy",
 "title": "Statistical methods for complex clinical and survey data",
@@ -4283,7 +5049,7 @@
 ]
 },
 "Stepanova, Natalia": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Stepanova, Natalia",
@@ -4308,11 +5074,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "810151"
+},
+{
+"name": "Stepanova, Natalia",
+"title": "Efficient statistical inference in sparse models",
+"amount": 31000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830157"
 }
 ]
 },
 "Stevens, Brett": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Stevens, Brett",
@@ -4339,6 +5113,14 @@
 "id": "808327"
 },
 {
+"name": "Stevens, Brett",
+"title": "Orthogonal and Covering Arrays",
+"amount": 30000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "828339"
+},
+{
 "name": "stevens, brett",
 "title": "Combinatorial Arrays",
 "amount": 24000.0,
@@ -4357,19 +5139,19 @@
 ]
 },
 "Wang, Steven": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Hellemans, Kim": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Patterson, Zachary": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Aguilar Valles, Argel": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Aguilar Valles, Argel",
@@ -4402,15 +5184,23 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "807113"
+},
+{
+"name": "Aguilar Valles, Argel",
+"title": "Molecular control of social memory in mice",
+"amount": 62000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "827134"
 }
 ]
 },
 "Bombay, Amy": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Chee, Melissa": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Chee, Melissa",
@@ -4451,11 +5241,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "809351"
+},
+{
+"name": "Chee, Melissa",
+"title": "Role of melanin-concentrating hormone on energy expenditure",
+"amount": 63000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "829357"
 }
 ]
 },
 "McQuaid, Robyn": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "McQuaid, Robyn",
@@ -4488,11 +5286,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "807091"
+},
+{
+"name": "McQuaid, Robyn",
+"title": "Characterizing the influence of endogenous and exogenous sex steroid hormones in the stress response",
+"amount": 26000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "827112"
 }
 ]
 },
 "Salmaso, Natalina": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Salmaso, Natalina",
@@ -4533,15 +5339,23 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "807093"
+},
+{
+"name": "Salmaso, Natalina",
+"title": "Sex Differences in Astroglial Cells in Telencephalic Development and Plasticity",
+"amount": 64000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "827114"
 }
 ]
 },
 "Stead, John": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Sun, Hongyu": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Sun, Hongyu",
@@ -4622,15 +5436,31 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "801475"
+},
+{
+"name": "Sun, Hongyu",
+"title": "Developmental Neuroscience",
+"amount": 100000.0,
+"year": "2025-2026",
+"program": "Canada Research Chairs",
+"id": "822081"
+},
+{
+"name": "Sun, Hongyu",
+"title": "The role of AMPA receptors in critical period plasticity in the auditory cortex",
+"amount": 31000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "823533"
 }
 ]
 },
 "Abizaid Bucio, Alfonso": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Anisman, Hymie": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Anisman, Hymie",
@@ -4651,11 +5481,11 @@
 ]
 },
 "D'Angiulli, Amedeo": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Hayley, Shawn": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Hayley, Shawn",
@@ -4700,7 +5530,7 @@
 ]
 },
 "Holahan, Matthew": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Holahan, Matthew",
@@ -4741,15 +5571,23 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "808322"
+},
+{
+"name": "Holahan, Matthew",
+"title": "The Impact of Postnatal Neurogenic and Environmental Signals on the Development of Hippocampal-Cortical Circuits Involved in Remote Memory Processing",
+"amount": 39000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "828333"
 }
 ]
 },
 "Matheson, Kim": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Smith, Patrice": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Smith, Patrice",
@@ -4770,23 +5608,23 @@
 ]
 },
 "Dale-Tam, Jennifer": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Manning, Megan": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Lucas, Katie": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Manley, Danielle": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Berman, Avery": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Berman, Avery",
@@ -4819,15 +5657,23 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "807084"
+},
+{
+"name": "Berman, Avery",
+"title": "Magnetic resonance imaging and modelling of brain function and microvascular physiology",
+"amount": 50000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "827105"
 }
 ]
 },
 "Gillberg, Dag": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Heath, Emily": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Heath, Emily",
@@ -4868,15 +5714,23 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "808321"
+},
+{
+"name": "Heath, Emily",
+"title": "Dose accumulation methods for adaptive radiation therapy",
+"amount": 32000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "828332"
 }
 ]
 },
 "Heilman, Jesse": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Ipek, Seyda": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Ipek, Seyda",
@@ -4901,20 +5755,36 @@
 "year": "2024-2025",
 "program": "Subatomic Physics Envelope - Individual",
 "id": "811419"
+},
+{
+"name": "Ipek, Seyda",
+"title": "Understanding The Universe Through Beyond The Standard Model Physics",
+"amount": 41000.0,
+"year": "2025-2026",
+"program": "Subatomic Physics Envelope - Individual",
+"id": "833494"
 }
 ]
 },
 "Viel, Simon": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Xu, Tong": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Zhang, Yue": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
+{
+"name": "Zhang, Yue",
+"title": "Exploring Novel Particle Theories of the Dark Universe",
+"amount": 65000.0,
+"year": "2025-2026",
+"program": "Subatomic Physics Envelope - Individual",
+"id": "833508"
+},
 {
 "name": "Zhang, Yue",
 "title": "Exploring Novel Particle Theories of the Dark Universe",
@@ -4934,7 +5804,7 @@
 ]
 },
 "Bellerive, Alain": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Bellerive, Alain",
@@ -4975,11 +5845,19 @@
 "year": "2024-2025",
 "program": "Subatomic Physics Envelope - Project",
 "id": "811463"
+},
+{
+"name": "Bellerive, Alain",
+"title": "The ATLAS Experiment at the Large Hadron Collider",
+"amount": 874000.0,
+"year": "2025-2026",
+"program": "Subatomic Physics Envelope - Project",
+"id": "833573"
 }
 ]
 },
 "Thomson, Rowan": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Thomson, Rowan",
@@ -5044,11 +5922,19 @@
 "year": "2024-2025",
 "program": "Discovery Grants Program - Individual",
 "id": "810152"
+},
+{
+"name": "Thomson, Rowan",
+"title": "Advancing radiation medicine physics: New approaches for modelling the interactions of radiation with matter and connecting with biological response",
+"amount": 123000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "830158"
 }
 ]
 },
 "Boulay, Mark": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Boulay, Mark",
@@ -5147,6 +6033,22 @@
 "id": "811478"
 },
 {
+"name": "Boulay, Mark",
+"title": "Particle Astrophysics",
+"amount": 200000.0,
+"year": "2025-2026",
+"program": "Canada Research Chairs",
+"id": "822284"
+},
+{
+"name": "Boulay, Mark",
+"title": "The Global Argon Dark Matter Program - 2025",
+"amount": 990000.0,
+"year": "2025-2026",
+"program": "Subatomic Physics Envelope - Project",
+"id": "833582"
+},
+{
 "name": "Boulay, Mark Guy",
 "title": "Particle Astrophysics and Subatomic Physics",
 "amount": 200000.0,
@@ -5157,7 +6059,7 @@
 ]
 },
 "Gornea, Razvan": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Gornea, Razvan",
@@ -5230,11 +6132,19 @@
 "year": "2024-2025",
 "program": "Subatomic Physics Envelope - Project",
 "id": "811490"
+},
+{
+"name": "Gornea, Razvan",
+"title": "Pioneering neutrino physics: Ba ion tagging in liquid xenon",
+"amount": 69000.0,
+"year": "2025-2026",
+"program": "Subatomic Physics Envelope - Project",
+"id": "833564"
 }
 ]
 },
 "Graham, Kevin": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Graham, Kevin",
@@ -5275,11 +6185,19 @@
 "year": "2024-2025",
 "program": "Subatomic Physics Envelope - Major Resources Support Program",
 "id": "811450"
+},
+{
+"name": "Graham, Kevin",
+"title": "Carleton Technical Team for Subatomic Physics Research",
+"amount": 322100.0,
+"year": "2025-2026",
+"program": "Subatomic Physics Envelope - Major Resources Support Program",
+"id": "833537"
 }
 ]
 },
 "Gregoire, Thomas": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Gregoire, Thomas",
@@ -5324,11 +6242,11 @@
 ]
 },
 "Koffas, Thomas": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Logan, Heather": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Logan, Heather",
@@ -5369,11 +6287,19 @@
 "year": "2024-2025",
 "program": "Subatomic Physics Envelope - Individual",
 "id": "811387"
+},
+{
+"name": "Logan, Heather",
+"title": "Higgs sector extensions and their constraints",
+"amount": 67000.0,
+"year": "2025-2026",
+"program": "Subatomic Physics Envelope - Individual",
+"id": "833528"
 }
 ]
 },
 "Murugkar, Sangeeta": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Murugkar, Sangeeta",
@@ -5416,6 +6342,14 @@
 "id": "807092"
 },
 {
+"name": "Murugkar, Sangeeta",
+"title": "Raman spectroscopy and imaging techniques for ionizing radiation research",
+"amount": 56000.0,
+"year": "2025-2026",
+"program": "Discovery Grants Program - Individual",
+"id": "827113"
+},
+{
 "name": "Murugkar, Sangeeta S",
 "title": "Development of Raman spectroscopy for biodosimetry",
 "amount": 67500.0,
@@ -5442,7 +6376,7 @@
 ]
 },
 "Stolarski, Daniel": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": [
 {
 "name": "Stolarski, Daniel",
@@ -5475,15 +6409,23 @@
 "year": "2024-2025",
 "program": "Subatomic Physics Envelope - Individual",
 "id": "811412"
+},
+{
+"name": "Stolarski, Daniel",
+"title": "Searching for New Physics with Colliders and Cosmology",
+"amount": 25000.0,
+"year": "2025-2026",
+"program": "Subatomic Physics Envelope - Individual",
+"id": "833487"
 }
 ]
 },
 "Vincter, Manuella": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 },
 "Buschek, John": {
-"fetched": "2026-10-07",
+"fetched": "2026-11-09",
 "awards": []
 }
 },
@@ -6932,6 +7874,1031 @@
 "partners": [],
 "coresearchers": [],
 "summary": "Radiation therapy (RT) is a standard treatment for ~50% of cancers worldwide. Radiation protection (RP) aims to ensure public health safety from exposure to ionizing radiation (IR) arising from all sources including RT. Major goals in RT and RP require ne",
+"department": "Physics - Physics"
+},
+"828328": {
+"app_id": "RGPIN-2023-04651",
+"program": "Discovery Grants Program - Individual",
+"area": "Medical and health sciences",
+"subject": "Proteins and peptides, amino acids",
+"partners": [],
+"coresearchers": [],
+"summary": "Histone proteins and their many post-translational modifications (PTMs) are exquisitely conserved in eukaryotes where they regulate gene expression in diverse ways. Accordingly, the factors that control the deposition, removal, and interpretation of histone modifications are themselves deeply conserved, with many established to strongly impact normal biological processes in humans. A key type of PTM occurring on histones is lysine methylation. Lysine residues can be mono-, di-, or tri-methylated (Kme1, 2, 3) and these modification states have distinctive consequences reflecting the binding of Kme-specific binding proteins. Of central importance to the research proposed here, although numerous enzymes have been highly characterized with respect to their ability to dynamically control lysine methylation at specific histone residues, the known targets of these enzymes remain almost exclusiv",
+"department": "Biochemistry"
+},
+"831352": {
+"app_id": "RGPIN-2025-04345",
+"program": "Discovery Grants Program - Individual",
+"area": "Environment",
+"subject": "Cell differentiation",
+"partners": [],
+"coresearchers": [],
+"summary": "Glucose homeostasis is controlled by hormones secreted from small endocrine cell clusters in the pancreas called \"islets\". The most predominant islet cell type is the beta cell, which secretes insulin dynamically in response to glucose and other stimuli. The overarching goal of my research program is to understand fundamental processes regulating islet biology and beta cell identity. My NSERC-funded research program is exploring the diverse functions of the aryl hydrocarbon receptor (AhR) in pancreatic islets. This receptor is activated by environmental pollutants and required for the detoxification of these chemicals. However, AhR has many diverse roles in cell biology, far beyond just responding to environmental chemicals. AhR biology is typically studied in liver-the main site for detoxification-and very little is known about this pathway in the pancreas. Over the past 7 years, the Br",
+"department": "Department of Biology & Institute of Biochemistry"
+},
+"828337": {
+"app_id": "RGPIN-2023-04663",
+"program": "Discovery Grants Program - Individual",
+"area": "Life sciences (including biotechnology)",
+"subject": "Stress physiology",
+"partners": [],
+"coresearchers": [],
+"summary": "My NSERC Discovery research program is focused on understanding the biosynthetic pathways, regulated production, and protective functions of plant surface lipids and fatty acid-derived volatile emissions. Our ultimate aim is to provide information and tools for the development of stress-tolerant crops. The improvement of crop drought tolerance is particularly attractive considering changing climate conditions are currently limiting agricultural production in large areas of the world, including Canada. Enhancing the natural defences of crops towards microbial pathogens and insects is also an important strategy in our efforts to reduce crop losses to disease. My research group uses a combination of genetic and biochemical approaches to study plant surface lipid production and function, largely in the model plant Arabidopsis thaliana but also in select crops. In this funding period, my grou",
+"department": "Biology"
+},
+"820258": {
+"app_id": "607288-2025",
+"program": "Alliance Grants",
+"area": "Environment",
+"subject": "Microbiology",
+"partners": [
+"Environment Canada"
+],
+"coresearchers": [
+"Grégoire, Daniel Steven",
+"Mahmoudi, Nagissa"
+],
+"summary": "Our research focuses on understanding microbial biodegradation of persistent microplastics in wetland environments. While biodegradable plastics degrade more readily, common petroleum derived plastics such as polyethylene, polypropylene, and PET persist in the environment and may accumulate in ecosystems, posing risks to organisms, especially benthic (near and within the sediment) communities.Wetlands are vital ecosystems will be investigated to better understand chemical and biological controls on the microbial degradation and uptake of plastic-derived carbon. The study integrates microplastic data (e.g., plastic abundance and type) with sediment biogeochemistry, microbial cell membrane phospholipid fatty acid analysis (PLFA), and natural abundance radiocarbon isotope techniques.Because microplastic carbon-13 isotope values can overlap with natural sources such as plants, the study will",
+"department": "Biology"
+},
+"828329": {
+"app_id": "RGPIN-2023-04652",
+"program": "Discovery Grants Program - Individual",
+"area": "Environmental impact of economic activities (including agriculture)",
+"subject": "Microbial ecology",
+"partners": [],
+"coresearchers": [],
+"summary": "Microorganisms are the backbone of ecosystems, driving material and energy cycling, and represent a wealth of unexplored biodiversity. Despite their ecological and biogeochemical importance, interactions among microbes and environmental factors affecting growth and substrate use remains a black box. My long-term goal is to advance knowledge of microbial diversity and interactions within complex ecosystems under varying geochemical conditions to drive innovative biotechnology development, facilitating advancements in plastic remediation and biofuels, and answer fundamental questions about the possibility of life on other planets. Extreme ecosystems give insight into microbial responses to mounting pressure from environmental stressors due to global climate change and anthropogenic impacts. Microbes are widely recognized as having the ability to remediate pollutants. Microplastics are one ",
+"department": "Department of Biology"
+},
+"829358": {
+"app_id": "RGPIN-2024-04134",
+"program": "Discovery Grants Program - Individual",
+"area": "Waste, waste management and recycling",
+"subject": "Bioremediation",
+"partners": [],
+"coresearchers": [],
+"summary": "Plastic waste pollution is a major global issue, and efforts are on-going to address this with biological and chemical methods. Both chemical and enzymatic degradation have shown promise in breaking down plastics like polyethylene terephthalate (PET) and polystyrene into their basic monomer units mainly made up of aromatic compounds such as terephthalic acid and styrene respectively. Similarly, lignin in forestry and agricultural (lignocellulosic) waste can be hydrolysed to aromatic monomers like vanillic acid. These waste materials may be used as fermentation feedstocks to make new products in a process called upcycling. Some bacteria can consume these aromatic monomers via specialised metabolic pathways. However, strict growth conditions and susceptibility to phage attacks limit their industrial use. The metabolic pathways needed to use these aromatic compounds are highly regulated, ye",
+"department": "Biology"
+},
+"831787": {
+"app_id": "RGPIN-2025-04958",
+"program": "Discovery Grants Program - Individual",
+"area": "Conservation and preservation",
+"subject": "Biogeography and landscape ecology",
+"partners": [],
+"coresearchers": [],
+"summary": "Fresh waters are home to almost 30% of the Earth's vertebrate diversity in spite of covering only 1% of the planet's surface, making them disproportionately important to biodiversity conservation. They also contribute to human wellbeing in numerous ways by supporting the provision of ecosystem services such as clean drinking water and flood regulation. At the same time, fresh waters face numerous threats, many of which are linked to human activities. My research program seeks to help diminish those threats by improving the understanding of how human activities affect fresh waters and utilising this information to guide conservation action, all the while equipping HQP to move on toward meaningful conservation careers. Land uses such as agriculture, timber harvesting and urban development can result in negative effects on fresh waters, including a reduction in water or habitat quality due ",
+"department": "Biology"
+},
+"814274": {
+"app_id": "592383-2023",
+"program": "Alliance Grants",
+"area": "Conservation and preservation",
+"subject": "Wildlife management",
+"partners": [
+"Environment Canada",
+"Ottawa Field-Naturalists' Club"
+],
+"coresearchers": [],
+"summary": "Since the 1970s, 3 billion birds have been lost in North America. People's quality of life, from the food we eat to the beauty of our natural landscapes, depends on healthy bird populations. Collisions with windows one of the largest sources of bird mortality, with up to 42 million birds killed in Canada each year by colliding with windows. A growing number of community science (aka citizen science) networks across North America patrol for bird-window collisions and record their observations. The resulting large volume of data have contributed to advancing scientific understanding of bird-window collisions, guiding building design standards, informing lawsuits against building owners, and most notably in raising public awareness of the issue. Although these community science organizations have successfully brought awareness to the issue of bird-window collisions, there have been few coor",
+"department": "Biology"
+},
+"827107": {
+"app_id": "RGPIN-2022-04888",
+"program": "Discovery Grants Program - Individual",
+"area": "Conservation and preservation",
+"subject": "Animal ecology",
+"partners": [],
+"coresearchers": [],
+"summary": "Despite a growing body of conservation science, biodiversity across many taxa continues to decline worldwide. As action becomes ever more urgent, conservation science must move from understanding threats, to designing and testing solutions. Urban areas are critical for biodiversity conservation, as urbanization is a major contributor to biodiversity loss. Moreover, urban biodiversity represents the predominant exposure to nature and opportunity to engage with conservation for over half of the global population. As such, an increasing number of nature-based solutions and ecological restoration programs target biodiversity conservation in cities. Examples include tree planting, invasive species removal, and reducing human disturbance, and these initiatives can create habitat, reduce fragmentation, and minimize threats. Yet, how wildlife responds to conservation interventions in highly modi",
+"department": "Biology"
+},
+"824049": {
+"app_id": "RGPIN-2020-04728",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Evolution and ecology",
+"partners": [],
+"coresearchers": [],
+"summary": "Canada's forests are facing increasing pressures from pests and pathogens as a result of climate change, introduction of invasive insects, and disturbances. The negative impacts from these pests/pathogens is difficult to manage as the disturbance can occur over large scales. The overall goal of my research program is to gain insight into the complex tree-pest/pathogen interaction, and how climate influences this interaction. This research will incorporate a suite of approaches (population genomics, landscape genetics, and molecular biology) to help address fundamental questions regarding the co-evolutionary relationship between pathogen and host. Ultimately the knowledge gained will be used to inform policy and management of forests. I will use two pest/pathogen systems, mountain pine beetle (Dendroctonus ponderosae) for the current grant cycle, and western gall rust (Cronartium harkness",
+"department": "Biological Sciences"
+},
+"823745": {
+"app_id": "RGPIN-2019-06140",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Neurophysiology",
+"partners": [],
+"coresearchers": [],
+"summary": "The goal of this research program is to discover the sensory, motor, and decision-making rules that guide dynamic animal behaviours. We focus on animal flight, because it is physiologically challenging and critical for survival. Research on complex flight has broad implications because animals can achieve agility that far surpasses what we can currently achieve technologically. Knowledge of flight behaviour can also inform wildlife conservation for many declining birds, bats, and insects. We use automated 3D tracking to monitor dynamic flight behaviours, and we develop novel computational approaches to analyze high-throughput data. This has resulted in internationally-recognized discoveries of the visual and biomechanical mechanisms of avian flight. The present proposal builds on this success in three main areas. Objective #1 is to determine how flying birds integrate multiple visual cue",
+"department": "Department of Biology"
+},
+"831576": {
+"app_id": "RGPIN-2025-04669",
+"program": "Discovery Grants Program - Individual",
+"area": "Conservation and preservation",
+"subject": "Behaviour",
+"partners": [],
+"coresearchers": [],
+"summary": "Bats provide a range of ecosystem services including control of agricultural and forestry pest insects. These regulating services rely on healthy, stable bat populations, but several Canadian bat species are endangered due to habitat modification and an introduced disease. Knowledge gaps around the specific behaviours and habitat requirements of these species limit our ability to conserve and recover them, particularly in areas with intense urbanization, and their small size makes them difficult to study. The proposed DG research supports the long-term objectives of my research program: to understand how individual and cumulative threats to endangered wildlife interact to determine the probability of persistence for threatened populations, and to evaluate and refine tools for addressing these threats. These complementary fundamental and applied ecology approaches are reflected in the sho",
+"department": "Biology - Biology"
+},
+"814379": {
+"app_id": "593415-2024",
+"program": "Alliance Grants",
+"area": "Conservation and preservation",
+"subject": "Animal physiology and metabolism",
+"partners": [
+"Environment Canada"
+],
+"coresearchers": [],
+"summary": "Plastic pollution is a growing worldwide concern as rates of accumulation in the environment continue to soar. More than 6900 megatons of plastic waste has already accumulated in landfills and other terrestrial environments and without dramatic changes in plastic management, this number will continue to grow. Once in the environment, plastics can break down into smaller particles, termed microplastics. These tiny fragments, less than 1 mm in size defy attempts at remediation and are a hazard to small organisms, like terrestrial insects. Many manufactured plastics contain additives intended to confer desirable properties such as mold resistance and UV stability for outdoor use. The additives pose a new environmental hazard to terrestrial insect species, that may regularly encounter them while foraging. UV stabilizing additives have been identified in municipal sewage sludge, regularly app",
+"department": "Biology"
+},
+"831457": {
+"app_id": "RGPIN-2025-04488",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Animal physiology and metabolism",
+"partners": [],
+"coresearchers": [],
+"summary": "Temperature shapes animal distribution and abundance, and our collective thermal reality is changing. The goal of my research program is to build mechanistic models that explain why insects suffer from reduced performance and increased mortality at extreme temperatures and use this insight to inform useful interventions targeting insects. I use a strong inference approach to integrative and comparative physiology, leveraging multiple model organisms to test competing hypotheses on what sets the boundaries of performance. In insects, a systemic \"ionoregulatory collapse\" involving renal function drives loss of water balance, hemolymph hyperkalemia, uncontrolled Ca2+ flux and cell death in the cold. We don't know why heat stress causes mortality, but similar phenomena occur at high temperatures. The organs involved, the causes, and at least some of the consequences of this phenomenon differ",
+"department": "Biology"
+},
+"831458": {
+"app_id": "RGPIN-2025-04489",
+"program": "Discovery Grants Program - Individual",
+"area": "Life sciences (including biotechnology)",
+"subject": "Cell biology",
+"partners": [],
+"coresearchers": [],
+"summary": "There are approximately 20, 000 protein coding genes in the human genome. These genes are transcribed into RNA and this primary transcript is further processed to generate mature messenger RNAs (mRNAs) that can be exported from the nucleus to be translated into protein. A key step is the removal of intervening non-protein-coding sequences (introns) from the primary RNA to yield an mRNA encoding a specific protein product. Collectively The transfer of genetic information from DNA to functional proteins (and specialized RNAs) is referred to as gene expression. The accuracy of gene expression is essential for life. Our overarching hypothesis posits that human cells have mechanisms to limit the consequences of errors in gene expression. This concept initially stems from work we did many years ago that indicated that interfering with transcription itself leads to a well-characterized stress r",
+"department": "Biology - Biology"
+},
+"812751": {
+"app_id": "580882-2022",
+"program": "Alliance Grants",
+"area": "Inland waters",
+"subject": "Aquatic ecology and limnology",
+"partners": [
+"Kenauk Nature X LP"
+],
+"coresearchers": [
+"Gilmour, Kathleen",
+"Raby, Graham"
+],
+"summary": "Water temperature interacts with coldwater trout populations in a number of ways. For example, trout that are captured in recreational fisheries during warm summer temperatures or in the winter during ice fishing may experience elevated post-release mortality. In the case of managed waterbodies, suitable summer thermal habitat may become limiting for trout. Stocking decisions that do not adequately consider temperature can lead to mortality such that resources are wasted and fisheries supplementation targets are not met. From a biodiversity perspective, trout can be obligate hosts for imperiled freshwater mussels to complete their life cycle such that if thermal conditions exclude trout, mollusc populations may be extirpated. All of these issues are salient to Kenauk Properties LP which is a tourism outfitter that owns and operates the largest private nature reserve in Canada. They have ",
+"department": "Biology"
+},
+"814277": {
+"app_id": "592388-2023",
+"program": "Alliance Grants",
+"area": "Inland waters",
+"subject": "Aquatic ecology and limnology",
+"partners": [
+"National Capital Commission"
+],
+"coresearchers": [],
+"summary": "Invasive fishes are among the most common threats to freshwater biodiversity. To date, there is little research on the effectiveness of non-chemical control methods for eradicating invasive fish. The proposed research will evaluate the use of intensive physical removal efforts of largemouth bass from two lakes (i.e., Kingsmere and Mulvihill) in Gatineau Park in Quebec. Largemouth bass were historically not in either lake but were introduced (it is unclear how) sometime prior to September 2021. Particularly concerning for Kingsmere Lake is that the presence of largemouth bass is often associated with a decline in native freshwater mussel species who are needed to filter bacteria (e.g. cryptosporidium, cyanobacteria) and require small bodied fish, such as minnows as their larval host during their reproductive phase. In addition to being an apex predator, largemouth bass are not a larval ho",
+"department": "Biology"
+},
+"816184": {
+"app_id": "602835-2025",
+"program": "Alliance Grants",
+"area": "Inland waters",
+"subject": "Aquatic ecology and limnology",
+"partners": [
+"BC Hydro"
+],
+"coresearchers": [
+"Martins, Eduardo",
+"Power, Michael"
+],
+"summary": "The hydropower industry in Canada generates ~60% of our electricity and it is expected that demand for \"clean\" energy will continue to grow including in BC. BC Hydro, the primary hydro utility in the province, has a long tradition of using scientific evidence to guide the siting, development and operations of hydropower facilities. However, it has become apparent that climate change will have a significant impact on aquatic productivity of the systems where BC Hydro operates demanding need for additional science to \"future proof\" their operations and infrastructure. Indeed, climate change impacts are already becoming apparent in BC with negative impacts on fish and aquatic ecosystems. Needless to say, in the future being a fish will be tough and being an environmental manager will be challenging! Proactive research to prepare for future operations is essential to ensure that BC Hydro hyd",
+"department": "Biology"
+},
+"831455": {
+"app_id": "RGPIN-2025-04485",
+"program": "Discovery Grants Program - Individual",
+"area": "Wildlife management",
+"subject": "Aquatic ecology and limnology",
+"partners": [],
+"coresearchers": [],
+"summary": "The long-term goal of our Fish Ecology and Conservation Physiology Lab is to generate actionable knowledge to inform the conservation and management of freshwater fishes. Underpinning that goal is fundamental research to establish a mechanistic understanding of the interrelationships between the environment and individual-level physiology and behaviour. Given that energy is the currency of life and integrates individual behaviour and physiology, energetics is a logical framework in which to study animal-environment interactions. Animals are linked to their environment so that when environmental conditions are suboptimal (e.g., poor habitat quality) there may be consequences on organismal performance and fitness that scale to influence populations and ecosystems. Using this framework, our lab adopts experimental and comparative approaches with a focus on ecological and management relevanc",
+"department": "Biology - Biology"
+},
+"824763": {
+"app_id": "RGPIN-2021-02513",
+"program": "Discovery Grants Program - Individual",
+"area": "Wildlife management",
+"subject": "Evolution and ecology",
+"partners": [],
+"coresearchers": [],
+"summary": "Species extinctions are driven mainly by loss of natural habitats, especially in regions with high native biodiversity such as southern Canada. Connectivity conservation has been suggested as a means of slowing species losses in such regions. In a landscape with high connectivity the natural habitat is arranged such that organisms can safely move between remnant habitat patches. Connectivity conservation preserves elements of natural habitat (e.g. hedgerows) that link habitat patches. This emphasis on connectivity conservation arises largely from research suggesting that species with higher dispersal abilities are more likely to persist in human-modified landscapes. However, the link between connectivity conservation and dispersal ability is not straightforward, because dispersal ability is conceptualized in two ways: (i) mobility - the ability of individuals to move to distant sites -, ",
+"department": "Biology - Biology"
+},
+"831786": {
+"app_id": "RGPIN-2025-04957",
+"program": "Discovery Grants Program - Individual",
+"area": "Life sciences (including biotechnology)",
+"subject": "Microbiology",
+"partners": [],
+"coresearchers": [],
+"summary": "The overall goal of the research program in my laboratory is to achieve a better understanding of how gene expression is regulated. Protein synthesis, also known as translation, is essential for the survival of a cell. The cellular machineries responsible for translation are highly conserved throughout the course of evolution. Translation control is used to regulate the expression of a variety of mRNAs under different physiological conditions such as cell transformation, apoptosis, and stress. Abnormalities in translation have been linked to pervasive human conditions such as cancer and diabetes, among others. My laboratory is particularly interested in the identification of mechanisms and novel factors that regulate protein synthesis, as well as the cross-communications between different cellular processes that govern protein synthesis. For this, we use the model eukaryotic organism the",
+"department": "Biology - Biology"
+},
+"815925": {
+"app_id": "602372-2024",
+"program": "Alliance Grants",
+"area": "Agriculture",
+"subject": "Plant and tree biology",
+"partners": [
+"Cannabis Orchards Inc.",
+"Mathematics of Information Technology and Complex Systems"
+],
+"coresearchers": [],
+"summary": "Hemp (Cannabis sativa L.) is a globally significant natural source of cannabinoids used in health and pharmaceutical products. However, a major challenge in hemp cultivation is the risk of cross-pollination. Hemp is a wind-pollinated species that produces male and female flowers on separate plants. Primarily cultivated outdoors, hemp pollen from male crops grown for fiber or grain can travel long distances and pollinate female cannabinoid producing crops. This pollination results in unwanted seed production and reduced cannabinoid yields. To address this issue, our team has developed innovative polyploidization and hybridization methods to produce triploid hemp plants. Similar to other triploid crops, these plants are expected to be infertile due to an uneven number of chromosomes, thereby minimizing the risk of cross-pollination and maximizing cannabinoid production. In this project, we",
+"department": "Biology"
+},
+"831353": {
+"app_id": "RGPIN-2025-04346",
+"program": "Discovery Grants Program - Individual",
+"area": "Agriculture and primary food production",
+"subject": "Plant growth and development",
+"partners": [],
+"coresearchers": [],
+"summary": "Plant agriculture is a key contributor to the Canadian economy. One of the key challenges in modern agriculture is optimizing plant architecture to maximize crop yields across various growing environments, including open fields, greenhouses, and vertical farming systems. Over centuries, staple crops have been bred for traits that enhance their performance and make them easier to harvest. By defining the genetic factors that control plant structure, we can accelerate the breeding process and improve crop varieties for diverse growing conditions. My NSERC Discovery research focuses on understanding how plant architecture is influenced by specialized regions called organ boundaries. These regions of regulated growth form at the junctions between organs and the plant body. These zones play a critical role in processes like leaf shaping, flower and branch formation, and the shedding of organs",
+"department": "Biology - Biology"
+},
+"831578": {
+"app_id": "RGPIN-2025-04671",
+"program": "Discovery Grants Program - Individual",
+"area": "Life sciences (including biotechnology)",
+"subject": "Taxonomy, systematics and phylogenetics",
+"partners": [],
+"coresearchers": [],
+"summary": "Objectives For over 25 years, traditional models of codon substitution have been the main tool to uncovering signals of adaptation in protein-coding genes at a phylogenetic scale. Building on our past research (Rodrigue et al., 2010), our work over the last six years has shown that the traditional codon substitution models are greatly under-powered. We have proposed new models (Rodrigue Rodrigue, Latrille, 2) Establish approximations to make our newly published models less computationally demanding, and hopefully encourage others to adopt the approaches; and 3) Conduct additional large-scale applications in multiple taxonomic groups across the tree of life, in order to reassess the prevalence of adaptation in molecular evolution. Methods Our methods for modeling the dependence between codons will consist of accounting for the encoded protein's tertiary structure constraints using statist",
+"department": "Biology"
+},
+"825514": {
+"app_id": "RGPIN-2021-03832",
+"program": "Discovery Grants Program - Individual",
+"area": "Life sciences (including biotechnology)",
+"subject": "Evolution and ecology",
+"partners": [],
+"coresearchers": [],
+"summary": "Natural environments are continually changing, which is known to cause sometimes extreme variation in evolutionary fitness. Existing species are the few representatives of survivors of all environments to the present time. The ultimate goal of this NSERC-supported research program is to contribute to an understanding of how organisms evolve in the face of continual change. It addresses fundamental questions, but has broad applicability. For example, evolution of infectious disease-causing microbes is a story of adaptation to changing host environments. There are three main ways in which organisms respond to change: 1) by adaptively \"tracking\" changing environments, 2) through \"plastic\" adjustments within a lifetime, and 3) by evolving \"bet-hedging\" traits that reduce risk of complete failure. Little is known about the relative importance of these three forms of response, how they interac",
+"department": "Biology - Biology"
+},
+"830160": {
+"app_id": "RGPIN-2024-05359",
+"program": "Discovery Grants Program - Individual",
+"area": "Life sciences (including biotechnology)",
+"subject": "Evolution and ecology",
+"partners": [],
+"coresearchers": [],
+"summary": "My laboratory is interested in understanding the evolutionary processes that have led to the incredible diversity of life on earth, and that continue to generate diversity today. Under this proposal, we will investigate whether alternative evolutionary pathways are available to different genetic types, both within and between species. Our research does not qualify as Indigenous research. In order to investigate evolutionary processes, we study bacteria in the lab and in nature. Many bacteria are easy to grow in the lab and grow very quickly with several generations per day. This means that we can study evolution in near real-time. We can easily measure many different traits of bacteria in the lab, such as growth rates, resistance to stressors, and production of key enzymes. Moreover, it is relatively easy and cheap to sequence bacterial genomes, so we can understand the genetic basis of ",
+"department": "Biology"
+},
+"827109": {
+"app_id": "RGPIN-2022-04891",
+"program": "Discovery Grants Program - Individual",
+"area": "Waste, waste management and recycling",
+"subject": "Bioremediation",
+"partners": [],
+"coresearchers": [],
+"summary": "The long-term vision for my research program is to expand the known biodiversity of microbes living in contaminated habitats and identify novel physiological pathways that can be used for sustainable waste reclamation. My initial research will concentrate on microbe-mediated metal cycling in e-waste. As the demand for consumer electronics has increased in the last decade, so has the environmental footprint associated with their manufacturing and disposal. In 2019 alone, it is estimated that 53.6 million tons of e-waste were produced at the global scale. The inability to properly manage e-waste has created a scenario in which managing e-waste is challenging because it represents a contamination source but also contains valuable metals that could be recycled, mitigating the burden of large-scale mining operations. The global growth of e-waste has created a new and important environment for",
+"department": "Chemistry"
+},
+"816058": {
+"app_id": "602597-2025",
+"program": "Alliance Grants",
+"area": "Environment",
+"subject": "Solid waste management (including radioactivity)",
+"partners": [
+"eCycle Solutions Inc."
+],
+"coresearchers": [
+"Grégoire, Daniel Steven"
+],
+"summary": "The growing demand for consumer electronics has led to a surge in electronic waste (e-waste), which poses both environmental risks and opportunities for recovering valuable materials like plastics. By 2030, plastic reclamation from solid waste is projected to be worth over $90 billion annually. However, current physical and chemical recycling methods fail to produce high-quality material from waste that contains complex mixtures of plastics alongside hazardous additives. Microbe-based plastic biodegradation strategies are a promising alternative for reclaiming plastics from of e-waste but have yet to be explored beyond soil and water habitats. To effectively tailor biodegradation strategies for plastics found in e-waste, we need to understand how microbes interact and breakdown plastics in discarded consumer electronics. As a rapid, high-throughput, non-destructive and reliable chemical ",
+"department": "Chemistry"
+},
+"820821": {
+"app_id": "608803-2025",
+"program": "Alliance Grants",
+"area": "Processed food products and beverages",
+"subject": "Food chemistry and analysis",
+"partners": [
+"Health Canada",
+"Ministry of Agriculture, Food and Agribusiness",
+"National Research Council of Canada"
+],
+"coresearchers": [
+"Rand, Amy"
+],
+"summary": "Concerns about exposure to per- and polyfluoroalkyl substances (PFAS), also known as \"forever chemicals\", through food have been growing in Canada and around the world, as these substances have been detected in some agricultural and food products. To properly understand and address this issue, reliable testing methods are urgently needed by government labs and testing companies that work with the agri-food industry. Currently, most testing methods only cover a small group of well-known PFAS, while thousands of newer ones go undetected, especially those that are more volatile and harder to measure using common methods. In addition, there are no standardized reference materials designed for food testing, which makes it difficult to confirm accuracy and quality in existing tests.This project will develop new, advanced methods to better detect a wide range of PFAS in foods such as fish, beef",
+"department": "Chemistry"
+},
+"827110": {
+"app_id": "RGPIN-2022-04892",
+"program": "Discovery Grants Program - Individual",
+"area": "Agriculture and primary food production",
+"subject": "Food chemistry and analysis",
+"partners": [],
+"coresearchers": [],
+"summary": "Food fraud is conservatively estimated to cause $65B USD in damage to the global food industry every year. Food fraud not only causes economic damage, but also impairs consumers' trust in government and the food industry, potentially hides harmful ingredients in the products, and prevents consumers from making wise decisions based on their nutritional needs as well as religious and other beliefs (e.g., vegetarian). This issue has become more serious in recent years due to the increasingly complex global food supply chain. To address this issue, our group will develop new and effective analytical methods and integrate them with a global information sharing system to detect fraudulent products and share the results to all stakeholders (i.e., consumers, food industry and government) in a timely manner. The long-term research objective of my program is to push the advancement of analytical t",
+"department": "Chemistry"
+},
+"830144": {
+"app_id": "RGPIN-2024-05330",
+"program": "Discovery Grants Program - Individual",
+"area": "Materials sciences",
+"subject": "Materials structure, properties and testing",
+"partners": [],
+"coresearchers": [],
+"summary": "Energetic Materials (EMs) have played a crucial role in various applications, from military to civilian, for centuries. However, traditional EMs (e.g. lead azide) often pose environmental and safety concerns due to their heavy-metal composition. To make progress in this field, we need to replace these traditional EMs with environmentally friendly solid-form materials with the optimal combination of energy (high performance) and safety (low sensitivity). To achieve this, we must understand how the structure of a material affects its properties (structure-property relationships), like how the structure of an EM affects the initiation of an explosive reaction. Another area of materials research is that of photomechanical materials. These materials can convert light energy (Ultraviolet and/or Visible) into mechanical energy using molecular photochemical mechanisms. Employing light as a trigg",
+"department": "Chemistry"
+},
+"825511": {
+"app_id": "RGPIN-2021-03825",
+"program": "Discovery Grants Program - Individual",
+"area": "Environment",
+"subject": "Natural products",
+"partners": [],
+"coresearchers": [],
+"summary": "With over one-million lakes and access to upwards of 20% of global freshwater resources, Canada is the steward for a significant amount of the planet's drinking water. Over the last one hundred years, freshwater ecosystems (e.g., rivers, lakes and wetlands) have undergone widespread environmental change. Intense pressure on these ecosystems from population growth, pollution, increased temperatures, and habitat degradation are responsible for this change. A visible consequence of this environmental change is the increase in frequency and magnitude of toxic cyanobacteria blooms. Cyanobacteria blooms release mixtures of biologically active compounds into freshwater that negatively impact human and ecosystem health, wildlife, and local economies. Despite this, the chemistry, environmental concentrations, toxicological risks, and beneficial properties of most cyanobacteria chemicals are unkno",
+"department": "Chemistry"
+},
+"823502": {
+"app_id": "RGPIN-2018-05330",
+"program": "Discovery Grants Program - Individual",
+"area": "Human health (including medically-related psychological research)",
+"subject": "Bioanalytical chemistry",
+"partners": [],
+"coresearchers": [],
+"summary": "We are continuously exposed to environmental contaminants from their presence in our diet and environment. These contaminants are known to manipulate fundamental biological pathways regulated by genes and proteins. However, complete understanding of contaminant fate is lacking because of uncertainty regarding their interaction with lipid signaling molecules. Signaling lipids have long been recognized as vital to an organism's biological processes. My proposed research aims to elucidate the relationship between a class of emerging contaminants, the fluorinated substances, and signaling lipids, to fully appreciate how basic and higher-order cell functions respond and adapt to this exposure. Results gained will enable us to better predict biological outcome after environmental contaminant exposure. Research by myself and others has shown that fluorinated substances induce enzymes, modify pr",
+"department": "Chemistry"
+},
+"831462": {
+"app_id": "RGPIN-2025-04495",
+"program": "Discovery Grants Program - Individual",
+"area": "Physical sciences",
+"subject": "Quantum and/or computational chemistry",
+"partners": [],
+"coresearchers": [],
+"summary": "Our group's long-term specialty is the development of new computational methods to study complex chemical systems. The accurate calculation of the energies and forces of chemical systems is fundamental to all molecular modeling and simulation methods. Machine learning (ML) has provided powerful new ways to calculate the forces between atoms with the same accuracy as quantum mechanical methods but at a dramatically reduced computational cost. These techniques train models like neural networks to approximate the calculation of the potential energy for large datasets of (quantum mechanical) QM calculations. These new methods, termed Machine Learned Interatomic Potentials (MLIPs), have made it possible to perform routine simulations of large and complex chemical systems with unprecedented accuracy. MLIPs have already made it possible to simulate chemical systems with QM accuracy without maki",
+"department": "Chemistry - Chemistry"
+},
+"830154": {
+"app_id": "RGPIN-2024-05349",
+"program": "Discovery Grants Program - Individual",
+"area": "Life sciences (including biotechnology)",
+"subject": "Nucleic acids",
+"partners": [],
+"coresearchers": [],
+"summary": "Overview: The emerging field of supramolecular ribonucleic acid (RNA) chemistry enables genetic programming of well-defined nanostructures for new material innovations in the natural sciences and engineering (NSE), including the design and development of molecular sensors. This proposed research program broadly aims to explore supramolecular chemistry for controlled functionalization and assembly of RNA nanostructures engaging in dynamic molecular sensing events. Our proposed research program will pursue the following specific research aims: Aim 1: Dynamic RNA Ligation Chemistry. A dynamic reversible conjugation strategy contingent on imine ligation chemistry will be developed to study the controlled capture and release of the near-infrared cyanine (Cy3/5) fluorescent probes from 5'-end labelled double-stranded (ds)RNA. The Cy3/5 reporters provide distance and orientation information bas",
+"department": "Chemistry"
+},
+"820877": {
+"app_id": "611492-2025",
+"program": "Alliance Grants",
+"area": "Agriculture and primary food production",
+"subject": "Nucleic acids",
+"partners": [
+"Conestoga Meat Packers Ltd.",
+"Ontario Pork Producers' Marketing Board"
+],
+"coresearchers": [],
+"summary": "Boar taint is an offensive odour in meat from non-castrated male pigs caused by specific chemical compounds present in fat tissue. When meat is cooked, most consumers can detect it by smell, thus it is necessary for pork producers to use strategies (e.g. castration) to manage boar taint. The foul odour is a deterrent in international trade and Ontario's pork producers do not want to jeopardize their excellent reputation for product quality. Stopping piglet castration would improve animal welfare and enhance on-farm performance, but it would require tools to monitor boar taint in carcasses. Additionally, ridgeling carcasses (where one or both testes did not descend into the scrotum and were missed during castration) are currently wasted from producers, as they are discarded due to boar taint risk. During phase I, the DeRosa lab at Carleton University, in collaboration with the Canadian Ce",
+"department": "Chemistry"
+},
+"825506": {
+"app_id": "RGPIN-2021-03817",
+"program": "Discovery Grants Program - Individual",
+"area": "Agriculture",
+"subject": "Bioanalytical chemistry",
+"partners": [],
+"coresearchers": [],
+"summary": "The UN's Zero Hunger sustainable development goal is to \"achieve food security\" and \"promote sustainable agriculture\". Food security exists when all people \"have access to sufficient, safe and nutritious food\". Chemistry can play a key role in addressing sustainable food security by developing new methods and tools to improve the efficiency with which crops receive vital nutrients, to protect crops from pests and stressors, and to monitor food safety and quality from farm to fork. Aptamers are DNA strands capable of selective, high affinity binding to a molecular target. They serve as the building blocks for biosensors, as targeting agents for drug delivery, and as inhibitors and therapeutics. The goal of this research program is to develop aptamer tools for advancing precision agriculture and food security through three aims: 1) Rhizosphere biomarker aptamers for biosensing: The thin re",
+"department": "Chemistry - Chemistry"
+},
+"831370": {
+"app_id": "RGPIN-2025-04367",
+"program": "Discovery Grants Program - Individual",
+"area": "Physical sciences",
+"subject": "Inorganic nonmetal chemistry",
+"partners": [],
+"coresearchers": [],
+"summary": "The key emphasis of this research program is on the development of chemical precursors and understanding surface chemical mechanisms, with a particular focus on Area Selective Deposition (ASD), a crucial technology for semiconductor manufacturing at sub-2 nm scales. Key achievements over the past six years include securing $1.4 million in industrial research funding and producing significant publications and patents. The research highlights pioneering work in the use of carbenes and other chemical compounds in chemical vapor deposition (CVD) and ALD processes. These compounds act as small molecule inhibitors (SMIs), facilitating selective deposition of films on specific surfaces, such as dielectrics, while preventing deposition on others, like metals. ASD is central to the future of semiconductor manufacturing, allowing for precision in material deposition, which is critical as feature s",
+"department": "Chemistry - Chemistry"
+},
+"830136": {
+"app_id": "RGPIN-2024-05316",
+"program": "Discovery Grants Program - Individual",
+"area": "Energy storage and conversion",
+"subject": "Surface and interfacial chemistry",
+"partners": [],
+"coresearchers": [],
+"summary": "Light is the most abundant renewable energy source available to people. Taking every opportunity to optimize and use this energy is fundamentally important to society and is critical to the well been of human civilization. This proposal will investigate one relatively unexplored property of materials suitable for light energy conversion: collective plasmonic effects in nanocrystals assembled into 3D superstructures. These collective effects are likely to bring about multiple new chemical and physical phenomena, which can be used for various sustainable applications, to improve the efficiency of light energy use. We propose to use advanced deposition technologies to design and fabricate 3D macrostructures of plasmonic nanocrystals with controlled collective properties on various surfaces and potential incorporation into flexible electronic and photonic devices. The following short-term ac",
+"department": "Chemistry"
+},
+"828341": {
+"app_id": "RGPIN-2023-04672",
+"program": "Discovery Grants Program - Individual",
+"area": "Agriculture and primary food production",
+"subject": "Food chemistry and analysis",
+"partners": [],
+"coresearchers": [],
+"summary": "The link between foods and health is well known meanwhile, the nature of compounds in foods that are beneficial, and their mechanisms are still mostly undefined. Proteins for example provide blocks (i.e. amino acids) to the body to build its own proteins. In processed foods, protein properties such as gelation, emulsion or foam stabilization, and water-holding capacity are important for optimum formation. These functions of proteins are however dependent on their purity, and their polypeptide composition which must be determined through scientific research. In cereals, benefits are often attributed to soluble fibres and polyphenols, meanwhile, benefits associated with their proteins and peptides are gradually being discovered. Peptides produced from the hydrolysis of proteins have for example antioxidant activity in food systems and some can be absorbed and provide biological functions i",
+"department": "Chemistry"
+},
+"831354": {
+"app_id": "RGPIN-2025-04348",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Artificial intelligence (computer vision, use2603)",
+"partners": [],
+"coresearchers": [],
+"summary": "This proposal aims to introduce more elaborate methods of Game Theory (GT) into Computational Social Choice (CSC). Currently, only the most basic GT approaches found their place in application to the voting theory section of CSC. While this already proved to be successful, many alleys of research remain unexplored. Most of current GT in CSC research focuses on systems with individual (though possibly statistical) features of voters and candidates are studied. But more progressive researchers started to move to (possibly external) voter groupings. Coalitional games in voting were the first step, but they still presumed that the acting power remains with individual voters. I suggest that it is necessary to view voter groups and organisations as the main actors in a game, rather than individual voters. This is far closer to reality and allows not just the analysis of voting outcomes, but al",
+"department": "School of Computer Science"
+},
+"830159": {
+"app_id": "RGPIN-2024-05357",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Learning and inference theories",
+"partners": [],
+"coresearchers": [],
+"summary": "Reinforcement learning (RL), an important branch of machine learning and artificial intelligence, trains an intelligent agent to perform a specific task by letting it interact with a complex environment. It has a wide range of applications, such as competing in video/board games, automatic trading in financial markets, autonomous vehicles, and prescribing drugs in healthcare. Despite its tremendous success in recent years, training RL agents remains inefficient in practice. To gain a theoretical understanding of RL algorithms, especially in the modern deep learning regime, and to develop efficient algorithms for practical applications, this research proposal investigates three related learning scenarios in RL: online, offline and transfer settings. In the online setting, the RL agent improves itself by interacting with an environment, which can be costly and time-consuming if the interac",
+"department": "School of Computer Science"
+},
+"825499": {
+"app_id": "RGPIN-2021-03809",
+"program": "Discovery Grants Program - Individual",
+"area": "Information systems and technology",
+"subject": "Information technology",
+"partners": [],
+"coresearchers": [],
+"summary": "Code review, i.e., manual inspection of source code changes, is recognized to be one of the most effective QA practices in software development as it delivers benefits of identifying software defects and improving software quality. Many software companies (e.g., Google, Microsoft, Shopify, Mozilla) have employed code reviews extensively. However, due to the volume of submitted contributions and the need to handle them in a timely manner, many code review processes have become more lightweight and less formal in nature. This evolution of the review process increases the risks of letting defects slip into the code as reviewers are unable to detect all of them. One of the reasons for this failure to detect defects and, as a result, reduced software quality, can be attributed to poor understanding of the context surrounding the developer's working environment. The context in a software devel",
+"department": "School of Computer Science"
+},
+"825508": {
+"app_id": "RGPIN-2021-03819",
+"program": "Discovery Grants Program - Individual",
+"area": "Information systems and technology",
+"subject": "Database management",
+"partners": [],
+"coresearchers": [],
+"summary": "Using the Internet to answer our questions is an almost daily practice, typically, using search engines like Google or Bing. Usually, this task involves browsing web pages to find the answer. In the past few years, if the question is simple (e.g., finding a fact about a famous entity), the answer is shown in what is called an infobox. Search engines show this fact by accurately extracting the entity of interest in the question written in natural language and map it to its equivalent entity in their internal data representation of the world. This internal representation is of course proprietary and different from one search engine to another. However, the approach is the same: The data is stored in a structured format (tables or what is typically called a knowledge graph) and queries are issued against it. Natural language is one of the most popular interfaces to access the underlying str",
+"department": "Computer Science"
+},
+"824276": {
+"app_id": "RGPIN-2020-05582",
+"program": "Discovery Grants Program - Individual",
+"area": "Human health (including medically-related psychological research)",
+"subject": "Expert systems",
+"partners": [],
+"coresearchers": [],
+"summary": "The long-term goal of my research in surgical data science is to develop machine learning methods for quantitative analysis of intra-operative surgical data to improve patient outcomes. Due to the diversity in disease and surgical techniques, it is imperative machine learning methods incorporate domain knowledge. My work will focus on: (1) real-time decision support and (2) performance assessment and coaching. For this funding period, I propose research in two primary applications: point-of-care ultrasound and ophthalmological surgery. These freehand interventions have many degrees of freedom and require precise sensorization of the environment. Performance Assessment and Coaching in Point-of-care Ultrasound This research works towards machine learning for comprehensive performance assessment and coaching in point-of-care ultrasound. We will explore the use of neural network architecture",
+"department": "School of Computer Science"
+},
+"824562": {
+"app_id": "RGPIN-2020-06720",
+"program": "Discovery Grants Program - Individual",
+"area": "Information systems and technology",
+"subject": "Artificial intelligence (computer vision, use2603)",
+"partners": [],
+"coresearchers": [],
+"summary": "Machine learning methods are widely used in predictions and decision making, and people are affected more than ever by these algorithmic decisions. Our society has become significantly influenced by the use of AI and this in turn has raised a lot of concerns about AI's transparency, bias and fairness. Research directed towards the interpretability of AI has become a topic of intense interest in recent years. My research program on interpretability will proceed in two fundamental directions. The first is to develop novel methods that are designed with interpretability in mind. Despite the recent popularity of deep learning methods and their successful application in areas such as object recognition and machine translation, many other areas -especially in finance, insurance and, to some extent health- have been hesitant to benefit from advances in deep learning, mainly because of issues ro",
+"department": "Computer Science"
+},
+"830147": {
+"app_id": "RGPIN-2024-05336",
+"program": "Discovery Grants Program - Individual",
+"area": "Computer software",
+"subject": "Information technology",
+"partners": [],
+"coresearchers": [],
+"summary": "Distracted driving is a major cause of accidents each year in Canada, with drivers' attention drawn to information and objects within the car. Augmented reality (AR) head-up displays (HUDs), which overlay key driving information and warnings in a driver's line of sight, have been touted as a means of making driving safer by helping drivers keep their eyes on the road. As part of the potential future of driving, AR HUDs can also play a critical role in autonomous driving, allowing drivers to quickly regain awareness of their driving status and surroundings if they had been engaged in a non-driving related task. However, the concern is that AR HUD imagery will lead to a new and equally dangerous type of in-vehicle driver distraction. Display design guidelines related to clutter - an excess of poorly organized data that leads to performance decrements - do not account for the unique nature ",
+"department": "Computer Science"
+},
+"824531": {
+"app_id": "RGPIN-2020-06574",
+"program": "Discovery Grants Program - Individual",
+"area": "Computer software",
+"subject": "Software and development",
+"partners": [],
+"coresearchers": [],
+"summary": "Users are often unconsidered in the design of security systems, leading to vulnerabilities when users are unable or unwilling to use the provided security mechanisms. Usable security examines the human factors in security systems, and attempts to design security systems that are both secure and usable. Authentication is one of the central security tasks affecting users, but is plagued by usability and security problems. These problems result from inattention to the cognitive capabilities of the user, and in this Discovery Grant I suggest that by applying research on human cognition to the design of authentication tools, we will be able to improve the usability and security of user authentication tasks. In this grant, the following three themes will be explored: The first theme will be to examine the usability of individual authentication systems, and examine how cognitive theories can be",
+"department": "Computer Sciences"
+},
+"827117": {
+"app_id": "RGPIN-2022-04903",
+"program": "Discovery Grants Program - Individual",
+"area": "Information systems and technology",
+"subject": "Information technology",
+"partners": [],
+"coresearchers": [],
+"summary": "The long-term goal of my research program is to develop methods for facilitating the creation of computer graphics content, especially 3D shapes. 3D content is important in a variety of applications, such as computer games, movies and animation, and architectural simulations. In the next period of funding, I propose to develop computational methods for synthesizing 3D shapes with deep neural networks (DNNs), where the synthesis can be controlled by users and the generated shapes are of high-quality. These methods can then be applied to facilitate the generation of different types of 3D content. Content creation is challenging since high-quality 3D shapes are commonly created by explicitly modeling the geometry of the shapes. This process involves the use of complex user interfaces by skilled artists in a time-consuming process requiring substantial training. Thus, during the last two dec",
+"department": "Computer Science, School of - Computer Science, School of"
+},
+"824050": {
+"app_id": "RGPIN-2020-04734",
+"program": "Discovery Grants Program - Individual",
+"area": "Information systems and technology",
+"subject": "Computer architecture and design",
+"partners": [],
+"coresearchers": [],
+"summary": "When a computer user accesses a remote service involving sensitive information, ensuring that the service program has executed with integrity and confidentiality is important before the service outcome can be trusted. For this purpose, trusted computing (TC) is introduced, which performs certain cryptographic measurements for inital integrity and isolates the program from outside for integrity and confidentiality. To eventually provide evidence of such protection to the user, a mechanism called attestation signs the measurements with a long-term secret that never gets exposed elsewhere and sends them to the user. The user chooses to trust the execution, seeing the measurements come from the long-term secret (verified with the public part of that secret) and cryptographically match the intended program. Nonetheless, current TC is still sub-ideal to be considered trustworthy. Things can go",
+"department": "School of Computer Science"
+},
+"831452": {
+"app_id": "RGPIN-2025-04482",
+"program": "Discovery Grants Program - Individual",
+"area": "Mathematical sciences",
+"subject": "Algorithms",
+"partners": [],
+"coresearchers": [],
+"summary": "My research area is Computational Geometry, a field dedicated to designing and analyzing algorithms and data structures for geometric problems. The long-term objective of my research program is to explore different properties of various geometric structures and leverage these insights to develop efficient algorithms and data structures. The core focus of the proposal is on geometric graphs which play a fundamental role in modeling spatial relationships, and the proposal addresses the following key research areas in geometric graphs: Geometric Spanners: A central research theme is the study of spanners which are sparse subgraphs that approximate the shortest path distances of dense graphs. Spanners have applications in network design, graph compression, and data structures. We explore different methods for constructing spanners, such as greedy algorithms, well-separated pair decomposition",
+"department": "Computer Science, School of - Computer Science, School of"
+},
+"830140": {
+"app_id": "RGPIN-2024-05323",
+"program": "Discovery Grants Program - Individual",
+"area": "Mathematical sciences",
+"subject": "Distributed and parallel processing",
+"partners": [],
+"coresearchers": [],
+"summary": "Fault-tolerant search with multiple robots has attracted the attention of researchers in theoretical computer science and distributed computing. Group Search and Delivery are two important tasks arising from the need to design algorithms for multi-agent systems in distributed computing. I intend to design new algorithms and analyze tradeoffs involving time, mobility, and fault-tolerant communication for solving such tasks. The proposed algorithms will employ cooperating, communicating autonomous mobile agents in a distributed setting and operate over continuous as well as discrete domains. Proposed strategies will be fault-tolerant and maintain optimal characteristics despite hardware and/or software failures during their execution. Long term goal is to understand the impact of faulty agents on search and delivery. The general approach will be theoretical; research outcomes do not preclu",
+"department": "School of Computer Science"
+},
+"831351": {
+"app_id": "RGPIN-2025-04344",
+"program": "Discovery Grants Program - Individual",
+"area": "Computer communications",
+"subject": "Information technology",
+"partners": [],
+"coresearchers": [],
+"summary": "Extreme environments refer to hot or cold locations, extremely high or low-pressure environments, critical control loops in aircraft and nuclear power plants, high-speed rotating equipment, oil and gas pipelines, and platforms. Canada's subsurface (underwater) environment is particularly relevant to this, as it has the longest coastlines of any country in the world. It presents unique challenges and is harsh physically with noisy, poor, and multi-path propagation, resulting in low signal-to-noise ratio and inter-symbol interference. All network architectures and protocols must be reinvented for this communication frontier. My research program aims to develop robust and secure extreme-environment communication systems through a holistic approach, a unique endeavor in the field. A long-term objective is the design of original protocols and architectures for underwater communications, netwo",
+"department": "Computer Science, School of - Computer Science, School of"
+},
+"819872": {
+"app_id": "606707-2025",
+"program": "Alliance Grants",
+"area": "Computer software",
+"subject": "Information technology",
+"partners": [
+"Canadian Association for Neuroscience",
+"Canadian Association of Physicists",
+"Canadian Council of Professional Engineers",
+"Canadian Society for Chemistry",
+"IEEE Canada",
+"Ivado",
+"National Research Council of Canada",
+"Perimeter Institute for Theoretical Physics",
+"Réseau interuniversitaire québécois pour l''équité, la diversité et l''inclusion"
+],
+"coresearchers": [
+"Chan, Adrian",
+"Cruickshank, Cynthia Ann",
+"Hellemans, Kim",
+"Hewitt, Kevin",
+"McQuaid, Robyn",
+"Melcer, Edward",
+"Orji, Rita",
+"Salmaso, Natalina",
+"Thomson, Rowan"
+],
+"summary": "This project aims to develop novel interactive technologies as a transformative approach for addressing the challenges to equity, diversity, and inclusion (EDI) in science, technology, engineering, and mathematics (STEM). These societal problems affect who engages in STEM and their experiences, how those STEM activities happen, their success, and connections between STEM and society. In the proposed research, we will advance the Computer Science sub-field of Persuasive Technology (PT) - interactive systems to motivate positive changes in user attitude and behaviour through informed persuasion. NSERC has recognized this type of research as being particularly high-value (e.g., applicant Chiasson and co-applicant Orji areMcDonald Fellows); our research builds on and extends these outstanding NSE technological innovations. We follow the original intent of PT: to transparently encourage and s",
+"department": "Computer Science, School of"
+},
+"828330": {
+"app_id": "RGPIN-2023-04653",
+"program": "Discovery Grants Program - Individual",
+"area": "Computer software",
+"subject": "Software and development",
+"partners": [],
+"coresearchers": [],
+"summary": "With this Discovery Grant, I plan to reconsider the field of usable security and privacy through a wider Universal Design lens that broadly accounts for Equity, Diversity, and Inclusion (EDI). In this context, security and privacy design should account for users of different ages, including children and older adults, users with different physical characteristics (e.g., skin tones), different literacy and digital literacy levels, and other cultural and socio-economic factors. We can also view attitudinal differences and preferences through this lens, such as comfort with risk-taking and privacy preferences. Although work in usable security and privacy seeks to meet the needs of different user populations, the field as a whole has not been viewed through the lens of Universal Design as an overarching framework. My long-term research goal is to develop the Universal PRIvacy and SEcurity (UP",
+"department": "Computer Science"
+},
+"828550": {
+"app_id": "RGPIN-2023-05015",
+"program": "Discovery Grants Program - Individual",
+"area": "Information systems and technology",
+"subject": "Learning and inference theories",
+"partners": [],
+"coresearchers": [],
+"summary": "Machine learning is playing an increasingly central role in decision making systems in fields as diverse as autonomous driving, robotics, commerce, healthcare and medicine. These successes, however, have largely relied on human supervision in the form of accurate annotation of sufficient training data, which incurs significant cost, and is often the primary barrier to practical deployments. Additionally, machine learning must increasingly address concerns about data privacy and security while coping with ever more decentralized data storage and processing systems. Therefore, this research will investigate deeper data exploitation strategies that enable prediction model training in more realistic annotation availability scenarios. One key direction is to extend domain adaptation methods to preserve privacy and cope with distributed learning. Domain adaptation seeks to reduce the annotatio",
+"department": "School of Computer Science"
+},
+"825510": {
+"app_id": "RGPIN-2021-03823",
+"program": "Discovery Grants Program - Individual",
+"area": "Information, computer and communication technologies",
+"subject": "Algorithms",
+"partners": [],
+"coresearchers": [],
+"summary": "I study computational problems within the framework of the design and analysis of algorithms. The solution to a problem requires designing an efficient algorithm and supporting data structures, analyzing their complexities, and providing correctness proofs. My long term research objectives are to design, analyze and implement algorithms for problems that require spatial information and (a) are fundamental, (b) have practical significance, (c) are theoretically-challenging and have the potential to raise new questions, (d) contribute to an understanding of a methodology or concept, (e) lead to the development of generic techniques and tools that apply to other problems, and (f) are of interest to students, members of our research lab, and to many of my collaborators worldwide. To have a flavour of my research, let us consider the following abstract algorithmic problem inspired by mobile n",
+"department": "School of Computer Science"
+},
+"830148": {
+"app_id": "RGPIN-2024-05337",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Theory of computation",
+"partners": [],
+"coresearchers": [],
+"summary": "Graphs represent pairwise relationships (edges) between objects (vertices) and appear in various guises across all branches of science and humanities: flow charts, molecule diagrams, entity-relationship models, circuits, communication networks, social networks, road networks, neural networks, and phylogenetic trees are just a few examples of other names given to graphs. For many reasons, such as cost, complexity, and geometric constraints, graphs that arise in applications are often sparse; the number of edges in the graph is not more than a constant times the number of vertices.The classic example of sparse graphs are planar graphs whose vertices can be drawn as points in the plane and whose edges can be drawn as non-crossing curves joining their endpoints. Planar graphs arise naturally from a physical representation of some graph (e.g., a road network, a circuit, or a map) on a 2-dimen",
+"department": "School of Computer Science"
+},
+"823528": {
+"app_id": "RGPIN-2018-06298",
+"program": "Discovery Grants Program - Individual",
+"area": "Computer software",
+"subject": "Graphics",
+"partners": [],
+"coresearchers": [],
+"summary": "Texture is used in computer graphics to provide the illusion of a detailed world; virtual buildings, streets, and landscapes have minute details of roughness and rust expressed using texture. Texture synthesis creates the huge quantities of detail needed for the virtual world of a game or film.Texture is used as well in non-photorealistic rendering (NPR) which seeks to create images in artistic styles, such as painting or pen-and-ink sketching. Historical artworks and illustrations are sometimes magnificently detailed. In computer graphics, such detail would normally be supplied by texture; in NPR, though, texture has been reserved for depicting the media (say, the roughness of the paint) and not used to add detail to the scene shown in the image. Thus, non-photorealistic images have tended to be far less detailed than computer-generated realistic images. I mean to change that by bringin",
+"department": "School of Computer Science"
+},
+"828338": {
+"app_id": "RGPIN-2023-04666",
+"program": "Discovery Grants Program - Individual",
+"area": "Information, computer and communication technologies",
+"subject": "Information technology",
+"partners": [],
+"coresearchers": [],
+"summary": "The general theme in this project is the design and analysis of optimization algorithms for geometric problems. The research will concentrate on the following topics: Geometric Spanner Networks and Routing: How to construct a sparse network that connects a given set of sites such that for any two sites, their shortest-path distance in the network is approximately equal to their straight-line distance. Given such a network, how to use geometric information to compute (exact or approximate) shortest paths between any two given sites, how to compute such a path incrementally using only local information. Geometric Data Structures: How to organize geometric data, such that an informative \"summary\" of the subset of the data that is contained in a query region can be computed. How to organize geometric data in which each data element belongs to some category, such that the different categories",
+"department": "School of Computer Science"
+},
+"831582": {
+"app_id": "RGPIN-2025-04676",
+"program": "Discovery Grants Program - Individual",
+"area": "Earth sciences",
+"subject": "Environmental geochemistry",
+"partners": [],
+"coresearchers": [],
+"summary": "Metals are micronutrients that are essential to life on Earth, but can also be toxic at elevated exposure. They are found in the environment under both natural and anthropogenic forms, and their mobility depends on complex interactions between water flow, minerals, organic matter, and microbes. There is increasing evidence that thawing permafrost alters biogeochemical and hydrological controls on the fate of metals in the environment, and may enhance their mobility. Enhanced metal mobilization from thawing permafrost has widespread implications for water quality and ecosystem health in Canada, which has permafrost under approximately a third of its land area. This permafrost is thawing at an accelerated rate due to global warming. The overall research objective is to understand the biogeochemical controls on metal mobility during permafrost thaw. I hypothesize that increased fluid flow, ",
+"department": "Earth Science"
+},
+"828331": {
+"app_id": "RGPIN-2023-04654",
+"program": "Discovery Grants Program - Individual",
+"area": "Earth sciences",
+"subject": "Earth-systems science",
+"partners": [],
+"coresearchers": [],
+"summary": "A central aim of the study of Earth history is to reconstruct past climate and atmospheric composition and to determine the extent and type of life that has existed throughout Earth's past. Achieving this aim is contingent on the quantification of the major components of Earth's carbon cycle through time. For example, the amount of inorganic carbon that is converted to organic carbon through primary production sets the amount of life that can ultimately inhabit the Earth. Estimating how much of this biologically fixed carbon is exported to the ocean interior (i.e., the strength of `the biological pump') is an important regulator of atmospheric CO2 levels; and quantifying how much organic carbon is ultimately buried exerts a dominant control on how much O2 is in the atmosphere. Traditionally, reconstructions of Earth's past carbon cycle have only had access to geochemical proxies that tar",
+"department": "Earth and Planetary Sciences"
+},
+"831788": {
+"app_id": "RGPIN-2025-04960",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Petrology, igneous and metamorphic geology",
+"partners": [],
+"coresearchers": [],
+"summary": "The timing and mechanisms of Earth's chemical differentiation, crust formation, and the widespread stabilization of subduction-driven plate tectonics are major unresolved questions in geoscience. Geochemical evidence suggests that the silicate Earth underwent differentiation during the Hadean era (before 4 billion years ago), but the processes that led to this differentiation are still debated. Plate tectonics is the driving force behind the shaping of our planet's landforms, oceans, and habitats. It redistributes elements between the crust and the mantle, triggers seismic activity, and is responsible for the formation of certain ore deposits. However, there is still ongoing controversy regarding the onset of subduction-driven plate tectonics and its evolution throughout geological history. This research aims to provide answers by studying two short-lived isotope systems: 182Hf-182W (wit",
+"department": "Earth Sciences"
+},
+"812770": {
+"app_id": "580962-2022",
+"program": "Alliance Grants",
+"area": "Nuclear energy",
+"subject": "Environmental geochemistry",
+"partners": [
+"Canadian Nuclear Safety Commission"
+],
+"coresearchers": [],
+"summary": "The Canadian Nuclear Safety Commission (CNSC) is the federal regulator responsible regulating the management of used nuclear fuel (UNF). In the coming years, the CNSC expects the Nuclear Waste Management Organization (NWMO) to submit a proposal for a licence to build and operate a deep geological repository (DGR) for the long-term storage of UNF. The goal of this project, in partnership with the CNSC, is to provide critical scientific information to allow the CNSC to effectively evaluate the NWMO proposal. In particular, this research will investigate the corrosion of copper in the DGR environment and evaluate whether a 3 mm copper coating on UNF storage containers can effectively mitigate corrosion processes and maintain the integrity of the UNF storage container over a lifespan of one million years. This project will include four main tasks; 1) a thorough literature review of copper co",
+"department": "Earth Sciences"
+},
+"820769": {
+"app_id": "608545-2025",
+"program": "Alliance Grants",
+"area": "Environmental impact of economic activities (including agriculture)",
+"subject": "Environmental geochemistry",
+"partners": [
+"Lorax Environmental Services Ltd",
+"Mathematics of Information Technology and Complex Systems"
+],
+"coresearchers": [
+"Rizo Garza, Hanika"
+],
+"summary": "The release of selenium (Se) from coal mining operations is a significant environmental risk and financial liability to the coal mining industry. In particular, the organic Se species, methyl seleninic acid [MeSe(IV)] and dimethyl selenoxide (DMSeO) are known to be present in coal mining environments and are significantly more bioavailable than inorganic Se species, making them a greater threat to aquatic ecosystems. This project will investigate the sorption of MeSe(IV) and DMSeO onto iron (Fe) and manganese (Mn) oxides, which are ubiquitous minerals in the environment and important substrate for attenuation of many metals. Currently, there is no literature on this process, forming an important knowledge gap on the transport of Se species in the environment. Additionally, the fractionation of Se isotope ratios during the sorption process will be investigated to provide a valuable tool f",
+"department": "Earth Sciences"
+},
+"825497": {
+"app_id": "RGPIN-2021-03807",
+"program": "Discovery Grants Program - Individual",
+"area": "Environmental impact of economic activities (including agriculture)",
+"subject": "Environmental geology",
+"partners": [],
+"coresearchers": [],
+"summary": "Throughout Canada and globally groundwater resources are under continuous threat from industry and other anthropogenic activities. The protection of this resource is vital for the health of humans and ecosystems, and economic security. Canada's economy relies heavily on the resource sector, but these activities, due to their nature and scale have significant impact on the environment. For example, mining operations, including mineral and petroleum resources, generate waste products that have potential to leach contaminant, and particularly toxic metals, into the environment. The transport and fate of contaminants in groundwater and in soils often involve complex biogeochemical reactions coupled to physical transport and attenuation processes. The objectives of this research program are to better understand and quantify these coupled biogeochemical and physical processes, to determine the",
+"department": "Earth Sciences - Earth Sciences"
+},
+"830151": {
+"app_id": "RGPIN-2024-05343",
+"program": "Discovery Grants Program - Individual",
+"area": "Mineral resources ( prospecting, exploration, mining, extraction, processing)",
+"subject": "Economic geology",
+"partners": [],
+"coresearchers": [],
+"summary": "Summary of Proposal As the global economy grows to match the anticipated level of prosperity of the world's peak population, that the global primary metal production is predicted to at least double by 2060. Several key commodities like nickel may see up to 20-fold increases in demand as the economy moves toward full electrification. Currently recognized resources of nickel and several other important metals will fall far short of expected demand. Supply shortfalls will cause a surge in exploration for conventional mineral deposit types as well as increased scrutiny of mineralization styles currently regarded as being subeconomic. The proposed research will examine the fundamental geometallurgical controls on the economic feasibility of metal extraction from a variety of rock types not currently regarded as ores and will take the resulting information into large-scale examinations of the ",
+"department": "Earth Sciences"
+},
+"830153": {
+"app_id": "RGPIN-2024-05345",
+"program": "Discovery Grants Program - Individual",
+"area": "Earth sciences",
+"subject": "Environmental geology",
+"partners": [],
+"coresearchers": [],
+"summary": "The boreal biome in Alberta is a vast, ecologically diverse region spanning the northern part of the province. Three percent of the region comprises lakes that support abundant aquatic life. These lakes are of great importance to the economic and cultural well-being of the people living there. Many lakes in the region face environmental challenges related to high levels of nutrient enrichment (eutrophication) from agriculture, industry, and/or municipalities, as well as the effects of a variable and rapidly changing climate. Fully understanding the degree to which lake eutrophication is driven by climate change is hampered by the short instrumental climatological record. The impact of multiple environmental stressors further complicates paleoenvironmental interpretation, thus requiring high-resolution temporal data and multiple diagnostic proxies to identify and distinguish these many dr",
+"department": "Earth Sciences"
+},
+"827108": {
+"app_id": "RGPIN-2022-04889",
+"program": "Discovery Grants Program - Individual",
+"area": "Mathematical sciences",
+"subject": "Biostatistics",
+"partners": [],
+"coresearchers": [],
+"summary": "Mixture models continue to be the most popular approach for learning hidden cluster structure in heterogenous data. Mixture-based cluster analysis assumes that data arise from a mixture of homogenous subpopulations where a cluster can be modeled parametrically via a component density. In model-based clustering (unsupervised) as opposed to model-based classification (semi-supervised), no group label information is available for any observations. Advantages of probabilistic mixture model clustering as well as the statistical grounding for such models is well established. The long term goal of the applicant's research program is to develop flexible statistical models for biological and clinical data sets to gain deeper insight into complex underlying processes. While flexible models continue to be developed, some challenges remain. Mixtures of Gaussian distributions remain popular but perfo",
+"department": "Health Sciences"
+},
+"830152": {
+"app_id": "RGPIN-2024-05344",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Cell differentiation",
+"partners": [],
+"coresearchers": [],
+"summary": "The epithelial lining of our intestine rapidly turns over, completely replaced every week, and fueled by adult intestinal stem cells. Intestinal stem cells divide daily and give rise to all intestinal epithelial lineages including absorptive enterocytes, mucus-producing goblet cells, and antimicrobial-secreting Paneth cells. In contrast, during the fetal stage, there is no such hierarchy, and virtually any cell can be the clonal origin for large patches of tissue. Postnatally, a switch occurs from this fetal non-hierarchal system to the adult stem-cell based system, via an unknown mechanism. Organoids are 3-dimensional organ-like structures cultured in petri dishes that mimic their in vivo counterparts. They have eased the study of epithelium ex vivo and are important in reducing animal use in research. Although this is encouraging, the analysis of organoids and their cellular compositio",
+"department": "Health Sciences"
+},
+"823762": {
+"app_id": "RGPIN-2019-06335",
+"program": "Discovery Grants Program - Individual",
+"area": "Life sciences (including biotechnology)",
+"subject": "Bacteriology",
+"partners": [],
+"coresearchers": [],
+"summary": "Bacteria are able to survive under a variety of often harmful environmental conditions such as heat or cold, nutrient limitation, low ph or antimicrobial treatment due to a multitude of adaptation processes and stress responses. One important adaptation and survival strategy exhibited by a wide range of bacteria is the formation of biofilms. Biofilms are communities of microorganisms attached to a surface and embedded in a self-produced, polymeric matrix. Biofilm bacteria have been shown to possess unique characteristics including increased stress resistance and higher antimicrobial tolerance leading to failures in bacterial eradication in many technical settings including drinking and waste water industries. During a screening of different environmental stressors, we identified that the oxidative stress agents and commonly used reactive chlorine species (RCS) and disinfectants sodium hy",
+"department": "Department of Health Sciences"
+},
+"827318": {
+"app_id": "RGPIN-2022-05233",
+"program": "Discovery Grants Program - Individual",
+"area": "Inland waters",
+"subject": "Aquatic ecology and limnology",
+"partners": [],
+"coresearchers": [],
+"summary": "Human activities are having a profound impact on aquatic ecosystems degrading water quality and reducing biodiversity. In fact, lakes and rivers are some of the most impacted ecosystems on the planet and there is a growing need to understand how human actions are altering these environments, particularly over longer time scales (decades or longer) where data are scarce. This proposed program will employ both paleoecological techniques and modern sampling to investigate how human actions are altering lake ecosystems, with special focus on the highly biodiverse and productive nearshore environment (littoral zone). Specifically, this program will 1) investigate ecological resilience and recovery (if any) in lake ecosystems contaminated with legacy pollution and 2) determine the transport pathways and fate of microplastics in freshwater environments and assess how microplastics are interacti",
+"department": "Geography and Environmental Studies - Geography and Environmental Studies"
+},
+"831785": {
+"app_id": "RGPIN-2025-04956",
+"program": "Discovery Grants Program - Individual",
+"area": "Modelling and mathematical simulation of natural processes",
+"subject": "Statistics and probability",
+"partners": [],
+"coresearchers": [],
+"summary": "This research proposal aims to better understand travel times on transportation networks by modelling them as a continuous process that changes over space and time. This approach is more complex than current methods that only calculate a point estimate, namely the expected time of arrival. The research will explore the theoretical properties of these processes and then apply the findings to develop better tools for the transportation industry. The research is important because it can lead to more efficient and reliable transportation systems. This is beneficial for a wide range of people, including transportation professionals, ride-share providers, routing and logistic services, policymakers, researchers, and everyday Canadians. Enabling us to deal with challenges facing growing urbanization and the move towards smart cities. The anticipated outcomes include a new mathematical framework",
+"department": "Mathematics & Statistics"
+},
+"828610": {
+"app_id": "RGPIN-2023-05133",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Operator algebra",
+"partners": [],
+"coresearchers": [],
+"summary": "In 1925 our view of the physical world drastically changed with the advent of Heisenberg's matrix mechanics, wherein quantum phenomena are accurately described by non-commuting operators rather than functions. This ``quantization'' of functions, which underlies the theoretical development of quantum mechanics, has motivated the quantization of other areas of mathematics, including functional analysis, group theory and information theory. The resulting areas, operator algebras, quantum groups and quantum information, have profound structure theories, and deep mathematical connections between them continue to emerge. The proposed research will establish new connections between these areas and develop new mathematical technologies to increase our understanding of fundamental concepts in quantum groups and algebras of observables in quantum information. We will pursue applications to the cur",
+"department": "Mathematics and Statistics"
+},
+"825502": {
+"app_id": "RGPIN-2021-03812",
+"program": "Discovery Grants Program - Individual",
+"area": "Life sciences (including biotechnology)",
+"subject": "Biostatistics",
+"partners": [],
+"coresearchers": [],
+"summary": "Identification and analysis of population heterogeneity is the primary goal of cluster analysis. Clustering allows us to summarize data into homogenous groups or clusters of observations where observations within each cluster are more similar than between clusters. Model-based clustering, which utilizes mixture models, has been increasingly used in the last two decades. A finite mixture model assumes that the population consists of a finite mixture of subpopulations or components, each of which can be represented by a parametric model. Depending on the nature of the data, appropriate distributions are chosen to model various kinds of data. The long-term goal of the applicant's research program is to develop cutting edge statistical algorithms for biological datasets to gain a comprehensive understanding of biological processes. While there has been a big explosion in data generation in b",
+"department": "School of Mathematics and Statistics"
+},
+"825515": {
+"app_id": "RGPIN-2021-03834",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Operator algebra",
+"partners": [],
+"coresearchers": [],
+"summary": "Von Neumann introduced operator algebras to express quantum mechanics in a mathematical language. C*-algebras are a tractable and rich class of operator algebras, and their study has a geometric flavour---they have been described by Connes as \"noncommutative geometry\". Geometry is governed by its beautiful symmetries, and my program explores the extent to which C*-algebras are governed by \"partial symmetries\" through structures called groupoids and inverse semigroups. A groupoid is certain type of set of partial symmetries on some geometric space. To every groupoid, one may construct a C*-algebra built from it. My long-term goal is to determine whether every C*-algebra is obtainable from partial symmetries in this way; or if this is not possible, describe the largest class of C*-algebras obtainable in this way. If all or most are obtainable in this way, it would foster new research conne",
+"department": "School of Mathematics and Statistics"
+},
+"828343": {
+"app_id": "RGPIN-2023-04674",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Statistics and probability",
+"partners": [],
+"coresearchers": [],
+"summary": "One of the key problems in quantitative risk management is to assess various types of risks with available data and their implications in decision-making. The long--term goal of the research program is to develop statistical methods and provide implementation schemes for insurance companies, banks, and regulators to better manage risks. In this proposal, the objective is to advance the theory and applications of risk functionals. The detailed objectives are listed as follows. First, while most existing works study the statistical methods of the industry benchmarks Value--at--Risk and Expected--Shortfall, we focus on developing statistical methods of the general class of risk functionals in insurance and finance, including variability measures and risk functionals in higher--dimensions. Second, besides the use of daily financial returns data, we investigate the use of other datasets, such",
+"department": "Mathematics and Statistics"
+},
+"830138": {
+"app_id": "RGPIN-2024-05319",
+"program": "Discovery Grants Program - Individual",
+"area": "Mathematical sciences",
+"subject": "Pure mathematics",
+"partners": [],
+"coresearchers": [],
+"summary": "Algebraic geometry is the study of solution spaces of polynomials in several variables. This includes the geometry of familiar shapes like parabolas, spheres, and curves in the plane defined by a polynomial. One tries to study the solutions by relating them to other spaces via mappings or parametrizations. This subject is highly controlled by the algebra of polynomials. Geometric statements about the space of solutions correspond directly to algebraic statements about the polynomial equations one is solving. In noncommutative algebra, applying operations in different orders can yield different results. We have that x times y is not necessarily equal to y times x. Noncommutative algebra, just as in the study of the algebra of polynomials, is often motivated by geometric problems and intuition. In this setting, the field is called noncommutative algebraic geometry and it uses the technique",
+"department": "School of Mathematics and Statistics"
+},
+"827126": {
+"app_id": "RGPIN-2022-04915",
+"program": "Discovery Grants Program - Individual",
+"area": "Information, computer and communication technologies",
+"subject": "Operations research and management science",
+"partners": [],
+"coresearchers": [],
+"summary": "In recent years, the proliferation of technologies, easier access to big data, wide introduction of cloud storage and computing, and exponential growth of the Internet, wireless and smartphone apps have profoundly impacted everybody's daily life. These advancements and their subsequent impacts have created many new challenges, which in turn greatly motivate research on large-scale complex systems, multi-dimensional networks, adaptive models, parallel processing, and cloud computing. Many of the new challenges cannot be satisfactorily addressed by classical or standard methods, which call for new innovative mathematical/statistical modeling and solution methodologies. Queueing theory is such an example. Well-developed classical queueing theory and its approaches are not sufficient to meet these modern challenges. This insufficiency results primarily from the large scale and complexity of ",
+"department": "Mathematics and Statistics"
+},
+"831575": {
+"app_id": "RGPIN-2025-04667",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Algebra",
+"partners": [],
+"coresearchers": [],
+"summary": "The focus of this research project is the theory of AV-modules, which sits at the intersection of algebraic geometry and non-commutative algebra. AV-modules are structures that admit compatible actions of both the Lie algebra of vector fields and the commutative algebra of functions. While some AV-modules have clear geometric origins, recent developments have uncovered new, exotic modules within this framework. The theory of AV-modules can be seen as an extension of the highly successful theory of D-modules, which describes modules over the algebra of differential operators. In addition to my work on AV-modules, I am also engaged in applied problems within Data Science. Recently, I developed a novel algorithm for identifying the densest subgraph in large hypergraphs. This algorithm has potential applications in the analysis of social networks and the generation of viewing recommendations",
+"department": "Mathematics and Statistics, School of - Mathematics and Statistics, School of"
+},
+"830146": {
+"app_id": "RGPIN-2024-05335",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Pure mathematics",
+"partners": [],
+"coresearchers": [],
+"summary": "The oldest questions in mathematics are questions about the relationships between whole numbers--for example finding patterns among all of the prime numbers. Despite their superficial simplicity, questions about numbers can be very difficult to answer, and so an enormous amount of theory has been built up to help find answers. One of the discoveries in the late twentieth century was that information about numbers could be packaged into mathematical objects that usually describe the symmetries of some classical geometric spaces. I am trying to determine just what kind of information is packaged in precisely what manner. This is important to a large number of mathematicians internationally, because it reveals a new structure that numbers possess. Canadians benefit in this research as it connects us to a continuing global endeavour to understand numbers better.",
+"department": "Mathematics and Statistics"
+},
+"831459": {
+"app_id": "RGPIN-2025-04491",
+"program": "Discovery Grants Program - Individual",
+"area": "Mathematical sciences",
+"subject": "Optimisation and optimal control theory",
+"partners": [],
+"coresearchers": [],
+"summary": "My research encompasses two primary areas: the study of partial differential equations (PDEs) with an emphasis on the calculus of variations, and the theory and applications of optimal mass transportation. The calculus of variations stands out as one of the most powerful and versatile methodologies for enhancing our understanding of mathematics and its practical implications. In contemporary mathematical sciences, researchers are actively engaged in addressing a myriad of problems modeled by PDEs. This research is particularly vital in applied physics, mathematical modeling, and engineering disciplines. My primary interest lies in exploring nonlinear partial differential equations that emerge from natural sciences and differential geometry. By developing innovative techniques and employing tools from functional and convex analysis, I investigate crucial aspects such as existence, symmetr",
+"department": "Mathematics and Statistics"
+},
+"830150": {
+"app_id": "RGPIN-2024-05341",
+"program": "Discovery Grants Program - Individual",
+"area": "Mathematical sciences",
+"subject": "Mathematics of computing",
+"partners": [],
+"coresearchers": [],
+"summary": "The focus of this research proposal is on the theory and real-world applications of finite fields. These algebraic objects have a long history in mathematics. The theory, applications and algorithms of finite fields have become central to countless areas in communications and security. In particular, they play a central role in cryptography and coding theory. Our plan has four axes of research: (a) the study of iterations of functions over finite fields; (b) the development of algorithms for operations involving polynomials over finite fields in use in post-quantum cryptography (PQC); (c) the construction of efficient codes; and (d) the creation of combinatorial arrays built from finite field theory. (a) The dynamics of iterations of functions over finite fields has attracted a lot of attention in part due to their relation to integer factorization algorithms and discrete logarithm compu",
+"department": "School of Mathematics and Statistics"
+},
+"827115": {
+"app_id": "RGPIN-2022-04899",
+"program": "Discovery Grants Program - Individual",
+"area": "Human health (including medically-related psychological research)",
+"subject": "Biostatistics",
+"partners": [],
+"coresearchers": [],
+"summary": "In clinical studies, we often encounter multivariate data featuring many complex issues including frailties in survival outcomes, correlations in longitudinal outcomes, left-censoring in biomarkers, measurement errors in covariates, and outliers in response variables. Joint modeling of longitudinal and survival data is often used when the focus is on the survival times of individuals and one wishes to study the effect of endogenous time-dependent covariates or biomarkers on the survival times. Often values of a clinical covariate or biomarker are unobserved but known to be below a threshold called the limit of detection (LOD). Naive approaches that ignore the problem of left-censoring due to the LOD, such as replacing the undetected value by the LOD or by half of the LOD, typically lead to biased estimators of the covariate effects. For a valid statistical inference, it is important to u",
+"department": "Mathematics and Statistics"
+},
+"830157": {
+"app_id": "RGPIN-2024-05354",
+"program": "Discovery Grants Program - Individual",
+"area": "Information, computer and communication technologies",
+"subject": "Statistics and probability",
+"partners": [],
+"coresearchers": [],
+"summary": "The last three decades have seen the development of statistical models that are infinite (or 'high') dimensional. The main target of statistical inference in high-dimensional models is a function or an infinite vector. In view of modern computational techniques, such models are tractable and attractive in statistical practice. The goal of this research project is to elaborate statistically efficient and computationally feasible methods that would allow scientists and practitioners to make statistical inference in sparse high-dimensional models and apply the proposed methods for analyzing real-life data. It is often difficult to treat high-dimensional problems and provide practical procedures with nearly exact theoretical properties. Nevertheless, applications of some advanced statistical theories (if possible) may lead to elegant and efficient solutions to various high-dimensional proble",
+"department": "School of Mathematics and Statistics"
+},
+"828339": {
+"app_id": "RGPIN-2023-04668",
+"program": "Discovery Grants Program - Individual",
+"area": "Information, computer and communication technologies",
+"subject": "Combinatorics",
+"partners": [],
+"coresearchers": [],
+"summary": "I am interested in the mathematical theory and real world application of finite set systems. I propose research on generalizations of orthogonal arrays which are two-dimensional arrays of symbols with the property that when some small sets of columns are extracted, the resulting rows contain every possible vector with some uniformity. They have applications to numerical methods, software testing, and optimized welding design. Orthogonal arrays (OA) require all small sets of columns and every possible row must appear the same number of times. I am proposing two generalizations, poset OAs where the selection of columns is restricted to the ideals of a partially ordered sets and Lee OAs where all sets of columns are selected but which do not require that all vectors appear. I will study both by understanding the related association schemes which are algebras of matrices with strong combinat",
+"department": "Mathematics and Statistics"
+},
+"827134": {
+"app_id": "RGPIN-2022-04928",
+"program": "Discovery Grants Program - Individual",
+"area": "Life sciences (including biotechnology)",
+"subject": "Neurophysiology",
+"partners": [],
+"coresearchers": [],
+"summary": "In mice, like most mammals, social behaviours increase survival and reproductive fitness. Social memory is a core element of social interaction, allowing recognition of stranger and familiar individuals. The CA2 subregion of the hippocampus is a crucial hub for encoding social memory and the control of social aggression. The role of CA2 in social memory has only been investigated in male mice; thus, it is unclear whether sex differences exist. Other forms of hippocampal-mediated memory (i.e., spatial memory) depend on the induction of gene transcription and mRNA translation of proteins that are just beginning to be identified. However, the molecular underpinnings of CA2-mediated social memory encoding remain poorly understood. Several genes that encode regulators of mRNA translation, such as Tsc1 (tuberous sclerosis complex 1) and Cnot3 (CCR4-NOT transcription complex subunit 3), affect ",
+"department": "Neuroscience"
+},
+"829357": {
+"app_id": "RGPIN-2024-04133",
+"program": "Discovery Grants Program - Individual",
+"area": "Life sciences (including biotechnology)",
+"subject": "Animal physiology and metabolism",
+"partners": [],
+"coresearchers": [],
+"summary": "Energy regulation is essential for life and balances the energy demands of an organism with food availability. Prolonged periods where energy demands exceed food intake would lead to starvation and eventually death. Paradoxically, while energy balance is needed for survival, it is also dependent on motivated actions like going to look for food and then moving towards the food source. This locomotor or activity aspect of energy balance is considerably less studied than feeding. This Discovery Grant aims to investigate the brain processes that regulate motivated activity to regulate energy balance. Melanin-concentrating hormone (MCH) is one important peptide hormone whose actions promote energy storage. Our recent work showed that mice that have lost MCH signaling are hyperactive, burn more energy, and are lean, but there was no effect on how much food they eat. Interestingly, this hyperac",
+"department": "Neuroscience"
+},
+"827112": {
+"app_id": "RGPIN-2022-04896",
+"program": "Discovery Grants Program - Individual",
+"area": "Life sciences (including biotechnology)",
+"subject": "Life sciences research related to human health and disease",
+"partners": [],
+"coresearchers": [],
+"summary": "Sex hormones, such as estrogen, progesterone and testosterone have widespread influences on cognition, affective states, and stress reactivity. Indeed, fluctuations of sex hormones across the menstrual cycle correspond to altered brain activity and connectivity, alterations in stress hormones, such as cortisol, and pro-inflammatory cytokines (i.e., signaling molecules released by immune cells). Although there has been a shift in the past 10 years to include females in biological research, sex is most often not the focus of the investigation. As a result, significant gaps remain in our understanding as to how alterations in sex hormones, for example through the menstrual cycle or use of hormonal contraceptives, affects biological stress responses in females. With over 100 million women worldwide using hormone contraceptives there is a pressing need for the systematic examination of the ho",
+"department": "Neuroscience"
+},
+"827114": {
+"app_id": "RGPIN-2022-04898",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Inter-cellular communication",
+"partners": [],
+"coresearchers": [],
+"summary": "Sex differences exist from neuroanatomy to behaviour. As such, characterising sex differences in the building of neural systems over development is essential to understanding the contributions of sex to systems level neuroscience in adult brain functions. A great deal of research has identified astroglial cells as critical players in all central nervous system functions, including in the development and maintenance of neurons and neuronal networks. Given the involvement of astroglial cells in neuronal network function, it is perhaps not surprising that astroglial cells also show sex differences in morphology, gene/protein expression patterns and functions. Indeed, astroglial cells express sex hormone receptors and show rapid responses to hormonal manipulations, however few studies have examined sex differences in astroglial cells in telencephalic development. We recently used translating",
+"department": "Neuroscience, Institute of - Neuroscience, Institute of"
+},
+"823533": {
+"app_id": "RGPIN-2018-06552",
+"program": "Discovery Grants Program - Individual",
+"area": "Life sciences (including biotechnology)",
+"subject": "Electrophysiology",
+"partners": [],
+"coresearchers": [],
+"summary": "The optimal functioning of the nervous system involves proper activity-dependent refinement of neuronal circuits during critical periods (CPs) in early life. Such periods are characterized by highest level of synaptic plasticity, rapid learning, synaptogenesis as well as enduring consequences for neuronal connectivity. Currently, the cellular and molecular mechanisms of CP plasticity remain elusive, although the prevailing notion is that the finely tuned local excitatory/inhibitory balance determines the CP plasticity. The maturation of inhibition from parvalbumin-positive inhibitory interneuron has been implicated in the formation of CPs for sensory plasticity. However, the maturation of inhibitory circuits in various sensory maps develops through glutamatergic excitation. To date, detailed knowledge about the role of glutamatergic excitation in the regulation of CP plasticity in the im",
+"department": "Neuroscience"
+},
+"828333": {
+"app_id": "RGPIN-2023-04656",
+"program": "Discovery Grants Program - Individual",
+"area": "Life sciences (including biotechnology)",
+"subject": "Behavioural neuroscience --learning",
+"partners": [],
+"coresearchers": [],
+"summary": "The current proposal is based on the idea that multiple brain regions interact over time to store memories and that changes in the relationships between and within the cellular components of these networks serve to represent long-term memory and preserve memory function over the lifespan. We will investigate the development of hippocampal-cortical circuits by manipulating the external environmental configuration or the internal neurogenic environment and assessing long-term outcomes on cognitive and social behaviors. The aim is to broaden the scope of our understanding of how alterations in the external and internal environments during postnatal development can affect the stability of memories over the lifespan. The overarching themes for this research proposal are organized into external environmental manipulations and internal, neurogenic manipulations. Studies will bridge experiments ",
+"department": "Neuroscience"
+},
+"827105": {
+"app_id": "RGPIN-2022-04886",
+"program": "Discovery Grants Program - Individual",
+"area": "Medical and health sciences",
+"subject": "Biological and Medical Physics",
+"partners": [],
+"coresearchers": [],
+"summary": "Functional magnetic resonance imaging (fMRI) has revolutionized human neurosciences by providing a non-invasive tool for dynamically mapping brain activity without the use of ionizing radiation or exogenous contrast agents. Most fMRI studies exploit the Blood Oxygenation Level-Dependent (BOLD) effect, whereby the oxygen saturation of blood modulates the MRI signal level, to localize changes in blood oxygenation that are related to changing neuronal activity. More recently, quantitative functional imaging techniques have used the BOLD effect to estimate physiological parameters of basic and clinical neuroscientific relevance, such as blood oxygen saturation and the cerebral metabolic rate of oxygen, while alternative \"non-BOLD\" imaging techniques have been developed to measure additional physiological parameters, such as cerebral blood flow. Because the brain is so heavily reliant on the ",
+"department": "Physics"
+},
+"828332": {
+"app_id": "RGPIN-2023-04655",
+"program": "Discovery Grants Program - Individual",
+"area": "Physical sciences",
+"subject": "Physics",
+"partners": [],
+"coresearchers": [],
+"summary": "Approximately half of all cancer treatments in Canada employ radiation therapy. These treatments are delivered in multiple treatment sessions over a timespan of weeks. Accurate delivery of the prescribed radiation dose is required to preserve the balance between tumour control and normal tissue toxicity. However, a patient's anatomy varies over the timespan of a single treatment, due to physiological processes such as respiration, as well as over the timespan of a treatment course, due to tumour regression/progression and normal tissue response to radiation. A proposed solution to this problem is adaptive radiation therapy, which adjusts the treatment plan to compensate for the anatomical changes detected at the time of treatment. However, current adaptive approaches are sub-optimal in that they do not account for the actually delivered dose to the patient during the treatment session. A",
+"department": "Physics"
+},
+"830158": {
+"app_id": "RGPIN-2024-05355",
+"program": "Discovery Grants Program - Individual",
+"area": "Advancement of knowledge",
+"subject": "Biological and Medical Physics",
+"partners": [],
+"coresearchers": [],
+"summary": "Radiation medicine plays a critical role in the lives of many Canadians for diagnosis and treatment, e.g., with 1 in 4 undergoing cancer radiation therapy in their lifetime. All radiation treatments aim to maximize tumour cell kill while limiting healthy tissue exposure; the figure of merit is typically \"absorbed dose\" which is the energy deposited per unit mass of tissue and is evaluated by physicists. Despite the ubiquity of radiation medicine, fundamental scientific questions remain regarding the interactions of radiation with matter, radiation dosimetry, and biological effects of radiation. Advances in radiation medicine require new approaches for evaluating energy deposition (dose) and connecting with biological response across length and complexity scales ranging from cellular to patient systems. The proposed research focuses on physics developments to advance knowledge of how radi",
+"department": "Physics"
+},
+"827113": {
+"app_id": "RGPIN-2022-04897",
+"program": "Discovery Grants Program - Individual",
+"area": "Physical sciences",
+"subject": "Biological and Medical Physics",
+"partners": [],
+"coresearchers": [],
+"summary": "Radiation therapy (RT) is a standard treatment for ~50% of cancers worldwide. Radiation protection (RP) aims to ensure public health safety from exposure to ionizing radiation (IR) arising from all sources including RT. Major goals in RT and RP require new tools for improved mechanistic understanding of radiobiological response, and for high precision IR dosimetry. My research program will generate new basic knowledge for RT and RP by developing (1) Coherent Raman imaging for use in the understanding of radiobiological response at IR doses relevant to RT and RP and, (2) Raman spectroscopy (RS) techniques to advance bio-dosimetry for RP and micron-scale dosimetry for RT. Coherent Raman imaging for understanding the radiobiological response in RT and RP Introduction: My previous DG has developed tools based on RS and Non-Linear Optical Microscopy (NLOM) for rapid molecular fingerprinting a",
 "department": "Physics - Physics"
 }
 }
