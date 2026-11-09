@@ -34,6 +34,18 @@ directory: globalstudies: 10 faculty listings
 directory: akcollege: 5 faculty listings
 directory: sprott: 63 faculty listings
 directory: 840 faculty across 35 department sites
+NSERC FY2020: 445 awards but only the first 250 can be listed
+NSERC FY2021: 457 awards but only the first 250 can be listed
+NSERC FY2022: 486 awards but only the first 250 can be listed
+NSERC FY2023: 451 awards but only the first 250 can be listed
+NSERC FY2024: 446 awards but only the first 250 can be listed
+NSERC FY2025: 450 awards but only the first 250 can be listed
+NSERC: 1500 Carleton awards listed, 1101 research grants
+SSHRC FY2020: 154 Carleton research grants (columns: cle, File Number, Name-Nom, Role-Rôle,  Amount-Montant , Fiscal_Year-Exercice_financier, Institution, Établissement)
+SSHRC FY2021: 168 Carleton research grants (columns: cle, File Number, Name-Nom, Role-Rôle, Amount-Montant, Fiscal_Year-Exercice_financier, Institution, Établissement)
+SSHRC FY2022: 190 Carleton research grants (columns: cle, File_Number, Name-Nom, Role-Rôle, Amount-Montant, Fiscal_Year-Exercice_financier, Institution, Établissement)
+SSHRC FY2023: 181 Carleton research grants (columns: cle, File_Number, Name-Nom, Role-Rôle, Amount-Montant, Fiscal_Year-Exercice_financier, Institution, Établissement)
+SSHRC FY2024: 171 Carleton research grants (columns: cle, File_Number, Name-Nom, Role-Rôle, Amount-Montant, Fiscal_Year-Exercice_financier, Institution, Établissement)
 works: 2000 read
 works: 4000 read
 works: 6000 read
@@ -42,12 +54,13 @@ works: 10000 read
 works: 12000 read
 works: 14000 read
 works: 16000 read
+works: 18000 read
 works: 20000 read
-works: 19546 Carleton outputs since 2021, 7960 Carleton-affiliated author profiles
-people: 774 so far; 259 web-listed faculty had no Carleton outputs in OpenAlex for these years
-people: 55 more found through NSERC/SSHRC grants; 829 in total
-world baseline: 2332 topics, 92,980,015 works worldwide 2021-2026
-university data.json: 829 people, 19546 outputs, 6.4 MB
-company citers: 2575 company links across 1281 papers (214 batches)
+works: 19368 Carleton outputs since 2021, 7942 Carleton-affiliated author profiles
+people: 778 so far; 255 web-listed faculty had no Carleton outputs in OpenAlex for these years
+people: 55 more found through NSERC/SSHRC grants; 833 in total
+world baseline: 2329 topics, 90,808,546 works worldwide 2021-2026
+university data.json: 833 people, 19368 outputs, 6.3 MB
+company citers: 2751 company links across 1347 papers (212 batches)
 patents: USPTO: 17 Carleton applications and patents -> 15 matched to 11 researchers
-university signals.json: 1308 research lines
+university signals.json: 1287 research lines
