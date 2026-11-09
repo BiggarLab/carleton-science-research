@@ -460,10 +460,10 @@ table.st tr.clk.on{background:var(--accent-soft)}
         <div class="panel chat">
           <div class="ph"><h2>Research assistant</h2><div style="display:flex;gap:8px;align-items:center"><span class="note" id="ai-mode"></span><button class="btn" id="chat-new">New chat</button></div></div>
           <div id="keybox" class="keybox" hidden>
-            <p><b>Use your own Claude API key.</b> It is stored only in this browser and sent only to Anthropic, never to this website or GitHub. Other visitors can't see or use it.</p>
-            <div style="display:flex;gap:8px;flex-wrap:wrap"><input class="inp" id="key-in" type="password" autocomplete="off" placeholder="sk-ant-..." style="flex:1;min-width:220px"><button class="btn pri" id="key-save">Save key</button></div>
+            <p><b>Use your own Carleton RCS key.</b> It is stored only in this browser and sent only to Carleton's Research Computing Services, never to this website or GitHub. Other visitors can't see or use it.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap"><input class="inp" id="key-in" type="password" autocomplete="off" placeholder="ak_..." style="flex:1;min-width:220px"><button class="btn pri" id="key-save">Save key</button></div>
             <label class="tog"><input type="checkbox" id="key-remember" checked>Remember on this device</label>
-            <p class="note">Create a key at platform.claude.com under API Keys. Each question costs roughly 5 to 15 cents.</p>
+            <p class="note">Request an LLM API key from Research Computing Services (carleton.ca/rcs). You must be on campus or on the Carleton VPN for it to work.</p>
           </div>
           <div id="passbox" class="keybox" hidden>
             <p><b>Or enter the Faculty passcode.</b> This runs the assistant on a shared Faculty account. Ask the Associate Dean's office for the passcode.</p>
@@ -483,7 +483,7 @@ table.st tr.clk.on{background:var(--accent-soft)}
           <div class="starters" id="ask-ex"></div>
           <div class="dsec">
             <h3>Settings</h3>
-            <label class="tog">Model <select class="inp" id="ai-model" style="width:auto;padding:3px 6px"><option value="claude-sonnet-5-5">Sonnet 5.5 (fast, default)</option><option value="claude-opus-5-5">Opus 5.5 (deeper, about 2x cost)</option></select></label>
+            <label class="tog">Model <select class="inp" id="ai-model" style="width:auto;padding:3px 6px"><option value="gpt-oss:120b">gpt-oss:120b</option></select></label>
             <label class="tog"><input type="checkbox" id="ai-web" checked>Let it search the web for companies and grant programs</label>
             <div class="note" id="key-status"></div>
           </div>
@@ -1144,13 +1144,45 @@ function closeDrawer(){ $("#drawer").classList.remove("on"); $("#drawer").setAtt
 $("#scrim").onclick = closeDrawer; document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(); });
 
 /* ---------- AI ---------- */
-/* Three ways to reach Claude:
+/* Three ways to reach a model:
    1. inside claude.ai: the sample capability (viewer's own Claude account)
-   2. on GitHub Pages with the visitor's own API key saved in their browser: direct calls to api.anthropic.com
+   2. on GitHub Pages with the visitor's own Carleton RCS key saved in their browser: direct calls to the RCS LLM service (campus network or VPN only)
    3. on GitHub Pages with the Faculty passcode: the Worker relay at AI_ENDPOINT, which holds the shared key (see README)
    Nothing works on GitHub Pages until the visitor supplies one of the two. */
 let sample = null;
-const KEY_SLOT = "cs-research-claude-key";
+const KEY_SLOT = "cs-research-rcs-key";
+try { localStorage.removeItem("cs-research-claude-key"); sessionStorage.removeItem("cs-research-claude-key"); } catch {} // personal Claude keys are no longer used
+const RCS_BASE = "https://rcsllm.carleton.ca/rcsapi", RCS_MODEL = "gpt-oss:120b";
+let RCS_MODELS = null;
+async function loadRcsModels(){
+  if (RCS_MODELS || !getKey()) return; RCS_MODELS = [];
+  try { const r = await fetch(RCS_BASE + "/v1/models", { headers: { "Authorization": "Bearer " + getKey() } });
+    if (r.ok){ const d = await r.json(); RCS_MODELS = ((d.data || d.models || []).map(m => m.id || m.name || m).filter(x => typeof x === "string")).slice(0, 40); updateAiUi(); } } catch {}
+}
+/* The dashboard keeps its chat history in Claude's message format; these two convert to and from the OpenAI-style format RCS uses. */
+function toChatMessages(system, messages){
+  const out = []; if (system) out.push({ role: "system", content: system });
+  for (const m of messages){
+    if (typeof m.content === "string"){ out.push({ role: m.role, content: m.content }); continue; }
+    const blocks = m.content || [];
+    if (m.role === "assistant"){
+      const text = blocks.filter(b => b.type === "text").map(b => b.text).join("");
+      const calls = blocks.filter(b => b.type === "tool_use").map(b => ({ id: b.id, type: "function", function: { name: b.name, arguments: JSON.stringify(b.input || {}) } }));
+      out.push({ role: "assistant", content: text || null, ...(calls.length ? { tool_calls: calls } : {}) });
+    } else for (const b of blocks){
+      if (b.type === "tool_result") out.push({ role: "tool", tool_call_id: b.tool_use_id, content: typeof b.content === "string" ? b.content : JSON.stringify(b.content) });
+      else if (b.type === "text" && b.text) out.push({ role: "user", content: b.text });
+    }
+  }
+  return out;
+}
+function fromChatResponse(d){
+  const ch = (d.choices && d.choices[0]) || {}, msg = ch.message || {}, content = [];
+  if (msg.content) content.push({ type: "text", text: msg.content });
+  for (const c of msg.tool_calls || []){ let input = {}; try { input = JSON.parse((c.function || {}).arguments || "{}"); } catch {}
+    content.push({ type: "tool_use", id: c.id || ("call_" + Math.random().toString(36).slice(2)), name: (c.function || {}).name, input }); }
+  return { content, stop_reason: (msg.tool_calls || []).length ? "tool_use" : ch.finish_reason === "length" ? "max_tokens" : "end_turn" };
+}
 let memKey = "";
 function getKey(){ if (memKey) return memKey; try { return localStorage.getItem(KEY_SLOT) || sessionStorage.getItem(KEY_SLOT) || ""; } catch { return ""; } }
 function setKey(k, remember){ memKey = k; try { localStorage.removeItem(KEY_SLOT); sessionStorage.removeItem(KEY_SLOT); (remember ? localStorage : sessionStorage).setItem(KEY_SLOT, k); } catch {} }
@@ -1168,30 +1200,31 @@ async function loadProviders(){
 }
 // Each visitor connects once: their own API key, or the passcode for the shared Faculty account. A saved key wins over a saved passcode.
 const aiMode = () => sample ? "claude" : getKey() ? "key" : AI_ENDPOINT && getPass() ? "relay" : "none";
-const webOn = () => (aiMode() === "key" || (aiMode() === "relay" && !(PROVIDERS && (PROVIDERS.find(p => p.id === getProvider()) || {}).web === false))) && $("#ai-web").checked;
+const webOn = () => ((aiMode() === "relay" && !(PROVIDERS && (PROVIDERS.find(p => p.id === getProvider()) || {}).web === false))) && $("#ai-web").checked;
 const toolSpec = tools => (tools || []).map(t => ({ name: t.name, description: t.description, input_schema: t.inputSchema || { type: "object", properties: {} } }));
 const WEB_TOOL = { type: "web_search_20250305", name: "web_search", max_uses: 5, user_location: { type: "approximate", city: "Ottawa", region: "Ontario", country: "CA", timezone: "America/Toronto" } };
 
 async function apiTurn(body, signal){
   const mode = aiMode(); let r;
   try {
-    if (mode === "key") r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", signal, body: JSON.stringify(body),
-      headers: { "content-type": "application/json", "x-api-key": getKey(), "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" } });
+    if (mode === "key") r = await fetch(RCS_BASE + "/v1/chat/completions", { method: "POST", signal, headers: { "content-type": "application/json", "Authorization": "Bearer " + getKey() },
+      body: JSON.stringify({ model: body.model || RCS_MODEL, messages: toChatMessages(body.system, body.messages), stream: false, max_tokens: 6000,
+        ...((body.tools || []).length ? { tools: body.tools.map(t => ({ type: "function", function: { name: t.name, description: t.description, parameters: t.input_schema } })), tool_choice: "auto" } : {}) }) });
     else r = await fetch(AI_ENDPOINT, { method: "POST", signal, headers: { "content-type": "application/json", "x-passcode": getPass() },
       body: JSON.stringify({ messages: body.messages, tools: body.tools, system: body.system, web: !!body.web, provider: getProvider() }) });
-  } catch (e) { throw { code: signal && signal.aborted ? "cancelled" : "network" }; }
-  if (!r.ok){ let m = "", t = ""; try { const j = await r.json(); m = j.error?.message || ""; t = j.error?.type || ""; } catch {}
+  } catch (e) { throw { code: signal && signal.aborted ? "cancelled" : mode === "key" ? "rcs_network" : "network" }; }
+  if (!r.ok){ let m = "", t = ""; try { const j = await r.json(); m = j.error?.message || (typeof j.error === "string" ? j.error : "") || j.detail || ""; t = j.error?.type || ""; } catch {}
     if (mode === "relay" && t === "passcode"){ setPass("", false); throw { code: "passcode" }; }
     if (mode === "relay" && r.status === 429) throw { code: /daily/i.test(m) ? "daily_limit" : "rate_limited", message: m };
-    throw { code: r.status === 401 ? "bad_key" : r.status === 429 ? "rate_limited" : r.status === 529 ? "overloaded" : "upstream_error", message: m }; }
-  return r.json();
+    throw { code: r.status === 401 || (mode === "key" && r.status === 403) ? "bad_key" : r.status === 429 ? "rate_limited" : r.status === 529 ? "overloaded" : "upstream_error", message: m }; }
+  const d = await r.json(); return mode === "key" ? fromChatResponse(d) : d;
 }
 /* Runs a tool loop on `messages` (mutated in place, so a chat keeps its history). */
 async function apiLoop(messages, { system, tools, web, model, signal, onStatus } = {}){
-  const spec = toolSpec(tools); if (web && aiMode() === "key") spec.push(WEB_TOOL);
+  const spec = toolSpec(tools);
   let text = "";
   for (let round = 0; round < 12; round++){
-    const body = { model: model || "claude-sonnet-5-5", max_tokens: 4000, messages };
+    const body = { model: model || RCS_MODEL, max_tokens: 4000, messages };
     if (system) body.system = system; if (spec.length) body.tools = spec; if (web && aiMode() === "relay") body.web = true;
     const resp = await apiTurn(body, signal);
     messages.push({ role: "assistant", content: resp.content });
@@ -1235,7 +1268,7 @@ function md(t){
   flush(); close(); return out.join("");
 }
 const mdLite = md;
-function errCopy(c, m){ return ({ not_granted:"You declined AI access for this page.", rate_limited:"Too many requests just now. Wait a minute and try again.", overloaded:"Claude is busy right now. Try again in a minute.", sampling_disabled:"AI answers are turned off for your account.", prompt_too_large:"That conversation got too long. Start a new chat.", refused:"Claude declined to answer that.", session_expired:"Your session expired. Reload the page.", passcode:"That passcode wasn't accepted. Enter it again above.", daily_limit:"The shared assistant has reached today's question limit. Try again tomorrow.", bad_key:"Your API key was rejected. Check it in Settings or paste a new one.", no_key:"Add your Claude API key to use the assistant.", network:"Could not reach Claude. Check your connection and try again." })[c] || ("Something went wrong getting an answer." + (m ? " " + m : "")); }
+function errCopy(c, m){ return ({ not_granted:"You declined AI access for this page.", rate_limited:"Too many requests just now. Wait a minute and try again.", overloaded:"The assistant is busy right now. Try again in a minute.", sampling_disabled:"AI answers are turned off for your account.", prompt_too_large:"That conversation got too long. Start a new chat.", refused:"Claude declined to answer that.", session_expired:"Your session expired. Reload the page.", passcode:"That passcode wasn't accepted. Enter it again above.", daily_limit:"The shared assistant has reached today's question limit. Try again tomorrow.", bad_key:"Your API key was rejected. Check it in Settings or paste a new one.", no_key:"Add your Carleton RCS key or the Faculty passcode to use the assistant.", network:"Could not reach the assistant. Check your connection and try again.", rcs_network:"Could not reach the Carleton RCS service. It only works on campus or on the Carleton VPN, so connect to the VPN and try again." })[c] || ("Something went wrong getting an answer." + (m ? " " + m : "")); }
 
 async function summarizePerson(i, st){
   const out = $("#dr-ai-out"), b = $("#dr-ai"); b.disabled = true; out.innerHTML = `<p class="think">Thinking…</p>`;
@@ -1350,7 +1383,7 @@ async function ask(q){
     }
   } catch (e) {
     bot.content = e.text || bot.content || ""; if (e.code !== "cancelled") bot.error = errCopy(e.code, e.message); else bot.error = "Stopped.";
-    if (e.code === "bad_key" && mode === "key"){ forgetKey(); pendingQ = q; chatTurns.splice(chatTurns.length - 2, 2); bot.error = ""; setTimeout(() => { $("#key-in").setCustomValidity("That API key wasn't accepted."); $("#key-in").reportValidity(); }); }
+    if (e.code === "bad_key" && mode === "key"){ forgetKey(); pendingQ = q; chatTurns.splice(chatTurns.length - 2, 2); bot.error = ""; setTimeout(() => { $("#key-in").setCustomValidity("That Carleton RCS key wasn't accepted."); $("#key-in").reportValidity(); }); }
     if (e.code === "passcode"){ pendingQ = q; chatTurns.splice(chatTurns.length - 2, 2); bot.error = ""; setTimeout(() => { $("#pass-in").setCustomValidity("That passcode wasn't accepted."); $("#pass-in").reportValidity(); }); }
     if (mode !== "claude" && chatMsgs.length && chatMsgs[chatMsgs.length - 1].role === "user" && typeof chatMsgs[chatMsgs.length - 1].content === "string") chatMsgs.pop();
   } finally { bot.pending = false; log(""); renderChat(); $("#ask-go").disabled = false; $("#ask-stop").hidden = true; updateAiUi(); }
@@ -1369,8 +1402,8 @@ $("#chat-form").onsubmit = e => { e.preventDefault(); ask($("#ask-q").value); };
 $("#ask-q").onkeydown = e => { if (e.key === "Enter" && !e.shiftKey){ e.preventDefault(); ask($("#ask-q").value); } };
 $("#ask-stop").onclick = () => askCtl && askCtl.abort();
 $("#chat-new").onclick = () => { if (askCtl) askCtl.abort(); chatMsgs = []; chatTurns = []; log(""); renderChat(); };
-$("#key-save").onclick = () => { const k = $("#key-in").value.trim(); if (!/^sk-ant-/.test(k)){ $("#key-in").setCustomValidity("Claude API keys start with sk-ant-"); $("#key-in").reportValidity(); return; }
-  $("#key-in").setCustomValidity(""); setKey(k, $("#key-remember").checked); $("#key-in").value = ""; updateAiUi();
+$("#key-save").onclick = () => { const k = $("#key-in").value.trim(); if (!/^ak_[A-Za-z0-9]{16,}$/.test(k)){ $("#key-in").setCustomValidity("Carleton RCS keys start with ak_"); $("#key-in").reportValidity(); return; }
+  $("#key-in").setCustomValidity(""); setKey(k, $("#key-remember").checked); RCS_MODELS = null; $("#key-in").value = ""; updateAiUi();
   if (pendingQ){ const q = pendingQ; pendingQ = ""; ask(q); } };
 $("#key-in").oninput = () => $("#key-in").setCustomValidity("");
 $("#key-in").onkeydown = e => { if (e.key === "Enter"){ e.preventDefault(); $("#key-save").click(); } };
@@ -1380,23 +1413,33 @@ $("#pass-in").oninput = () => $("#pass-in").setCustomValidity("");
 $("#pass-in").onkeydown = e => { if (e.key === "Enter"){ e.preventDefault(); $("#pass-save").click(); } };
 function updateAiUi(){
   const mode = aiMode();
-  $("#ai-mode").textContent = { claude: "Using your Claude account", key: "Using your API key", relay: "Shared Faculty assistant", none: "" }[mode];
+  $("#ai-mode").textContent = { claude: "Using your Claude account", key: "Using your Carleton RCS key", relay: "Shared Faculty assistant", none: "" }[mode];
   $("#keybox").hidden = mode !== "none"; $("#passbox").hidden = mode !== "none" || !AI_ENDPOINT;
-  $("#ai-web").disabled = !(mode === "key" || mode === "relay"); $("#ai-model").disabled = !(mode === "key" || mode === "relay");
+  $("#ai-web").disabled = mode !== "relay"; $("#ai-web").closest("label").hidden = mode === "key"; $("#ai-model").disabled = !(mode === "key" || mode === "relay");
   const ms = $("#ai-model"), lab = ms.closest("label");
   if (mode === "relay"){
     loadProviders();
     lab.hidden = !(PROVIDERS && PROVIDERS.length > 1);
-    if (PROVIDERS && PROVIDERS.length > 1 && !ms.dataset.prov){
-      ms.dataset.prov = "1"; lab.firstChild.textContent = "AI provider ";
+    if (PROVIDERS && PROVIDERS.length > 1 && ms.dataset.kind !== "prov"){
+      ms.dataset.kind = "prov"; lab.firstChild.textContent = "AI provider ";
       ms.innerHTML = PROVIDERS.map(p => `<option value="${esc(p.id)}">${esc(p.label)}${p.web ? "" : " (no web search)"}</option>`).join("");
       const cur = getProvider(); ms.value = PROVIDERS.some(p => p.id === cur) ? cur : PROVIDERS[0].id;
       ms.onchange = () => { try { localStorage.setItem(PROV_SLOT, ms.value); } catch {} chatMsgs = []; updateAiUi(); };
     }
     ms.disabled = false;
-  } else lab.hidden = false;
-  $("#key-status").innerHTML = mode === "key" ? `API key saved in this browser. <button class="btn" id="key-forget" style="padding:2px 8px;font-size:11.5px">Forget key</button>`
-    : mode === "claude" ? "Running inside Claude on your own account." : mode === "relay" ? (getPass() ? `Using the shared Faculty assistant. <button class="btn" id="pass-forget" style="padding:2px 8px;font-size:11.5px">Forget passcode</button>` : "Using the shared Faculty assistant.") : AI_ENDPOINT ? "Not connected yet. Add your own API key or the Faculty passcode." : "No API key saved yet.";
+  } else if (mode === "key"){
+    loadRcsModels(); lab.hidden = false;
+    const list = RCS_MODELS && RCS_MODELS.length ? RCS_MODELS : [RCS_MODEL], sig = "rcs:" + list.join("|");
+    if (ms.dataset.kind !== sig){
+      ms.dataset.kind = sig; lab.firstChild.textContent = "Model ";
+      let cur = ""; try { cur = localStorage.getItem("cs-rcs-model") || ""; } catch {}
+      ms.innerHTML = list.map(m => `<option value="${esc(m)}">${esc(m)}</option>`).join("");
+      ms.value = list.includes(cur) ? cur : list.includes(RCS_MODEL) ? RCS_MODEL : list[0];
+      ms.onchange = () => { try { localStorage.setItem("cs-rcs-model", ms.value); } catch {} };
+    }
+  } else lab.hidden = mode === "none";
+  $("#key-status").innerHTML = mode === "key" ? `Carleton RCS key saved in this browser. Works on campus or on the Carleton VPN; no web search. <button class="btn" id="key-forget" style="padding:2px 8px;font-size:11.5px">Forget key</button>`
+    : mode === "claude" ? "Running inside Claude on your own account." : mode === "relay" ? (getPass() ? `Using the shared Faculty assistant. <button class="btn" id="pass-forget" style="padding:2px 8px;font-size:11.5px">Forget passcode</button>` : "Using the shared Faculty assistant.") : AI_ENDPOINT ? "Not connected yet. Add your Carleton RCS key or the Faculty passcode." : "No Carleton RCS key saved yet.";
   const pf = $("#pass-forget"); if (pf) pf.onclick = () => { setPass("", false); updateAiUi(); };
   const f = $("#key-forget"); if (f) f.onclick = () => { forgetKey(); updateAiUi(); };
   const dr = $("#dr-ai-sec"); if (dr) dr.hidden = mode === "none";
