@@ -460,13 +460,13 @@ table.st tr.clk.on{background:var(--accent-soft)}
         <div class="panel chat">
           <div class="ph"><h2>Research assistant</h2><div style="display:flex;gap:8px;align-items:center"><span class="note" id="ai-mode"></span><button class="btn" id="chat-new">New chat</button></div></div>
           <div id="keybox" class="keybox" hidden>
-            <p><b>Connect your Claude API key.</b> It is stored only in this browser and sent only to Anthropic, never to this website or GitHub. Other visitors can't see or use it.</p>
+            <p><b>Use your own Claude API key.</b> It is stored only in this browser and sent only to Anthropic, never to this website or GitHub. Other visitors can't see or use it.</p>
             <div style="display:flex;gap:8px;flex-wrap:wrap"><input class="inp" id="key-in" type="password" autocomplete="off" placeholder="sk-ant-..." style="flex:1;min-width:220px"><button class="btn pri" id="key-save">Save key</button></div>
             <label class="tog"><input type="checkbox" id="key-remember" checked>Remember on this device</label>
             <p class="note">Create a key at platform.claude.com under API Keys. Each question costs roughly 5 to 15 cents.</p>
           </div>
           <div id="passbox" class="keybox" hidden>
-            <p><b>Enter the Faculty passcode.</b> The assistant runs on a shared Faculty account. Ask the Associate Dean's office for the passcode.</p>
+            <p><b>Or enter the Faculty passcode.</b> This runs the assistant on a shared Faculty account. Ask the Associate Dean's office for the passcode.</p>
             <div style="display:flex;gap:8px;flex-wrap:wrap"><input class="inp" id="pass-in" type="password" autocomplete="off" placeholder="Passcode" style="flex:1;min-width:180px"><button class="btn pri" id="pass-save">Continue</button></div>
             <label class="tog"><input type="checkbox" id="pass-remember" checked>Remember on this device</label>
           </div>
@@ -1146,8 +1146,9 @@ $("#scrim").onclick = closeDrawer; document.addEventListener("keydown", e => { i
 /* ---------- AI ---------- */
 /* Three ways to reach Claude:
    1. inside claude.ai: the sample capability (viewer's own Claude account)
-   2. on GitHub Pages with the owner's API key saved in this browser: direct calls to api.anthropic.com
-   3. optional Worker relay at AI_ENDPOINT (see README) */
+   2. on GitHub Pages with the visitor's own API key saved in their browser: direct calls to api.anthropic.com
+   3. on GitHub Pages with the Faculty passcode: the Worker relay at AI_ENDPOINT, which holds the shared key (see README)
+   Nothing works on GitHub Pages until the visitor supplies one of the two. */
 let sample = null;
 const KEY_SLOT = "cs-research-claude-key";
 let memKey = "";
@@ -1165,7 +1166,8 @@ async function loadProviders(){
   try { const r = await fetch(AI_ENDPOINT, { method: "POST", headers: { "content-type": "application/json", "x-passcode": getPass() }, body: JSON.stringify({ list_providers: true }) });
     if (r.ok){ PROVIDERS = (await r.json()).providers || []; updateAiUi(); } } catch {}
 }
-const aiMode = () => sample ? "claude" : AI_ENDPOINT ? "relay" : getKey() ? "key" : "none";
+// Each visitor connects once: their own API key, or the passcode for the shared Faculty account. A saved key wins over a saved passcode.
+const aiMode = () => sample ? "claude" : getKey() ? "key" : AI_ENDPOINT && getPass() ? "relay" : "none";
 const webOn = () => (aiMode() === "key" || (aiMode() === "relay" && !(PROVIDERS && (PROVIDERS.find(p => p.id === getProvider()) || {}).web === false))) && $("#ai-web").checked;
 const toolSpec = tools => (tools || []).map(t => ({ name: t.name, description: t.description, input_schema: t.inputSchema || { type: "object", properties: {} } }));
 const WEB_TOOL = { type: "web_search_20250305", name: "web_search", max_uses: 5, user_location: { type: "approximate", city: "Ottawa", region: "Ontario", country: "CA", timezone: "America/Toronto" } };
@@ -1331,8 +1333,7 @@ $("#chat-log").onclick = async e => { const b = e.target.closest("[data-copy]");
 async function ask(q){
   q = q.trim(); if (!q) return;
   const mode = aiMode();
-  if (mode === "none"){ $("#keybox").hidden = false; $("#key-in").focus(); return; }
-  if (mode === "relay" && !getPass()){ pendingQ = q; $("#passbox").hidden = false; $("#pass-in").focus(); return; }
+  if (mode === "none"){ pendingQ = q; updateAiUi(); $("#key-in").focus(); return; }
   $("#ask-q").value = "";
   chatTurns.push({ role: "user", content: q }); const bot = { role: "assistant", content: "", pending: true }; chatTurns.push(bot); renderChat();
   $("#ask-go").disabled = true; $("#ask-stop").hidden = false; askCtl = new AbortController();
@@ -1349,8 +1350,8 @@ async function ask(q){
     }
   } catch (e) {
     bot.content = e.text || bot.content || ""; if (e.code !== "cancelled") bot.error = errCopy(e.code, e.message); else bot.error = "Stopped.";
-    if (e.code === "bad_key" && mode === "key"){ $("#keybox").hidden = false; }
-    if (e.code === "passcode"){ pendingQ = q; $("#passbox").hidden = false; chatTurns.splice(chatTurns.length - 2, 2); bot.error = ""; $("#pass-in").setCustomValidity("That passcode wasn't accepted."); $("#pass-in").reportValidity(); }
+    if (e.code === "bad_key" && mode === "key"){ forgetKey(); pendingQ = q; chatTurns.splice(chatTurns.length - 2, 2); bot.error = ""; setTimeout(() => { $("#key-in").setCustomValidity("That API key wasn't accepted."); $("#key-in").reportValidity(); }); }
+    if (e.code === "passcode"){ pendingQ = q; chatTurns.splice(chatTurns.length - 2, 2); bot.error = ""; setTimeout(() => { $("#pass-in").setCustomValidity("That passcode wasn't accepted."); $("#pass-in").reportValidity(); }); }
     if (mode !== "claude" && chatMsgs.length && chatMsgs[chatMsgs.length - 1].role === "user" && typeof chatMsgs[chatMsgs.length - 1].content === "string") chatMsgs.pop();
   } finally { bot.pending = false; log(""); renderChat(); $("#ask-go").disabled = false; $("#ask-stop").hidden = true; updateAiUi(); }
 }
@@ -1369,15 +1370,18 @@ $("#ask-q").onkeydown = e => { if (e.key === "Enter" && !e.shiftKey){ e.preventD
 $("#ask-stop").onclick = () => askCtl && askCtl.abort();
 $("#chat-new").onclick = () => { if (askCtl) askCtl.abort(); chatMsgs = []; chatTurns = []; log(""); renderChat(); };
 $("#key-save").onclick = () => { const k = $("#key-in").value.trim(); if (!/^sk-ant-/.test(k)){ $("#key-in").setCustomValidity("Claude API keys start with sk-ant-"); $("#key-in").reportValidity(); return; }
-  $("#key-in").setCustomValidity(""); setKey(k, $("#key-remember").checked); $("#key-in").value = ""; updateAiUi(); };
-$("#pass-save").onclick = () => { const k = $("#pass-in").value.trim(); if (!k) return; setPass(k, $("#pass-remember").checked); PROVIDERS = null; $("#pass-in").value = ""; $("#passbox").hidden = true; updateAiUi();
+  $("#key-in").setCustomValidity(""); setKey(k, $("#key-remember").checked); $("#key-in").value = ""; updateAiUi();
+  if (pendingQ){ const q = pendingQ; pendingQ = ""; ask(q); } };
+$("#key-in").oninput = () => $("#key-in").setCustomValidity("");
+$("#key-in").onkeydown = e => { if (e.key === "Enter"){ e.preventDefault(); $("#key-save").click(); } };
+$("#pass-save").onclick = () => { const k = $("#pass-in").value.trim(); if (!k) return; setPass(k, $("#pass-remember").checked); PROVIDERS = null; $("#pass-in").value = ""; updateAiUi();
   if (pendingQ){ const q = pendingQ; pendingQ = ""; ask(q); } };
 $("#pass-in").oninput = () => $("#pass-in").setCustomValidity("");
 $("#pass-in").onkeydown = e => { if (e.key === "Enter"){ e.preventDefault(); $("#pass-save").click(); } };
 function updateAiUi(){
   const mode = aiMode();
   $("#ai-mode").textContent = { claude: "Using your Claude account", key: "Using your API key", relay: "Shared Faculty assistant", none: "" }[mode];
-  $("#keybox").hidden = mode !== "none";
+  $("#keybox").hidden = mode !== "none"; $("#passbox").hidden = mode !== "none" || !AI_ENDPOINT;
   $("#ai-web").disabled = !(mode === "key" || mode === "relay"); $("#ai-model").disabled = !(mode === "key" || mode === "relay");
   const ms = $("#ai-model"), lab = ms.closest("label");
   if (mode === "relay"){
@@ -1392,7 +1396,7 @@ function updateAiUi(){
     ms.disabled = false;
   } else lab.hidden = false;
   $("#key-status").innerHTML = mode === "key" ? `API key saved in this browser. <button class="btn" id="key-forget" style="padding:2px 8px;font-size:11.5px">Forget key</button>`
-    : mode === "claude" ? "Running inside Claude on your own account." : mode === "relay" ? (getPass() ? `Using the shared Faculty assistant. <button class="btn" id="pass-forget" style="padding:2px 8px;font-size:11.5px">Forget passcode</button>` : "Using the shared Faculty assistant.") : "No API key saved yet.";
+    : mode === "claude" ? "Running inside Claude on your own account." : mode === "relay" ? (getPass() ? `Using the shared Faculty assistant. <button class="btn" id="pass-forget" style="padding:2px 8px;font-size:11.5px">Forget passcode</button>` : "Using the shared Faculty assistant.") : AI_ENDPOINT ? "Not connected yet. Add your own API key or the Faculty passcode." : "No API key saved yet.";
   const pf = $("#pass-forget"); if (pf) pf.onclick = () => { setPass("", false); updateAiUi(); };
   const f = $("#key-forget"); if (f) f.onclick = () => { forgetKey(); updateAiUi(); };
   const dr = $("#dr-ai-sec"); if (dr) dr.hidden = mode === "none";

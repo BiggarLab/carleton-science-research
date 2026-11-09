@@ -83,6 +83,8 @@ Industry pull drives the ranking; paper volume only breaks ties, so prolific pub
 ## The research assistant (AI chat)
 The **Assistant** tab is a chat that searches the Faculty publication data and, when allowed, the web. Use it to match researchers to an industry partner, build a team for a grant call, prep for a meeting, or find committee members. Follow-up questions keep the conversation's context.
 
+Nobody can use the Assistant on the public site without connecting first. Each visitor picks one of two options, once per browser: their own Claude API key, or the Faculty passcode for the shared account below. A saved personal key takes priority over a saved passcode; **Forget key** or **Forget passcode** in the Assistant's settings switches between them.
+
 ### Shared assistant (one key, held by you)
 A small Cloudflare Worker (`worker/worker.js`) holds one AI key and relays questions. The key never reaches the website, the repo or anyone's browser. Visitors type a passcode once; there's a daily question cap.
 
@@ -108,8 +110,8 @@ To change the key, model or passcode later, edit them in Cloudflare; nothing in 
 
 Cost with `gpt-5-mini`: about 1 to 3 cents a question; web searches add about 1 cent each. The weekly digest still uses Claude (`ANTHROPIC_API_KEY` in GitHub secrets).
 
-### Personal key (no Worker)
-With `docs/ai.json` empty, the Assistant asks for a Claude API key, kept only in that browser and sent only to Anthropic. Fine for one person; use the Worker for colleagues.
+### Personal key
+A visitor's own Claude API key (from platform.claude.com) is kept only in their browser and sent only to Anthropic, and their questions are billed to them, not to the shared account. With `docs/ai.json` empty this is the only option offered.
 
 ## University-wide view
 **https://biggarlab.github.io/carleton-science-research/university/** shows research strengths across all of Carleton, built every Monday by the *University-wide update* action (`scripts/university.py`, about 20 to 40 minutes).
