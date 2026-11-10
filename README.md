@@ -133,7 +133,9 @@ Departments, their Faculty and the websites read are in `config/university_units
 To run it now: **Actions → University-wide update → Run workflow**.
 
 ## Password screen
-The pages show a simple password box. It keeps casual visitors out but is cosmetic: the data files and this repo stay public.
+Every page opens with a notice that visitors have to accept before they see anything: the tool is independent of Carleton, uses public data only, and must not be used for decisions. A browser is asked again after 30 days. The wording and the 30 days are `NOTICE` and `ACK_DAYS` in `scripts/gate.py`; after editing, run `python scripts/update.py --render-only` and update the two dashboard pages.
+
+The same screen shows a simple password box. It keeps casual visitors out but is cosmetic: the data files and this repo stay public.
 To set or change the password: add a repository secret `SITE_PASSWORD`, then **Actions → Set site password → Run workflow**. To remove it, delete the secret and run the action again. Each browser asks once.
 
 ## Running it yourself
