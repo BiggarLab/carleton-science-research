@@ -12,9 +12,9 @@ NOTICE = (
     "<p>This is an independent tool. It is not affiliated with, endorsed by, or an official publication of Carleton University.</p>"
     "<ul>"
     "<li>It is built only from public sources (OpenAlex, the NSERC and SSHRC awards databases, public patent records). No internal university data is used.</li>"
-    "<li>The data is collected and matched to people automatically. It can be incomplete, out of date or wrong: papers and grants can be missed or credited to the wrong person, and coverage differs between fields.</li>"
+    "<li>The data is collected and matched to people automatically. It can be incomplete, out of date or wrong: papers and grants can be missed, and coverage differs between fields.</li>"
     "<li>Summaries, opportunity notes and assistant answers are written by AI and can contain errors. Check the original source.</li>"
-    "<li>It is meant for exploring research activity and finding expertise. It must not be used to evaluate or compare individuals or units, or as the basis for hiring, tenure, promotion, funding, workload or any other decision.</li>"
+    "<li>It is meant for exploring research activity and finding expertise. It should not be used for decision making.</li>"
     "</ul>"
 )
 
