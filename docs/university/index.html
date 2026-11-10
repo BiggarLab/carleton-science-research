@@ -344,6 +344,7 @@ table.st tr.clk.on{background:var(--accent-soft)}
       <button class="tab" role="tab" data-t="people">People</button>
       <button class="tab" role="tab" data-t="expertise">Find expertise</button>
       <button class="tab" role="tab" data-t="opps">Partnership signals</button>
+      <button class="tab" role="tab" data-t="oa" id="tab-oa">Open access</button>
       <button class="tab" role="tab" data-t="pubs">Publications</button>
       <button class="tab" role="tab" data-t="ask" id="tab-ask">Assistant<span class="ai">AI</span></button>
     </nav>
@@ -377,6 +378,20 @@ table.st tr.clk.on{background:var(--accent-soft)}
       <div class="grid g2" style="margin-top:16px">
         <div class="panel"><div class="ph"><h2>Most active topics</h2><span class="note">OpenAlex topics · click to filter</span></div><div class="blist" id="topics"></div></div>
         <div class="panel"><div class="ph"><h2>Rising and falling topics</h2><span class="note" id="trend-note"></span></div><div id="trends"></div></div>
+      </div>
+    </section>
+
+    <section data-p="oa" hidden>
+      <div class="kpis" id="oa-kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))"></div>
+      <div class="grid g3">
+        <div class="panel"><div class="ph"><h2>Open access share by year</h2><span class="note" id="oa-yr-note"></span></div>
+          <p class="sub">Share of outputs that are free to read, as recorded by OpenAlex. Recent months read low, because repository copies and embargoed papers take time to show up as open.</p>
+          <svg id="oa-yr" role="img" aria-label="Open access share by year"></svg></div>
+        <div class="panel"><div class="ph"><h2 id="oa-units-h">By unit</h2><span class="note">share open · click to filter</span></div><div class="blist" id="oa-units"></div></div>
+      </div>
+      <div class="grid g2" style="margin-top:16px">
+        <div class="panel"><div class="ph"><h2>By research area</h2><span class="note" id="oa-areas-note"></span></div><div class="blist" id="oa-areas"></div></div>
+        <div class="panel"><div class="ph"><h2>Where the closed outputs are published</h2><span class="note">closed of total in that venue</span></div><div class="blist" id="oa-venues"></div></div>
       </div>
     </section>
 
@@ -681,7 +696,7 @@ $("#tabs").onclick = e => { const b = e.target.closest(".tab"); if (!b) return; 
 function render(){
   document.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-selected", b.dataset.t === S.tab));
   document.querySelectorAll("main section").forEach(s => s.hidden = s.dataset.p !== S.tab);
-  ({ strengths, overview, network, world, people, expertise, opps, pubs, ask: () => {} })[S.tab]();
+  ({ strengths, overview, network, world, people, expertise, opps, oa: openAccess, pubs, ask: () => {} })[S.tab]();
 }
 function update(){ S.page = 0; syncFilterUI(); render(); }
 
@@ -753,6 +768,63 @@ function overview(){
   $("#trends").onclick = e => { const r = e.target.closest(".drow[data-q]"); if (r) setTopic(r.dataset.q.toLowerCase()); };
   $("#trends").onmousemove = e => { const r = e.target.closest(".drow[data-q]"); if (!r) return hideTip(); const d = ch.find(c => c[0] === r.dataset.q); showTip(e, `<b>${esc(d[0])}</b><br>${d[2]} outputs ${S.y0}–${mid} · ${d[3]} outputs ${mid+1}–${lateEnd}`); };
   $("#trends").onmouseleave = hideTip;
+}
+
+/* ---------- open access ----------
+   Uses the open/closed flag OpenAlex records for each output (open_access.is_oa). Follows the same filters as the other tabs. */
+const OA_MIN = 10; // an area or venue is listed only with at least this many outputs
+function openAccess(){
+  const ws = sel(); const nOpen = ws.filter(w => w.oa).length;
+  const ys = d3.range(S.y0, S.y1 + 1);
+  const yr = ys.map(y => { const v = ws.filter(w => w.y === y); return { y, n: v.length, o: v.filter(w => w.oa).length }; });
+  const full = yr.filter(d => d.n >= OA_MIN && !(PARTIAL && d.y === Y1));
+  const a = full[0], b = full[full.length - 1];
+  const chg = a && b && a !== b ? Math.round(100 * b.o / b.n) - Math.round(100 * a.o / a.n) : null;
+  $("#oa-kpis").innerHTML = [
+    [pct(nOpen, ws.length), "Open access"], [fmt(nOpen), "Open outputs"], [fmt(ws.length - nOpen), "Closed outputs"],
+    [chg == null ? "–" : (chg > 0 ? "+" : chg < 0 ? "−" : "") + Math.abs(chg) + " pts", chg == null ? "Change in open share" : `Change in open share, ${a.y} to ${b.y}`]
+  ].map(([v,k]) => `<div class="kpi"><span class="v">${v}</span><span class="k">${k}</span></div>`).join("");
+
+  // share by year
+  const svg = d3.select("#oa-yr"); const W = svg.node().clientWidth || 600, H = 240, m = {t:20,r:8,b:24,l:40};
+  svg.attr("viewBox", `0 0 ${W} ${H}`).attr("height", H).selectAll("*").remove();
+  const x = d3.scaleBand().domain(ys).range([m.l, W - m.r]).padding(.35);
+  const y = d3.scaleLinear().domain([0, 100]).range([H - m.b, m.t]);
+  const tk = [0, 25, 50, 75, 100];
+  svg.append("g").selectAll("line").data(tk).join("line").attr("class","grid-l").attr("x1",m.l).attr("x2",W-m.r).attr("y1",d=>y(d)).attr("y2",d=>y(d));
+  svg.append("g").selectAll("text").data(tk).join("text").attr("x",m.l-6).attr("y",d=>y(d)+4).attr("text-anchor","end").text(d=>d+"%");
+  const bw = Math.min(x.bandwidth(), 64), sh = d => d.n ? 100 * d.o / d.n : 0;
+  svg.append("g").selectAll("path").data(yr.filter(d => d.n)).join("path")
+    .attr("d", d => { const x0 = x(d.y) + (x.bandwidth()-bw)/2, y0 = y(sh(d)), h = y(0) - y0, r = Math.min(4, h); return `M${x0},${y(0)}V${y0+r}Q${x0},${y0} ${x0+r},${y0}H${x0+bw-r}Q${x0+bw},${y0} ${x0+bw},${y0+r}V${y(0)}Z`; })
+    .attr("fill", d => PARTIAL && d.y === Y1 ? "var(--seq-2)" : "var(--seq-4)")
+    .on("mousemove", (e,d) => showTip(e, `<b>${d.y}</b><br>${fmt(d.o)} of ${fmt(d.n)} outputs open (${pct(d.o, d.n)})${PARTIAL && d.y===Y1?`<br>to ${GENL}`:""}`)).on("mouseleave", hideTip);
+  svg.append("g").selectAll("text").data(ys).join("text").attr("x",yy=>x(yy)+x.bandwidth()/2).attr("y",H-6).attr("text-anchor","middle").text(yy=>yy);
+  svg.append("g").selectAll("text").data(yr.filter(d => d.n)).join("text").attr("x",d=>x(d.y)+x.bandwidth()/2).attr("y",d=>y(sh(d))-6).attr("text-anchor","middle").style("fill","var(--ink-2)").text(d=>pct(d.o, d.n));
+  $("#oa-yr-note").textContent = PARTIAL && S.y1 === Y1 ? `${Y1} is partial (to ${GENL})` : "";
+
+  const bar = (o, n) => `<span class="tr"><span style="width:${n ? 100*o/n : 0}%"></span></span><span class="n">${pct(o, n)}</span>`;
+  const tally = (list, keyOf) => { const mp = new Map(); list.forEach(w => { for (const k of keyOf(w)) { const r = mp.get(k) || [0, 0]; r[0]++; if (w.oa) r[1]++; mp.set(k, r); } }); return mp; };
+
+  // units (or Faculties in the university view)
+  const wsU = sel({ noUnit: true });
+  const byFac = UNI && !S.facs.size;
+  const um = tally(wsU, w => byFac ? w.facs : w.units);
+  const keys = byFac ? FACS : UNITS.filter(u => !UNI || S.facs.has(FAC_OF.get(u)));
+  $("#oa-units-h").textContent = byFac ? "By Faculty" : UNI ? "By department or school" : "By unit";
+  const ur = keys.map(u => [u, ...(um.get(u) || [0, 0])]).filter(d => d[1]).sort((p, q) => (q[1] >= OA_MIN) - (p[1] >= OA_MIN) || q[2]/q[1] - p[2]/p[1]); // units with very few outputs go last
+  $("#oa-units").innerHTML = ur.length ? ur.map(([u,n,o]) => `<button class="brow${S.units.has(u)?" on":""}" data-u="${esc(u)}" title="${esc(byFac ? u : unitLabel(u))}: ${fmt(o)} of ${fmt(n)} open"><span class="nm">${esc(byFac ? u : unitLabel(u))} <small>${fmt(o)} of ${fmt(n)}</small></span>${bar(o, n)}</button>`).join("") : `<div class="empty">No outputs match.</div>`;
+  $("#oa-units").onclick = e => { const r = e.target.closest(".brow"); if (!r) return; const u = r.dataset.u; if (byFac) return setFac(u); S.units.size === 1 && S.units.has(u) ? S.units.clear() : (S.units = new Set([u])); update(); };
+
+  // research areas (OpenAlex subfields)
+  const ar = [...tally(ws.filter(w => w.T), w => [w.T[1]])].map(([k, [n, o]]) => [k, n, o]).filter(d => d[1] >= OA_MIN).sort((p, q) => q[1] - p[1]).slice(0, 16).sort((p, q) => q[2]/q[1] - p[2]/p[1]);
+  $("#oa-areas-note").textContent = ar.length ? `largest areas, ${OA_MIN}+ outputs · click to filter` : "";
+  $("#oa-areas").innerHTML = ar.length ? ar.map(([k,n,o]) => `<button class="brow" data-q="${esc(k)}"><span class="nm" title="${esc(k)}">${esc(k)} <small>${fmt(o)} of ${fmt(n)}</small></span>${bar(o, n)}</button>`).join("") : `<div class="empty">Not enough outputs to compare.</div>`;
+  $("#oa-areas").onclick = e => { const r = e.target.closest(".brow"); if (r) setTopic(r.dataset.q.toLowerCase()); };
+
+  // venues holding the most closed outputs
+  const vr = [...tally(ws.filter(w => w.v), w => [w.v])].map(([k, [n, o]]) => [k, n, n - o]).filter(d => d[2]).sort((p, q) => q[2] - p[2] || q[1] - p[1]).slice(0, 14);
+  const vm = d3.max(vr, d => d[2]) || 1;
+  $("#oa-venues").innerHTML = vr.length ? vr.map(([k,n,c]) => `<div class="brow" style="cursor:default;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) 64px"><span class="nm" title="${esc(k)}">${esc(k)}</span><span class="tr"><span style="width:${100*c/vm}%"></span></span><span class="n" style="white-space:nowrap">${fmt(c)}/${fmt(n)}</span></div>`).join("") : `<div class="empty">No closed outputs match.</div>`;
 }
 
 /* ---------- research strengths (university view) ----------
@@ -1464,6 +1536,7 @@ renderChat();
   Y0 = d3.min(WK, w => w.y); Y1 = d3.max(WK, w => w.y); GEN = D.gen; GENL = d3.timeFormat("%b %-d")(new Date(GEN + "T12:00")); PARTIAL = +GEN.slice(0,4) === Y1 && GEN.slice(5) < "12-31"; S.y0 = Y0; S.y1 = Y1;
   $("#h1").textContent = UNI ? `Research across Carleton, ${Y0} to ${Y1}` : `Research activity across the Faculty, ${Y0} to ${Y1}`;
   if (UNI) $("#tab-strengths").hidden = false;
+  if (UNI) $("#tab-oa").hidden = true; // open access view is on the Science dashboard only; delete this line to show it here too
   const ov = $("#other-view"); if (/github\.io/.test(location.hostname)){ ov.hidden = false; ov.href = UNI ? "../" : "university/"; ov.textContent = UNI ? "Faculty of Science dashboard →" : "University-wide view →"; }
   buildFilters();
   $("#m-stamp").textContent = `${P.length} ${UNI ? "researchers" : "faculty"} · ${fmt(WK.length)} outputs · data from OpenAlex, refreshed ${D.gen}`;
