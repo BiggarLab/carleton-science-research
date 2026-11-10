@@ -278,9 +278,9 @@ td small,.muted{color:var(--muted)}
 .empty{padding:28px;text-align:center;color:var(--muted);font-size:13px}
 /* strengths (university view) */
 .st-ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.st-ctl .seg{display:inline-flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
-.st-ctl .seg button{border:0;background:var(--surface);padding:5px 10px;font-size:12.5px;cursor:pointer}
-.st-ctl .seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.seg button{border:0;background:var(--surface);padding:5px 10px;font-size:12.5px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
 .st-rule{font-size:12px;color:var(--muted);line-height:1.5}
 .st-rule b{color:var(--ink-2);font-weight:600}
 table.st td{vertical-align:middle}
@@ -296,6 +296,13 @@ table.st tr.clk.on{background:var(--accent-soft)}
 .fleg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--ink-2)}
 .fleg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 .spark{display:block}
+.oa-mult{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:8px}
+.oa-cell{border:1px solid var(--line-2);border-radius:4px;padding:8px 10px 6px;background:none;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:2px;min-width:0;color:inherit;font:inherit}
+.oa-cell:hover{background:var(--surface-2)}.oa-cell.on{background:var(--accent-soft)}
+.oa-cell b{font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.oa-cell small{font-size:11.5px;color:var(--ink-2);font-family:var(--f-mono)}
+.oa-cell svg{display:block;width:100%;height:auto}
+.kpi.go{cursor:pointer}.kpi.go:hover{background:var(--surface-2)}.kpi.go .k::after{content:" · by unit →";color:var(--accent)}
 .ev{font-size:11px;color:var(--muted)}
 .loading{padding:60px 16px;text-align:center;color:var(--muted)}
 [hidden]{display:none!important}
@@ -384,9 +391,11 @@ table.st tr.clk.on{background:var(--accent-soft)}
     <section data-p="oa" hidden>
       <div class="kpis" id="oa-kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))"></div>
       <div class="grid g3">
-        <div class="panel"><div class="ph"><h2>Open access share by year</h2><span class="note" id="oa-yr-note"></span></div>
+        <div class="panel"><div class="ph"><h2>Open access share by year</h2><span class="seg" id="oa-view"><button data-v="all" aria-pressed="true">Overall</button><button data-v="unit" aria-pressed="false">By unit</button></span></div>
           <p class="sub">Share of outputs that are free to read, as recorded by OpenAlex. Recent months read low, because repository copies and embargoed papers take time to show up as open.</p>
-          <svg id="oa-yr" role="img" aria-label="Open access share by year"></svg></div>
+          <span class="note" id="oa-yr-note"></span>
+          <svg id="oa-yr" role="img" aria-label="Open access share by year"></svg>
+          <div class="oa-mult" id="oa-mult" hidden></div></div>
         <div class="panel"><div class="ph"><h2 id="oa-units-h">By unit</h2><span class="note">share open · click to filter</span></div><div class="blist" id="oa-units"></div></div>
       </div>
       <div class="grid g2" style="margin-top:16px">
@@ -540,7 +549,7 @@ function hideTip(){ tip.style.opacity = 0; }
 
 let D, WORLD, P, WK, TOP, UNITS, SG = null;
 let Y0 = 2021, Y1 = 2026, GEN = "", GENL = "", PARTIAL = true;
-const S = { units: new Set(), facs: new Set(), person: null, topic: "", y0: 2021, y1: 2026, pre: false, big: false, lead: false, tab: UNI ? "strengths" : "overview", pair: null, pubSort: "new", page: 0, country: null,
+const S = { units: new Set(), facs: new Set(), person: null, topic: "", y0: 2021, y1: 2026, pre: false, big: false, lead: false, tab: UNI ? "strengths" : "overview", pair: null, pubSort: "new", page: 0, oaView: "all", country: null,
   stLevel: "topic", stShow: "all", stSort: "n", stSel: null };
 let AI_ENDPOINT = ""; // GitHub version: read at startup from ai.json ({"endpoint": "<Cloudflare Worker URL>"}), see README.
 
@@ -783,7 +792,19 @@ function openAccess(){
   $("#oa-kpis").innerHTML = [
     [pct(nOpen, ws.length), "Open access"], [fmt(nOpen), "Open outputs"], [fmt(ws.length - nOpen), "Closed outputs"],
     [chg == null ? "–" : (chg > 0 ? "+" : chg < 0 ? "−" : "") + Math.abs(chg) + " pts", chg == null ? "Change in open share" : `Change in open share, ${a.y} to ${b.y}`]
-  ].map(([v,k]) => `<div class="kpi"><span class="v">${v}</span><span class="k">${k}</span></div>`).join("");
+  ].map(([v,k], i) => `<div class="kpi${i === 3 ? " go" : ""}"${i === 3 ? ` role="button" tabindex="0" title="Show the trend for each ${UNI ? "Faculty or department" : "unit"}"` : ""}><span class="v">${v}</span><span class="k">${k}</span></div>`).join("");
+  const goUnit = () => { S.oaView = "unit"; render(); $("#oa-view").scrollIntoView({ block: "nearest" }); };
+  $("#oa-kpis").onclick = e => { if (e.target.closest(".kpi.go")) goUnit(); };
+  $("#oa-kpis").onkeydown = e => { if ((e.key === "Enter" || e.key === " ") && e.target.closest(".kpi.go")) { e.preventDefault(); goUnit(); } };
+
+  const wsU = sel({ noUnit: true });
+  const byFac = UNI && !S.facs.size;
+  const keys = byFac ? FACS : UNITS.filter(u => !UNI || S.facs.has(FAC_OF.get(u)));
+  const byU = S.oaView === "unit";
+  $("#oa-view").querySelectorAll("button").forEach(b => { b.setAttribute("aria-pressed", b.dataset.v === (byU ? "unit" : "all")); if (b.dataset.v === "unit") b.textContent = byFac ? "By Faculty" : "By unit"; });
+  $("#oa-view").onclick = e => { const b = e.target.closest("button"); if (b) { S.oaView = b.dataset.v; render(); } };
+  $("#oa-yr").style.display = byU ? "none" : ""; $("#oa-mult").hidden = !byU;
+  if (byU) oaByUnit(wsU, keys, byFac, ys);
 
   // share by year
   const svg = d3.select("#oa-yr"); const W = svg.node().clientWidth || 600, H = 240, m = {t:20,r:8,b:24,l:40};
@@ -800,16 +821,13 @@ function openAccess(){
     .on("mousemove", (e,d) => showTip(e, `<b>${d.y}</b><br>${fmt(d.o)} of ${fmt(d.n)} outputs open (${pct(d.o, d.n)})${PARTIAL && d.y===Y1?`<br>to ${GENL}`:""}`)).on("mouseleave", hideTip);
   svg.append("g").selectAll("text").data(ys).join("text").attr("x",yy=>x(yy)+x.bandwidth()/2).attr("y",H-6).attr("text-anchor","middle").text(yy=>yy);
   svg.append("g").selectAll("text").data(yr.filter(d => d.n)).join("text").attr("x",d=>x(d.y)+x.bandwidth()/2).attr("y",d=>y(sh(d))-6).attr("text-anchor","middle").style("fill","var(--ink-2)").text(d=>pct(d.o, d.n));
-  $("#oa-yr-note").textContent = PARTIAL && S.y1 === Y1 ? `${Y1} is partial (to ${GENL})` : "";
+  $("#oa-yr-note").textContent = (byU ? `Blue: the ${byFac ? "Faculty" : "unit"}. Grey: all ${byFac ? "Faculties" : "units"} together. Years with fewer than ${OA_MIN_YR} outputs are left out. Click to filter. ` : "") + (PARTIAL && S.y1 === Y1 ? `${Y1} is partial (to ${GENL}).` : "");
 
   const bar = (o, n) => `<span class="tr"><span style="width:${n ? 100*o/n : 0}%"></span></span><span class="n">${pct(o, n)}</span>`;
   const tally = (list, keyOf) => { const mp = new Map(); list.forEach(w => { for (const k of keyOf(w)) { const r = mp.get(k) || [0, 0]; r[0]++; if (w.oa) r[1]++; mp.set(k, r); } }); return mp; };
 
   // units (or Faculties in the university view)
-  const wsU = sel({ noUnit: true });
-  const byFac = UNI && !S.facs.size;
   const um = tally(wsU, w => byFac ? w.facs : w.units);
-  const keys = byFac ? FACS : UNITS.filter(u => !UNI || S.facs.has(FAC_OF.get(u)));
   $("#oa-units-h").textContent = byFac ? "By Faculty" : UNI ? "By department or school" : "By unit";
   const ur = keys.map(u => [u, ...(um.get(u) || [0, 0])]).filter(d => d[1]).sort((p, q) => (q[1] >= OA_MIN) - (p[1] >= OA_MIN) || q[2]/q[1] - p[2]/p[1]); // units with very few outputs go last
   $("#oa-units").innerHTML = ur.length ? ur.map(([u,n,o]) => `<button class="brow${S.units.has(u)?" on":""}" data-u="${esc(u)}" title="${esc(byFac ? u : unitLabel(u))}: ${fmt(o)} of ${fmt(n)} open"><span class="nm">${esc(byFac ? u : unitLabel(u))} <small>${fmt(o)} of ${fmt(n)}</small></span>${bar(o, n)}</button>`).join("") : `<div class="empty">No outputs match.</div>`;
@@ -825,6 +843,34 @@ function openAccess(){
   const vr = [...tally(ws.filter(w => w.v), w => [w.v])].map(([k, [n, o]]) => [k, n, n - o]).filter(d => d[2]).sort((p, q) => q[2] - p[2] || q[1] - p[1]).slice(0, 14);
   const vm = d3.max(vr, d => d[2]) || 1;
   $("#oa-venues").innerHTML = vr.length ? vr.map(([k,n,c]) => `<div class="brow" style="cursor:default;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) 64px"><span class="nm" title="${esc(k)}">${esc(k)}</span><span class="tr"><span style="width:${100*c/vm}%"></span></span><span class="n" style="white-space:nowrap">${fmt(c)}/${fmt(n)}</span></div>`).join("") : `<div class="empty">No closed outputs match.</div>`;
+}
+
+const OA_MIN_YR = 5; // a unit's yearly share is drawn only with at least this many outputs that year
+function oaByUnit(wsU, keys, byFac, ys){
+  const cnt = list => ys.map(y => { const v = list.filter(w => w.y === y); return { y, n: v.length, o: v.filter(w => w.oa).length }; });
+  const all = cnt(wsU);
+  const W = 180, H = 74, m = { t: 8, r: 8, b: 14, l: 8 };
+  const x = d3.scalePoint().domain(ys).range([m.l, W - m.r]), y = d3.scaleLinear().domain([0, 100]).range([H - m.b, m.t]);
+  const line = d3.line().x(d => x(d.y)).y(d => y(100 * d.o / d.n));
+  const rows = keys.map(u => { const pts = cnt(wsU.filter(w => (byFac ? w.facs : w.units).has(u))); const ok = pts.filter(d => d.n >= OA_MIN_YR);
+    const full = ok.filter(d => !(PARTIAL && d.y === Y1)); return { u, pts, ok, a: full[0], b: full[full.length - 1], n: d3.sum(pts, d => d.n) }; }).filter(r => r.n);
+  const sh = d => Math.round(100 * d.o / d.n);
+  rows.sort((p, q) => (q.ok.length > 1) - (p.ok.length > 1) || q.n - p.n);
+  const ref = all.filter(d => d.n >= OA_MIN_YR);
+  $("#oa-mult").innerHTML = rows.length ? rows.map(r => {
+    const two = r.a && r.b && r.a !== r.b, dl = two ? sh(r.b) - sh(r.a) : null;
+    const lab = two ? `${sh(r.a)}% → ${sh(r.b)}% (${dl > 0 ? "+" : dl < 0 ? "−" : ""}${Math.abs(dl)} pts)` : r.ok.length ? `${sh(r.ok[r.ok.length - 1])}% in ${r.ok[r.ok.length - 1].y}` : "too few outputs";
+    return `<button class="oa-cell${!byFac && S.units.has(r.u) ? " on" : ""}" data-u="${esc(r.u)}"><b title="${esc(byFac ? r.u : unitLabel(r.u))}">${esc(byFac ? r.u : unitLabel(r.u))}</b><small>${lab}</small>
+      <svg viewBox="0 0 ${W} ${H}" aria-hidden="true"><line class="grid-l" x1="${m.l}" x2="${W - m.r}" y1="${y(0)}" y2="${y(0)}"/><line class="grid-l" x1="${m.l}" x2="${W - m.r}" y1="${y(50)}" y2="${y(50)}"/><line class="grid-l" x1="${m.l}" x2="${W - m.r}" y1="${y(100)}" y2="${y(100)}"/>
+      ${ref.length > 1 ? `<path d="${line(ref)}" fill="none" stroke="var(--edge)" stroke-width="1.5"/>` : ""}
+      ${r.ok.length > 1 ? `<path d="${line(r.ok)}" fill="none" stroke="var(--seq-4)" stroke-width="2" stroke-linejoin="round"/>` : ""}
+      ${r.ok.map(d => `<circle cx="${x(d.y)}" cy="${y(100 * d.o / d.n)}" r="2.6" fill="${PARTIAL && d.y === Y1 ? "var(--surface)" : "var(--seq-4)"}" stroke="var(--seq-4)" stroke-width="1.5"/>`).join("")}
+      <text x="${m.l}" y="${H - 2}" style="font-size:9px">${ys[0]}</text><text x="${W - m.r}" y="${H - 2}" text-anchor="end" style="font-size:9px">${ys[ys.length - 1]}</text></svg></button>`; }).join("") : `<div class="empty">No outputs match.</div>`;
+  const M = $("#oa-mult");
+  M.onclick = e => { const c = e.target.closest(".oa-cell"); if (!c) return; const u = c.dataset.u; if (byFac) return setFac(u); S.units.size === 1 && S.units.has(u) ? S.units.clear() : (S.units = new Set([u])); update(); };
+  M.onmousemove = e => { const c = e.target.closest(".oa-cell"); if (!c) return hideTip(); const r = rows.find(q => q.u === c.dataset.u);
+    showTip(e, `<b>${esc(byFac ? r.u : unitLabel(r.u))}</b>` + r.pts.filter(d => d.n).map(d => `<br>${d.y}: ${d.o} of ${d.n} open (${pct(d.o, d.n)})`).join("")); };
+  M.onmouseleave = hideTip;
 }
 
 /* ---------- research strengths (university view) ----------
