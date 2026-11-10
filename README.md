@@ -118,6 +118,7 @@ A visitor's own Carleton RCS LLM key (starts with `ak_`, requested from Research
 
 **Who counts as a researcher.** There is no university-wide faculty list, so each person carries the evidence that put them on the page:
 - **Science roster**: `config/roster.csv`, exact.
+- **Public and Global Affairs roster**: `config/roster_fpga.csv`, exact. This Faculty is defined by its roster alone: people found only through department websites or grants are not added to its units. To define another Faculty the same way, add a roster file and list it under `rosters` in `config/university_units.json`.
 - **Department website**: listed as professor, instructor, lecturer or research chair on a carleton.ca department site (adjuncts, emeriti, contract instructors and students are left out).
 - **NSERC or SSHRC grant**: held a research grant at Carleton in the last six years (scholarships and fellowships are left out) and publishes from Carleton in OpenAlex.
 

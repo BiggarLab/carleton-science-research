@@ -537,7 +537,7 @@ const ORG = UNI ? "Carleton University" : "Carleton University's Faculty of Scie
 let FACS = [], FAC_OF = new Map(), WSUB = null, HAS_LEAD = false;
 const wf = w => S.lead && w.lead ? w.lead : w.f; // researchers credited with a paper: all Carleton authors, or only lead authors when the switch is on
 const facColor = f => { const k = FACS.indexOf(f); return k >= 0 && k < 5 ? `var(--fc${k + 1})` : "var(--fc0)"; };
-const EVL = { roster: "Science roster", web: "department website", nserc: "NSERC grant", sshrc: "SSHRC grant" };
+const EVL = { roster: "Faculty roster", web: "department website", nserc: "NSERC grant", sshrc: "SSHRC grant" };
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const strip = s => String(s ?? "").replace(/<[^>]+>/g, "");
@@ -1461,7 +1461,7 @@ let chatMsgs = [];      // full API history (key / relay modes)
 let chatTurns = [];     // plain text turns (inside Claude)
 let askCtl = null, pendingQ = "";
 function chatSystem(){
-  const scope = UNI ? `University-wide data: ${P.length} researchers across these Faculties: ${FACS.join(", ")}. People were identified from the Faculty of Science roster, carleton.ca department faculty listings, and NSERC and SSHRC grant holders, then matched to OpenAlex; some people are missing and a few may be misassigned, so say so when it matters. Use research_strengths for questions about strengths, emerging areas or cross-Faculty themes.`
+  const scope = UNI ? `University-wide data: ${P.length} researchers across these Faculties: ${FACS.join(", ")}. People were identified from Faculty rosters (Science; Public and Global Affairs), carleton.ca department faculty listings, and NSERC and SSHRC grant holders, then matched to OpenAlex; some people are missing and a few may be misassigned, so say so when it matters. Use research_strengths for questions about strengths, emerging areas or cross-Faculty themes.`
     : `Faculty data: ${P.length} faculty in these units: ${UNITS.join(", ")}.`;
   return `You are the research assistant for the Associate Dean of Research, International and Innovation in Carleton University's Faculty of Science (Ottawa, Canada)${UNI ? ", working here with data for the whole university" : ""}. You help with matching researchers to industry partners and grant opportunities, preparing for meetings at short notice, finding expertise for committees, and spotting research strengths.
 

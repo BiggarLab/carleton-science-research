@@ -1,5 +1,13 @@
 {
  "_note": "Faculties and units for the university-wide view. 'sites' are carleton.ca sub-sites whose people listings are read (carleton.ca/<site>/wp-json/wp/v2/cu_people). 'match' is a regular expression tested against the affiliation text on papers. Science people come from config/roster.csv. Edit freely; unknown sites are skipped. 'secondary' units are institutes with cross-appointed members: a person also listed in a home department is assigned to the home department only.",
+ "_rosters_note": "A Faculty listed here is defined by its roster file in config/ (columns: name, sort_name as 'Last, First', units separated by ';', rank, and optional openalex_ids, orcid, aka). With 'exclusive' true, only people on the roster count as that Faculty's researchers: department web listings and grant holders in its units are not added.",
+ "rosters": [
+  {
+   "faculty": "Public and Global Affairs",
+   "file": "roster_fpga.csv",
+   "exclusive": true
+  }
+ ],
  "faculties": [
   {
    "name": "Science",

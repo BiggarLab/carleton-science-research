@@ -1,7 +1,8 @@
 """University-wide build: every Carleton output in OpenAlex, the people behind it, and research strengths.
 
 Who counts as a researcher (each person carries the evidence in `ev`):
-  roster   Faculty of Science roster (config/roster.csv), exact
+  roster   Faculty of Science roster (config/roster.csv), exact; and any other Faculty roster named under "rosters" in
+           config/university_units.json (e.g. config/roster_fpga.csv), which defines that Faculty's researchers on its own
   web      listed as faculty (professor, instructor, lecturer, research chair) on a carleton.ca department site
   nserc    holds an NSERC grant at Carleton in the last six years
   sshrc    holds a SSHRC grant at Carleton in the last six years
@@ -284,17 +285,54 @@ def build_people(authors, dirx, grants, today):
                        "st": r["stream"], "ro": [x.strip() for x in r["roles"].split(";") if x.strip()], "oa": ids, "ev": ["roster"],
                        "orc": f"https://orcid.org/{r['orcid']}" if r.get("orcid") else None, "aka": split_aka(r)})
     sci_names = {norm(p["n"]) for p in people}
+    # other Faculty rosters (config "rosters"): an exact list of who counts in that Faculty
+    closed = set()  # Faculties defined only by their roster
+    n_ros = n_ros_hit = 0
+    for rc in CFG.get("rosters", []):
+        if rc.get("exclusive", True):
+            closed.add(rc["faculty"])
+        with open(ROOT / "config" / rc["file"], encoding="utf-8") as fh:
+            ros = list(csv.DictReader(fh))
+        for r in ros:
+            if norm(r["name"]) in sci_names:
+                continue
+            last, _, first = r["sort_name"].partition(",")
+            last, first = last.strip(), first.strip()
+            ids = (r.get("openalex_ids") or "").split()
+            orcid = (r.get("orcid") or "").strip()
+            if not ids:
+                # the department listing for the same person can carry an ORCID or the name they publish under
+                web = [d for d in dirx if name_matches(d["name"], last, first)]
+                orcid = orcid or next((d["orcid"] for d in web if d.get("orcid")), "")
+                found = find(first, last, orcid)
+                for d in web:
+                    found += [a for a in find(d["first"], d["last"]) if a not in found]
+                for nm in split_aka(r):
+                    al, _, af = nm.partition(",") if "," in nm else (nm.split()[-1], "", " ".join(nm.split()[:-1]))
+                    found += [a for a in find(af.strip(), al.strip()) if a not in found]
+                ids = [a for a in found if a not in taken]
+            taken |= set(ids)
+            n_ros += 1
+            n_ros_hit += bool(ids)
+            people.append({"n": r["name"], "sort": r["sort_name"], "u": [u.strip() for u in r["units"].split(";") if u.strip()], "rk": r.get("rank") or "",
+                           "st": "", "ro": [], "oa": ids, "ev": ["roster"], "orc": f"https://orcid.org/{orcid.split('/')[-1]}" if orcid else None, "aka": split_aka(r)})
+            sci_names.add(norm(r["name"]))
+    if n_ros:
+        log(f"people: {n_ros} from other Faculty rosters, {n_ros_hit} with Carleton outputs in OpenAlex for these years")
     # department web listings
     unmatched = 0
     for d in dirx:
         if norm(d["name"]) in sci_names or all(unit_fac.get(u) == "Science" for u in d["units"]):
+            continue
+        d_units = [u for u in d["units"] if unit_fac.get(u) not in closed]  # a roster-defined Faculty takes no one from web listings
+        if not d_units:
             continue
         ids = [a for a in find(d["first"], d["last"], d.get("orcid")) if a not in taken]
         if not ids:
             unmatched += 1
             continue
         taken |= set(ids)
-        people.append({"n": d["name"], "sort": f"{d['last']}, {d['first']}", "u": d["units"], "rk": rank_of(d["title"]), "st": "", "ro": [],
+        people.append({"n": d["name"], "sort": f"{d['last']}, {d['first']}", "u": d_units, "rk": rank_of(d["title"]), "st": "", "ro": [],
                        "oa": ids, "ev": ["web"], "title": d["title"][:120], "orc": f"https://orcid.org/{d['orcid']}" if d.get("orcid") else None})
     log(f"people: {len(people)} so far; {unmatched} web-listed faculty had no Carleton outputs in OpenAlex for these years")
     # grant holders
@@ -322,6 +360,8 @@ def build_people(authors, dirx, grants, today):
             if not units:
                 continue
             unit = units.most_common(1)[0][0]
+            if unit_fac.get(unit) in closed:
+                continue
             taken |= set(ids)
             nm = authors[ids[0]]["name"]
             people.append({"n": nm, "sort": f"{last.strip()}, {first}", "u": [unit], "rk": "Faculty (grant holder)", "st": "", "ro": [], "oa": ids,
