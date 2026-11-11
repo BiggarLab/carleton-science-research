@@ -144,3 +144,11 @@ To set or change the password: add a repository secret `SITE_PASSWORD`, then **A
 python scripts/update.py --no-email      # full run without sending email
 python scripts/update.py --render-only   # rebuild digest pages from saved issues, no network
 ```
+
+## FPGA weekly digest
+
+`scripts/fpga_digest.py` makes a second weekly digest for the Faculty of Public and Global Affairs: new outputs by people on `config/roster_fpga.csv`, summarized the same way as the Science digest, with no partnership signals or innovation section. It runs as the last step of the "University-wide update" workflow each Monday, after the university data is rebuilt.
+
+- Page: `docs/digest/fpga/` (with an archive under `issues/`). Saved issues: `state/fpga/issues/`.
+- Email: sent as its own message, "Carleton FPGA research digest", from the sender name "Carleton FPGA Digest". It goes to `DIGEST_TO` unless a `FPGA_DIGEST_TO` secret is set.
+- To send one by hand: run the "University-wide update" workflow with "Only make the FPGA digest" ticked. Tick "Rebuild this week's FPGA digest" to redo a week already sent.

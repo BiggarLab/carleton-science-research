@@ -1,3 +1,4 @@
+# Also sends the weekly FPGA digest (scripts/fpga_digest.py), after the university data is rebuilt.
 # University-wide research strengths: all Carleton outputs, researchers identified from department sites and NSERC/SSHRC grants.
 name: University-wide update
 
@@ -5,6 +6,19 @@ on:
   schedule:
     - cron: "30 11 * * 1"   # Mondays, after the Science update
   workflow_dispatch:
+    inputs:
+      fpga_only:
+        description: "Only make the FPGA digest (skip the university data rebuild)"
+        type: boolean
+        default: false
+      send_email:
+        description: "Send the FPGA digest email"
+        type: boolean
+        default: true
+      force:
+        description: "Rebuild this week's FPGA digest even if it was already made"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -23,6 +37,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Build university data
+        if: ${{ !inputs.fpga_only }}
         env:
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
           PATENTSVIEW_API_KEY: ${{ secrets.PATENTSVIEW_API_KEY }}
@@ -31,12 +46,31 @@ jobs:
         run: |
           set -o pipefail
           python scripts/university.py 2>&1 | tee state/uni_last_run.log
+      # Weekly digest for Public and Global Affairs: its own page and its own email, no partnership signals.
+      - name: FPGA digest
+        if: ${{ !cancelled() }}
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          DIGEST_TO: ${{ secrets.DIGEST_TO }}
+          FPGA_DIGEST_TO: ${{ secrets.FPGA_DIGEST_TO }}
+          DIGEST_FROM: ${{ secrets.DIGEST_FROM }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+        run: |
+          ARGS=""
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.send_email }}" != "true" ]; then ARGS="$ARGS --no-email"; fi
+          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
+          python scripts/fpga_digest.py $ARGS
       - name: Save results
         if: always()
         run: |
           git config user.name "research-digest-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add docs/university state
+          git add docs/university docs/digest state
           git diff --cached --quiet || git commit -m "University update $(date -u +%Y-%m-%d)"
           git pull --rebase
           git push

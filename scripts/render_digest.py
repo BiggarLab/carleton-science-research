@@ -124,6 +124,15 @@ FOOT = ("Summaries and the innovation section were written by Claude from each p
         "or lag a few weeks behind publication.")
 
 
+# A digest for another Faculty carries its own wording in issue["brand"]; anything it leaves out falls back to the Science wording.
+BRAND = {"title": "New from Carleton Science", "page_title": "Science Weekly Digest", "empty": "No new Faculty of Science outputs were indexed this week.",
+         "foot": FOOT, "dash_label": "Open the research dashboard"}
+
+
+def brand(issue, k):
+    return (issue.get("brand") or {}).get(k) or BRAND[k]
+
+
 def who_html(it):
     s = ", ".join(f"{E(n)} <small>{E(u)}</small>" for n, u in it["who"])
     if it.get("who_note"):
@@ -305,7 +314,8 @@ def opp_html(inn_unused=None, issue=None):
     return "\n".join(out)
 
 
-def render_web(issue, dashboard_url="", archive=None, logo_src="logo.png", archive_prefix="issues/"):
+def render_web(issue, dashboard_url="", archive=None, logo_src="logo.png", archive_prefix="issues/", root=None):
+    """root is the relative path to the site root (for the entry screen); it defaults to dashboard_url."""
     n, ppl, nu, cross = stats(issue)
     parts = []
     for u in issue["units"]:
@@ -322,25 +332,25 @@ def render_web(issue, dashboard_url="", archive=None, logo_src="logo.png", archi
     arch = ""
     if archive:
         arch = '<div class="arch">All issues: ' + " · ".join(f'<a href="{archive_prefix}{E(a)}.html">{E(a)}</a>' for a in archive) + "</div>"
-    dash = f'<a class="btn" href="{E(dashboard_url)}">Open the research dashboard</a>' if dashboard_url else ""
+    dash = f'<a class="btn" href="{E(dashboard_url)}">{E(brand(issue, "dash_label"))}</a>' if dashboard_url else ""
     if not n:
-        lead = issue.get("lead") or "No new Faculty of Science outputs were indexed this week."
+        lead = issue.get("lead") or brand(issue, "empty")
     else:
         lead = issue["lead"]
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-{gate_html(dashboard_url or "")}
-<title>Science Weekly Digest</title>{FONTS}<style>{CSS}</style></head><body>
+{gate_html((dashboard_url or "") if root is None else root)}
+<title>{E(brand(issue, "page_title"))}</title>{FONTS}<style>{CSS}</style></head><body>
 <div class="col"><article class="sheet" id="digest">
 <div class="eyebrow"><i></i>Research digest</div>
-<h1>New from Carleton Science</h1>
+<h1>{E(brand(issue, "title"))}</h1>
 <div class="dates">{E(week_label(issue))} · issue {issue['issue']}</div>
 <div class="prep">{PREPARED}</div>
 <div class="stats"><div><b>{n}</b><span>new outputs this week</span></div><div><b>{ppl}</b><span>Faculty researchers</span></div><div><b>{nu}</b><span>units</span></div><div><b>{cross}</b><span>cross-unit paper{'s' if cross != 1 else ''}</span></div></div>
 <p class="lead">{E(lead)}</p>
 <div class="tools"><button class="btn" id="copy">Copy as email text</button>{dash}<span class="note" id="copy-note"></span></div>
 {chr(10).join(parts)}
-<div class="foot">{FOOT}</div>{arch}
+<div class="foot">{E(brand(issue, "foot"))}</div>{arch}
 </article></div>
 <script>
 document.getElementById("copy").onclick = async () => {{
@@ -353,7 +363,7 @@ document.getElementById("copy").onclick = async () => {{
 
 
 def render_text(issue, dashboard_url=""):
-    L = [f"New from Carleton Science: {week_label(issue)} (issue {issue['issue']})", PREPARED, "", issue.get("lead", ""), ""]
+    L = [f"{brand(issue, 'title')}: {week_label(issue)} (issue {issue['issue']})", PREPARED, "", issue.get("lead", ""), ""]
     for u in issue["units"]:
         if not u["items"]:
             continue
@@ -429,13 +439,13 @@ def render_email(issue, web_url="", dashboard_url="", logo_url=""):
 <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:#ffffff;border:1px solid #d9dce1"><tr><td style="padding:28px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="{font}font-size:11px;letter-spacing:1px;text-transform:uppercase;color:{muted}">Research digest</td></tr>
-<tr><td style="{font}font-size:30px;font-weight:bold;color:{ink};padding:6px 0 4px">New from Carleton Science</td></tr>
+<tr><td style="{font}font-size:30px;font-weight:bold;color:{ink};padding:6px 0 4px">{E(brand(issue, "title"))}</td></tr>
 <tr><td style="{font}font-size:13px;color:#4a4f5a">{E(week_label(issue))} · issue {issue['issue']}<br>{PREPARED}</td></tr>
 <tr><td style="{font}font-size:13px;color:{ink};padding:14px 0;border-bottom:1px solid {line};border-top:1px solid {line};margin-top:12px"><b>{n}</b> new outputs &nbsp;·&nbsp; <b>{ppl}</b> researchers &nbsp;·&nbsp; <b>{nu}</b> units &nbsp;·&nbsp; <b>{cross}</b> cross-unit</td></tr>
 <tr><td style="font-family:Georgia,serif;font-size:16px;line-height:1.6;color:{ink};padding:16px 0 0">{E(issue.get('lead', ''))}</td></tr>
 {f'<tr><td style="{font}font-size:13px;padding:12px 0 0">{links}</td></tr>' if links else ''}
 {''.join(rows)}
-<tr><td style="{font}font-size:12px;color:{muted};padding:24px 0 0;border-top:1px solid {line}">{FOOT}</td></tr>
+<tr><td style="{font}font-size:12px;color:{muted};padding:24px 0 0;border-top:1px solid {line}">{E(brand(issue, "foot"))}</td></tr>
 </table></td></tr></table></td></tr></table></body></html>"""
 
 

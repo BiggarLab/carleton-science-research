@@ -324,10 +324,10 @@ STYLE = ("Write in plain, direct Canadian English for a busy Associate Dean of R
          "no phrases like 'groundbreaking' or 'novel'. Do not invent findings that are not in the abstract.")
 
 
-def summarize(items):
+def summarize(items, faculty="Faculty of Science"):
     payload = [{"id": it["id"], "title": it["title"], "venue": it["venue"], "carleton_authors": [f"{n} ({u})" for n, u in it["who"]],
                 "large_collaboration": it.get("big", False), "abstract": it.get("abstract", "")[:2500]} for it in items]
-    prompt = (f"{STYLE}\n\nBelow are new publications by Carleton University Faculty of Science researchers this week. For each, write a 2-sentence "
+    prompt = (f"{STYLE}\n\nBelow are new publications by Carleton University {faculty} researchers this week. For each, write a 2-sentence "
               "summary a non-specialist colleague can follow: what was done and why it matters. If there is no abstract, describe only what the title "
               "says and note that no abstract was available. Then write a 2 to 4 sentence lead paragraph for the digest that highlights the week by unit "
               "and points out cross-unit collaborations.\n\nReturn only JSON in a ```json block: {\"lead\": str, \"summaries\": {id: str}}\n\n"
@@ -428,7 +428,8 @@ def abstract_of(wid):
     return " ".join(pos[k] for k in sorted(pos))
 
 
-def make_issue(data, works, state, week_start, week_end, use_ai=True, lines=None, citers=None):
+def make_issue(data, works, state, week_start, week_end, use_ai=True, lines=None, citers=None, innovate=True, faculty="Faculty of Science"):
+    """innovate=False leaves out the partnership signals and the innovation screen (the issue then has no innovation section)."""
     people = data["people"]
     line_ix = {(L["person"], L["topic"]): L for L in (lines or [])}
     seen = set(state.get("seen", []))
@@ -462,7 +463,7 @@ def make_issue(data, works, state, week_start, week_end, use_ai=True, lines=None
                       "venue": ((w.get("primary_location") or {}).get("source") or {}).get("display_name") or "", "date": w.get("publication_date"),
                       "oa": bool((w.get("open_access") or {}).get("is_oa")), "big": big, "cross": len(first_units) > 1,
                       "unit": sorted(first_units)[0] if first_units else "Other", "preprint": w.get("type") == "preprint", "author_order": author_order})
-    for it, (wid, rec) in zip(items, cands):
+    for it, (wid, rec) in zip(items if innovate else [], cands):
         w = rec["raw"]
         sig = SIG.work_signals(w)
         topic = (w.get("primary_topic") or {}).get("display_name")
@@ -480,10 +481,10 @@ def make_issue(data, works, state, week_start, week_end, use_ai=True, lines=None
         it["abstract"] = abstract_of(it["id"])
     lead, summ, inn = "", {}, {"opportunities": [], "screened": ""}
     if items and use_ai:
-        s = summarize(items)
+        s = summarize(items, faculty)
         lead, summ = s.get("lead", ""), s.get("summaries", {})
         try:
-            inn = innovation(items)
+            inn = innovation(items) if innovate else inn
         except Exception as e:
             log("innovation screen failed:", e)
             inn = {"opportunities": [], "screened": "The innovation screen did not run this week."}
@@ -495,8 +496,10 @@ def make_issue(data, works, state, week_start, week_end, use_ai=True, lines=None
     for it in sorted(main, key=lambda x: x["date"], reverse=True):
         by_unit.setdefault(it["unit"], []).append({k: v for k, v in it.items() if k not in ("abstract", "unit", "preprint", "author_order", "signals")})
     issue = {"issue": state.get("last_issue", 0) + 1, "week_start": week_start.isoformat(), "week_end": week_end.isoformat(),
-             "lead": lead or ("A quiet week: no new Faculty of Science outputs were indexed." if not items else f"{len(items)} new outputs this week."),
+             "lead": lead or (f"A quiet week: no new {faculty} outputs were indexed." if not items else f"{len(items)} new outputs this week."),
              "units": [{"unit": u, "items": by_unit[u]} for u in sorted(by_unit)], "innovation": inn}
+    if not innovate:
+        del issue["innovation"]
     if pre:
         issue["also_title"] = "Preprints"
         issue["also"] = [f"{', '.join(n for n, _ in it['who'])} ({it['who'][0][1]}): {it['title']}. {it['venue']}, {it['date']}." for it in pre]
@@ -604,13 +607,18 @@ def send_email(issue, web_url, dash_url):
     send_mail(subject, render_email(issue, web_url, dash_url, f"{dash_url}logo.png" if dash_url else ""), render_text(issue, dash_url))
 
 
-def send_mail(subject, html_body, text_body):
-    to = os.environ.get("DIGEST_TO")
+def send_mail(subject, html_body, text_body, to=None, from_name=None):
+    """to and from_name let another digest go to its own recipients under its own sender name (same sending address)."""
+    to = to or os.environ.get("DIGEST_TO")
     if not to:
         log("DIGEST_TO not set; skipping email")
         return
+    sender = os.environ.get("DIGEST_FROM") or ""
+    if from_name:
+        addr = sender[sender.find("<") + 1: sender.rfind(">")] if "<" in sender else sender
+        sender = f"{from_name} <{addr or os.environ.get('SMTP_USER') or 'onboarding@resend.dev'}>"
     if os.environ.get("RESEND_API_KEY"):
-        body = {"from": os.environ.get("DIGEST_FROM") or "Carleton Science Digest <onboarding@resend.dev>", "to": [x.strip() for x in to.split(",") if x.strip()],
+        body = {"from": sender or "Carleton Science Digest <onboarding@resend.dev>", "to": [x.strip() for x in to.split(",") if x.strip()],
                 "subject": subject, "html": html_body, "text": text_body}
         req = urllib.request.Request("https://api.resend.com/emails", data=json.dumps(body).encode(),
                                      headers={"Authorization": f"Bearer {os.environ['RESEND_API_KEY']}", "Content-Type": "application/json", "User-Agent": "carleton-science-digest"})
@@ -622,7 +630,7 @@ def send_mail(subject, html_body, text_body):
         return
     if os.environ.get("SMTP_HOST"):
         msg = MIMEMultipart("alternative")
-        msg["Subject"], msg["From"], msg["To"] = subject, os.environ.get("DIGEST_FROM") or os.environ["SMTP_USER"], to
+        msg["Subject"], msg["From"], msg["To"] = subject, sender or os.environ["SMTP_USER"], to
         msg.attach(MIMEText(text_body, "plain", "utf-8"))
         msg.attach(MIMEText(html_body, "html", "utf-8"))
         with smtplib.SMTP(os.environ["SMTP_HOST"], int(os.environ.get("SMTP_PORT", "587"))) as s:
@@ -642,20 +650,26 @@ def write_digest(issue):
     render_all()
 
 
+# Every digest on the site: where its saved issues live, where its pages go, the path from its front page to the site root, and which dashboard it links to.
+DIGESTS = [("state/issues", "docs/digest", "../", ""), ("state/fpga/issues", "docs/digest/fpga", "../../", "university/")]
+
+
 def render_all():
-    """Re-render the latest digest and every archived issue from state/issues/*.json."""
+    """Re-render the latest issue and every archived issue of each digest from its saved issues."""
     site = CFG.get("site_url", "").rstrip("/")
     dash = f"{site}/" if site else "../"
-    files = sorted((ROOT / "state/issues").glob("*.json"))
-    dates = [f.stem for f in files][::-1]
-    out = ROOT / "docs/digest/issues"
-    out.mkdir(parents=True, exist_ok=True)
-    for f in files:
-        iss = json.loads(f.read_text(encoding="utf-8"))
-        (out / f"{f.stem}.html").write_text(render_web(iss, "../../", [d for d in dates], logo_src="../../logo.png", archive_prefix=""), encoding="utf-8")
-    if files:
-        latest = json.loads(files[-1].read_text(encoding="utf-8"))
-        (ROOT / "docs/digest/index.html").write_text(render_web(latest, "../", dates, logo_src="../logo.png", archive_prefix="issues/"), encoding="utf-8")
+    for src, dst, root, board in DIGESTS:
+        files = sorted((ROOT / src).glob("*.json"))
+        dates = [f.stem for f in files][::-1]
+        out = ROOT / dst / "issues"
+        if files:
+            out.mkdir(parents=True, exist_ok=True)
+        for f in files:
+            iss = json.loads(f.read_text(encoding="utf-8"))
+            (out / f"{f.stem}.html").write_text(render_web(iss, f"../{root}{board}", [d for d in dates], logo_src=f"../{root}logo.png", archive_prefix="", root=f"../{root}"), encoding="utf-8")
+        if files:
+            latest = json.loads(files[-1].read_text(encoding="utf-8"))
+            (ROOT / dst / "index.html").write_text(render_web(latest, f"{root}{board}", dates, logo_src=f"{root}logo.png", archive_prefix="issues/", root=root), encoding="utf-8")
     return dash
 
 
