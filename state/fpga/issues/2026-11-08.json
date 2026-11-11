@@ -1,0 +1,38 @@
+{
+ "issue": 1,
+ "week_start": "2026-11-02",
+ "week_end": "2026-11-08",
+ "lead": "This week's digest has one publication, from the School of Journalism and Communication. Benjamin Woo is a co-author of Making Worlds, a book on small-scale and non-commercial cultural production. No other units had new publications, and no cross-unit collaborations appear in this week's records.",
+ "units": [
+  {
+   "unit": "Journalism and Communication",
+   "items": [
+    {
+     "id": "W7225492064",
+     "who": [
+      [
+       "Benjamin Woo",
+       "Journalism and Communication"
+      ]
+     ],
+     "who_note": "",
+     "title": "Making Worlds: For an Ecology of Cultural Production",
+     "url": "https://openalex.org/W7225492064",
+     "venue": "Spectrum Research Repository (Concordia University)",
+     "date": "2026-10-27",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "Benjamin Woo and co-author Miranda Campbell wrote a book arguing that research and policy on culture focus too much on commercial creative industries and overlook the work of amateurs, hobbyists, volunteers, non-profits and countercultural groups. They draw on their own involvement with comics creators, game players, music scenes, zine-makers, artist co-operatives and fan cultures to propose an ecological view of how cultural activity is sustained. It matters because it responds to gig-economy boosterism and widens what counts as culture in research and policy, including the work of people and spaces that are underfunded or at risk of eviction and gentrification."
+    }
+   ]
+  }
+ ],
+ "brand": {
+  "title": "New from Carleton FPGA",
+  "page_title": "FPGA Weekly Digest",
+  "empty": "No new Faculty of Public and Global Affairs outputs were indexed this week.",
+  "dash_label": "Open the university dashboard",
+  "foot": "Summaries were written by Claude from each paper's abstract, so check the paper before quoting. Outputs are matched to the Faculty list using OpenAlex, which can miss outputs (books, chapters, law reviews and reports especially) or lag a few weeks behind publication."
+ }
+}

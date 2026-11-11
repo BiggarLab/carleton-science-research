@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>html.gated body>*:not(#gate){visibility:hidden}#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;overflow:auto;padding:16px;box-sizing:border-box;
+background:#f3f4f6;font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;color:#15171c}#gate form{background:#fff;border:1px solid #d9dce1;border-radius:6px;padding:22px;margin:auto;
+width:min(520px,100%);box-sizing:border-box;display:flex;flex-direction:column;gap:10px}#gate p,#gate ul{margin:0}#gate ul{padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+#gate label{font-weight:600;margin-top:4px}#gate input{padding:8px 10px;border:1px solid #d9dce1;border-radius:4px;font:inherit}
+#gate button{padding:9px;border:0;border-radius:4px;background:#15171c;color:#fff;font:inherit;cursor:pointer;margin-top:4px}#gate small{color:#b0162b;min-height:1em}
+@media (prefers-color-scheme:dark){#gate{background:#111316;color:#eceef1}#gate form{background:#191c20;border-color:#2e3238}#gate input{background:#111316;color:#eceef1;border-color:#2e3238}#gate button{background:#eceef1;color:#111316}}</style>
+<script>(function(){var R="../../../",K="cs-gate",A="cs-ack",S="carleton-research-dashboard",T=30*864e5,N="<b>Before you continue</b><p>This is an independent tool. It is not affiliated with, endorsed by, or an official publication of Carleton University.</p><ul><li>It is built only from public sources (OpenAlex, the NSERC and SSHRC awards databases, public patent records). No internal university data is used.</li><li>The data is collected and matched to people automatically. It can be incomplete, out of date or wrong: papers and grants can be missed, and coverage differs between fields.</li><li>Summaries, opportunity notes and assistant answers are written by AI and can contain errors. Check the original source.</li><li>It is meant for exploring research activity and finding expertise. It should not be used for decision making.</li></ul>",d=document.documentElement;d.classList.add("gated");
+function open(){d.classList.remove("gated");var g=document.getElementById("gate");if(g)g.remove();}
+async function h(t){var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(S+t));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("");}
+fetch(R+"gate.json",{cache:"no-store"}).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(g){
+ var want=g&&g.sha256;var have="",ack=0;try{have=localStorage.getItem(K)||"";ack=+localStorage.getItem(A)||0}catch(e){}
+ var pw=!!want&&have!==want,ok=Date.now()-ack<T;
+ if(!pw&&ok)return open();
+ var show=function(){var w=document.createElement("div");w.id="gate";w.setAttribute("role","dialog");w.setAttribute("aria-modal","true");
+  w.innerHTML="<form>"+N+(pw?'<label for="gate-pw">Password</label><input id="gate-pw" type="password" autocomplete="current-password">':"")+"<button>I understand, continue</button><small></small></form>";
+  document.body.appendChild(w);var f=w.querySelector("form"),i=w.querySelector("input");(i||w.querySelector("button")).focus();
+  f.onsubmit=async function(e){e.preventDefault();
+   if(pw){var x=await h(i.value);if(x!==want){w.querySelector("small").textContent="That password did not work.";i.select();return;}try{localStorage.setItem(K,x)}catch(e){}}
+   try{localStorage.setItem(A,String(Date.now()))}catch(e){}open();};};
+ if(document.body)show();else document.addEventListener("DOMContentLoaded",show);});})();</script>
+<title>FPGA Weekly Digest</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap"><style>
+:root{--bg:#f3f4f6;--paper:#ffffff;--ink:#15171c;--ink-2:#4a4f5a;--muted:#6e7380;--line:#d9dce1;--line-2:#ebedf0;--accent:#b0162b;--accent-soft:#f7e3e6;
+--f-display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;--f-body:"IBM Plex Sans",system-ui,sans-serif;--f-read:"IBM Plex Serif",Georgia,serif;--f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#111316;--paper:#191c20;--ink:#eceef1;--ink-2:#c1c5cd;--muted:#9298a3;--line:#2e3238;--line-2:#262a30;--accent:#ec5a6d;--accent-soft:#3a1d22;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111316;--paper:#191c20;--ink:#eceef1;--ink-2:#c1c5cd;--muted:#9298a3;--line:#2e3238;--line-2:#262a30;--accent:#ec5a6d;--accent-soft:#3a1d22;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;margin:0}
+.col{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:28px 56px}
+.sheet{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:clamp(18px,4vw,40px)}
+.logo{display:block;width:clamp(160px,30vw,220px);height:auto;background:#fff;border-radius:4px;padding:6px 8px;margin:0 0 18px -8px}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px;align-items:center}
+.eyebrow i{display:inline-block;width:10px;height:10px;background:var(--accent)}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(28px,5vw,40px);line-height:1.05;margin:8px 0 6px;text-wrap:balance}
+.dates{font-family:var(--f-mono);font-size:13px;color:var(--ink-2)}
+.prep{font-size:13px;color:var(--ink-2);margin-top:4px}
+.stats{display:flex;flex-wrap:wrap;gap:6px 22px;margin:18px 0 0;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats div{display:flex;flex-direction:column}
+.stats b{font-family:var(--f-display);font-size:26px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.stats span{font-size:12px;color:var(--muted)}
+.lead{font-family:var(--f-read);font-size:17px;line-height:1.6;margin:20px 0 0;max-width:62ch}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:18px}
+.btn{border:1px solid var(--line);background:var(--paper);border-radius:4px;padding:6px 11px;cursor:pointer;font:inherit;font-size:13px;font-weight:500;color:var(--ink);text-decoration:none}
+.btn:hover{border-color:var(--ink-2)}
+.note{font-size:12.5px;color:var(--muted)}
+h2{font-family:var(--f-display);font-weight:600;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);margin:34px 0 4px;padding-bottom:6px;border-bottom:2px solid var(--ink);display:flex;justify-content:space-between;gap:12px}
+h2 span{font-family:var(--f-mono);font-weight:400;letter-spacing:0;text-transform:none;color:var(--muted)}
+.item{padding:16px 0;border-bottom:1px solid var(--line-2)}
+.item:last-child{border-bottom:0}
+.item .who{font-size:13px;font-weight:600;color:var(--accent)}
+.item .who small{font-weight:400;color:var(--muted)}
+.item h3{font-family:var(--f-body);font-size:16px;font-weight:600;line-height:1.35;margin:4px 0 6px}
+.item h3 a{color:inherit;text-decoration:none}
+.item h3 a:hover{text-decoration:underline}
+.item p{font-family:var(--f-read);font-size:15.5px;line-height:1.6;margin:0;max-width:64ch}
+.item .src{font-size:12.5px;color:var(--muted);margin-top:6px}
+.tag{display:inline-block;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--accent-soft);color:var(--ink);margin-left:4px;vertical-align:1px}
+.opp{margin-top:34px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:4px;padding:16px 18px;background:var(--bg)}
+.opp h2{margin:0 0 10px;border-bottom:0;padding-bottom:0}
+.opp h4{font-size:15px;margin:14px 0 4px;font-weight:600}
+.opp h4:first-of-type{margin-top:0}
+.opp p,.opp li{font-size:14px;line-height:1.55;margin:0 0 8px;max-width:66ch}
+.opp ul{padding-left:1.1em;margin:4px 0 8px}
+.opp .k{font-weight:600}
+.tier{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:3px;margin-right:6px;vertical-align:2px;letter-spacing:.02em}
+.tier.act{background:var(--accent);color:#fff}
+.tier.conversation{background:var(--accent-soft);color:var(--ink)}
+.opp .tally{font-family:var(--f-mono);font-size:12px;color:var(--ink-2);margin:0 0 6px}
+.opp .rule{font-size:12.5px;color:var(--muted);margin:0 0 4px}
+.opp h4.sub{font-family:var(--f-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin:16px 0 6px;font-weight:600}
+.opp h4.sub span{font-family:var(--f-body);text-transform:none;letter-spacing:0;font-weight:400;color:var(--muted)}
+.opp .none{color:var(--ink-2)}
+.opp .rec{border:1px solid var(--line);border-radius:4px;padding:12px 14px;background:var(--paper);margin:0 0 10px}
+.opp .rw{font-size:13px;font-weight:600;color:var(--accent)}
+.opp .rec .sig{font-size:12px;color:var(--muted);margin:0 0 6px}
+.opp .rec h5{font-size:15px;margin:0 0 4px}.opp .rec h5 a{color:inherit}
+.opp dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 12px;margin:8px 0 0;font-size:13.5px}
+.opp dt{font-weight:600}.opp dd{margin:0}.opp dd ul{margin:0;padding-left:1.1em}.opp dd li{margin:0 0 4px}
+.opp .nm{padding:10px 0;border-top:1px solid var(--line-2)}
+.opp .nt{font-size:14px;font-weight:600;line-height:1.35}.opp .nt a{color:inherit}
+.opp .nw{font-size:12.5px;color:var(--muted);margin:2px 0 6px}
+.opp .chips{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px}
+.opp .chk{font-size:11.5px;padding:1px 7px;border-radius:3px;border:1px solid var(--line)}
+.opp .chk.y{color:#1d6b3a;border-color:#b9dcc6;background:#eef7f1}
+.opp .chk.n{color:var(--accent);border-color:#f0c2c9;background:#fbeef0}
+.opp .nm ul{margin:0;padding-left:1.1em}.opp .nm li{font-size:13.5px;margin:0 0 3px}
+.opp .wc{font-size:13px;margin:4px 0 0;color:var(--ink-2)}
+.opp .more{font-size:12.5px;color:var(--muted);margin:10px 0 0}
+.opp .screened{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line-2);padding-top:10px;margin-top:10px}
+.also{font-size:14px}
+.also ul{padding-left:1.1em;margin:10px 0 0}
+.also li{margin:0 0 10px}
+.foot{margin-top:28px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.foot a,.arch a{color:var(--accent)}
+.arch{margin-top:10px;font-size:12.5px;color:var(--muted)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style></head><body>
+<div class="col"><article class="sheet" id="digest">
+<div class="eyebrow"><i></i>Research digest</div>
+<h1>New from Carleton FPGA</h1>
+<div class="dates">Week of November 2 to November 8, 2026 · issue 1</div>
+<div class="prep">Independent summary built from public data (OpenAlex, NSERC, SSHRC). Not an official Carleton University publication.</div>
+<div class="stats"><div><b>1</b><span>new outputs this week</span></div><div><b>1</b><span>Faculty researchers</span></div><div><b>1</b><span>units</span></div><div><b>0</b><span>cross-unit papers</span></div></div>
+<p class="lead">This week&#x27;s digest has one publication, from the School of Journalism and Communication. Benjamin Woo is a co-author of Making Worlds, a book on small-scale and non-commercial cultural production. No other units had new publications, and no cross-unit collaborations appear in this week&#x27;s records.</p>
+<div class="tools"><button class="btn" id="copy">Copy as email text</button><a class="btn" href="../../../university/">Open the university dashboard</a><span class="note" id="copy-note"></span></div>
+<h2>Journalism and Communication <span>1</span></h2>
+<div class="item"><div class="who">Benjamin Woo <small>Journalism and Communication</small></div><h3><a href="https://openalex.org/W7225492064" target="_blank" rel="noopener">Making Worlds: For an Ecology of Cultural Production</a></h3><p>Benjamin Woo and co-author Miranda Campbell wrote a book arguing that research and policy on culture focus too much on commercial creative industries and overlook the work of amateurs, hobbyists, volunteers, non-profits and countercultural groups. They draw on their own involvement with comics creators, game players, music scenes, zine-makers, artist co-operatives and fan cultures to propose an ecological view of how cultural activity is sustained. It matters because it responds to gig-economy boosterism and widens what counts as culture in research and policy, including the work of people and spaces that are underfunded or at risk of eviction and gentrification.</p><div class="src">Spectrum Research Repository (Concordia University) · Oct 27 · open access</div></div>
+<div class="foot">Summaries were written by Claude from each paper&#x27;s abstract, so check the paper before quoting. Outputs are matched to the Faculty list using OpenAlex, which can miss outputs (books, chapters, law reviews and reports especially) or lag a few weeks behind publication.</div><div class="arch">All issues: <a href="2026-11-08.html">2026-11-08</a></div>
+</article></div>
+<script>
+document.getElementById("copy").onclick = async () => {
+  const txt = "New from Carleton FPGA: Week of November 2 to November 8, 2026 (issue 1)\nIndependent summary built from public data (OpenAlex, NSERC, SSHRC). Not an official Carleton University publication.\n\nThis week's digest has one publication, from the School of Journalism and Communication. Benjamin Woo is a co-author of Making Worlds, a book on small-scale and non-commercial cultural production. No other units had new publications, and no cross-unit collaborations appear in this week's records.\n\nJOURNALISM AND COMMUNICATION\nMaking Worlds: For an Ecology of Cultural Production\nBenjamin Woo (Journalism and Communication)\nBenjamin Woo and co-author Miranda Campbell wrote a book arguing that research and policy on culture focus too much on commercial creative industries and overlook the work of amateurs, hobbyists, volunteers, non-profits and countercultural groups. They draw on their own involvement with comics creators, game players, music scenes, zine-makers, artist co-operatives and fan cultures to propose an ecological view of how cultural activity is sustained. It matters because it responds to gig-economy boosterism and widens what counts as culture in research and policy, including the work of people and spaces that are underfunded or at risk of eviction and gentrification.\nhttps://openalex.org/W7225492064  Spectrum Research Repository (Concordia University), Oct 27\n\n\nDashboard: ../../../university/\n\nSummaries written by Claude from abstracts; check the paper before quoting.";
+  const note = document.getElementById("copy-note");
+  try { await navigator.clipboard.writeText(txt); note.textContent = "Copied. Paste into an email."; }
+  catch { const ta = document.createElement("textarea"); ta.value = txt; ta.rows = 8; ta.style.width = "100%"; document.querySelector(".tools").after(ta); ta.select(); note.textContent = "Copy was blocked. Select the text below and copy it."; }
+};
+</script></body></html>
