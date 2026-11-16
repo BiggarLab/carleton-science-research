@@ -121,5 +121,23 @@
   "outcome": "near miss",
   "title": "Chromosome-scale reference assembly of New World lupin Lupinus mexicanus",
   "why": "market: No buyer identified for a wild lupin species genome. Lupin crops sold today are other species; Carleton's role: First and last authors are at Agriculture and Agri-Food Canada. Golshani is a middle author; evidence: Reference assembly only, with 98% BUSCO completeness. No crop improvement method or trait validation"
+ },
+ "W7226005679": {
+  "week_end": "2026-11-15",
+  "outcome": "near miss",
+  "title": "Using short-term postrelease behavior to assess novel methods of facilitated recovery for angled Smallmouth Bass",
+  "why": "evidence: Simulated angling, 12-minute monitoring, one species. Only the 15-minute flow chamber treatment improved recovery"
+ },
+ "W7225704677": {
+  "week_end": "2026-11-15",
+  "outcome": "near miss",
+  "title": "Differential Activity of Bacillus velezensis Strains Producing Antimicrobial Lipopeptides on Mycelial Growth Inhibition of Pome Fruit Pathogens",
+  "why": "evidence: Plate assays and LC-MS only. No fruit or storage trials reported"
+ },
+ "W7225630550": {
+  "week_end": "2026-11-15",
+  "outcome": "near miss",
+  "title": "In silico and in vitro studies suggest anti-inflammatory and immunomodulatory potential of Turbinaria ornata and Turbinaria decurrens",
+  "why": "Carleton's role: Tsopmo is fifth of nine authors. First and last authors are Indonesian; evidence: Docking plus one cell line (RAW264.7) at a single concentration. No in vivo data"
  }
 }

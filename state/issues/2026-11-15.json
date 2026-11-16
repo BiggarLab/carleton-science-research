@@ -1,0 +1,330 @@
+{
+ "issue": 7,
+ "week_start": "2026-11-09",
+ "week_end": "2026-11-15",
+ "lead": "Carleton Science had 12 new publications this week. Biology had five, covering wild turtle longevity, urban heat and mental health, genetic data in species-at-risk assessments, and two fish studies by Steven Cooke. Chemistry had three, one on Bacillus strains against fruit pathogens and two by Apollinaire Tsopmo on seaweed extracts and metal-based antibacterial compounds. Computer Science, Earth Sciences, Neuroscience and Physics had one each, and the Physics paper is an ATLAS collaboration result with five Carleton authors. Each paper lists authors from a single Carleton unit, so no cross-unit collaborations are evident this week.",
+ "units": [
+  {
+   "unit": "Biology",
+   "items": [
+    {
+     "id": "W7226005679",
+     "who": [
+      [
+       "Steven Cooke",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "Using short-term postrelease behavior to assess novel methods of facilitated recovery for angled Smallmouth Bass",
+     "url": "https://doi.org/10.1093/najfmt/vqag098",
+     "venue": "North American Journal of Fisheries Management",
+     "date": "2026-11-13",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "Steven Cooke and colleagues put biologgers on Smallmouth Bass after simulated catch-and-release, including air exposure, and compared the fish's depth, temperature use and swimming over the first 12 minutes after release under different assisted recovery methods. Fish held 15 minutes in a flow chamber swam more like unexposed control fish than those exposed to air and released right away, so the authors conclude this technique can improve recovery of fish intended for release."
+    },
+    {
+     "id": "W7225896518",
+     "who": [
+      [
+       "Christina Davy",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "Genetic data used in the assessment of at‐risk species: A Canadian case study",
+     "url": "https://doi.org/10.1111/csp2.70458",
+     "venue": "Conservation Science and Practice",
+     "date": "2026-11-11",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "Christina Davy and colleagues reviewed every status report that Canada's wildlife assessment committee (COSEWIC) produced from 1983 to 2022 to see how often genetic data were used in assessing species at risk. Genetic data appeared in 51% of assessed units and only 2.6% mentioned genetic monitoring, which the authors take as a sign that the genetic evidence base needs strengthening to support national and global biodiversity targets."
+    },
+    {
+     "id": "W7225753124",
+     "who": [
+      [
+       "Grégory Bulté",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "Wild Northern Map Turtle (Graptemys geographica) can live at least half a century in Ontario",
+     "url": "https://doi.org/10.22621/cfn.v139i4.3635",
+     "venue": "The Canadian Field-Naturalist",
+     "date": "2026-11-10",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "Grégory Bulté and colleagues used long-running capture and recapture records from Opinicon Lake, Ontario, including turtles marked in the 1970s, to estimate how long wild Northern Map Turtles live. One female marked in 1978 was recaptured in 2025 with an estimated age of 57 years, and 17 other turtles had minimum ages of 31 to 55 years, which the authors say matters for conservation of the species."
+    },
+    {
+     "id": "W7163687630",
+     "who": [
+      [
+       "Rachel Buxton",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "Relationships between GPS-derived outdoor activity space ambient heat exposure, mental health, and salivary cortisol in a longitudinal, repeated measures sample of adult detroiters",
+     "url": "https://doi.org/10.1186/s12942-026-00507-0",
+     "venue": "International Journal of Health Geographics",
+     "date": "2026-11-09",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "Rachel Buxton and colleagues tracked adults in 11 Detroit neighbourhoods with GPS devices over several years and linked their outdoor heat exposure to anxiety and depression symptoms and to salivary cortisol, a stress marker. Higher heat exposure was weakly associated with more anxiety and depression symptoms (not statistically significant at the usual threshold) and was significantly associated with a cortisol pattern indicating higher stress, while exposure to greenness did not change these results."
+    },
+    {
+     "id": "W7225644812",
+     "who": [
+      [
+       "Steven Cooke",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "Sub-ice thermal gradients strongly influence winter depth use of an iconic cold-water fish",
+     "url": "https://doi.org/10.1073/pnas.2600502123",
+     "venue": "Proceedings of the National Academy of Sciences",
+     "date": "2026-11-09",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "Steven Cooke and colleagues used multiyear acoustic telemetry on Lake Trout in 11 lakes to see what controls the depths they use under winter ice, and found that the depth of the 2 °C water layer explains much of it. Applying a model to 877,927 lakes in Canada and Alaska, they predicted that 73% of the 66,500 known Lake Trout lakes have warmer winter conditions, where the fish would stay in the upper water column."
+    }
+   ]
+  },
+  {
+   "unit": "Chemistry",
+   "items": [
+    {
+     "id": "W7225630550",
+     "who": [
+      [
+       "Apollinaire Tsopmo",
+       "Chemistry"
+      ]
+     ],
+     "who_note": "",
+     "title": "In silico and in vitro studies suggest anti-inflammatory and immunomodulatory potential of Turbinaria ornata and Turbinaria decurrens",
+     "url": "https://doi.org/10.1038/s41598-026-78996-z",
+     "venue": "Scientific Reports",
+     "date": "2026-11-09",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "Apollinaire Tsopmo and colleagues analyzed the chemical makeup of extracts from two seaweeds common in Indonesian waters and tested them with computer modelling and lab cell assays for anti-inflammatory and immune-related activity. The results suggest the extracts and some of their compounds are candidates for further study, but the authors state that the docking scores do not show inhibition and that dose-response and animal work are still needed."
+    },
+    {
+     "id": "W7225704677",
+     "who": [
+      [
+       "Tyler Avis",
+       "Chemistry"
+      ]
+     ],
+     "who_note": "",
+     "title": "Differential Activity of Bacillus velezensis Strains Producing Antimicrobial Lipopeptides on Mycelial Growth Inhibition of Pome Fruit Pathogens",
+     "url": "https://doi.org/10.1002/cbdv.71914",
+     "venue": "Chemistry & Biodiversity",
+     "date": "2026-11-01",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "Tyler Avis and colleagues tested three strains of the bacterium Bacillus velezensis against four fungal pathogens of apples and pears, and measured the antimicrobial lipopeptide compounds each strain produces. All strains reduced growth of three of the pathogens, and the type of lipopeptide recovered depended on the extraction method, so the authors advise caution when attributing ecological roles to these compounds."
+    }
+   ]
+  },
+  {
+   "unit": "Earth Sciences",
+   "items": [
+    {
+     "id": "W7225624009",
+     "who": [
+      [
+       "Fred Gaidies",
+       "Earth Sciences"
+      ]
+     ],
+     "who_note": "",
+     "title": "Pitfalls in metamorphic phase equilibria modelling caused by phase-in reaction kinetics: insights from overstepping the staurolite-forming reaction",
+     "url": "https://doi.org/10.1007/s00410-026-02376-z",
+     "venue": "Contributions to Mineralogy and Petrology",
+     "date": "2026-11-09",
+     "oa": false,
+     "big": false,
+     "cross": false,
+     "summary": "No abstract was available, so this summary is based on the title only. The paper by Fred Gaidies appears to address pitfalls in modelling metamorphic phase equilibria when reaction kinetics delay the formation of new minerals, using overstepping of the staurolite-forming reaction as the example."
+    }
+   ]
+  },
+  {
+   "unit": "Physics",
+   "items": [
+    {
+     "id": "W7225996853",
+     "who": [
+      [
+       "Dag Gillberg",
+       "Physics"
+      ],
+      [
+       "Jesse Heilman",
+       "Physics"
+      ],
+      [
+       "Alain Bellerive",
+       "Physics"
+      ],
+      [
+       "Thomas Koffas",
+       "Physics"
+      ],
+      [
+       "Manuella Vincter",
+       "Physics"
+      ]
+     ],
+     "who_note": "with a large collaboration",
+     "title": "Measurement of J/ψ-jet correlations in pp and Pb+Pb collisions at $$ \\sqrt{s_{\\mathrm{NN}}}=5.02 $$ TeV with the ATLAS detector",
+     "url": "https://doi.org/10.1007/jhep11(2026)020",
+     "venue": "Journal of High Energy Physics",
+     "date": "2026-11-04",
+     "oa": true,
+     "big": true,
+     "cross": false,
+     "summary": "Carleton physicists Dag Gillberg, Jesse Heilman, Alain Bellerive, Thomas Koffas and Manuella Vincter are authors on this ATLAS collaboration paper, which measured how J/ψ particles are produced alongside jets in proton-proton and lead-lead collisions at the Large Hadron Collider. J/ψ production is strongly suppressed in lead-lead collisions up to the highest momentum measured, with differences between J/ψ particles that are and are not near jets, and the results constrain how these particles are produced."
+    }
+   ]
+  }
+ ],
+ "innovation": {
+  "opportunities": [],
+  "near_misses": [
+   {
+    "id": "W7226005679",
+    "title": "Using short-term postrelease behavior to assess novel methods of facilitated recovery for angled Smallmouth Bass",
+    "why": "evidence: Simulated angling, 12-minute monitoring, one species. Only the 15-minute flow chamber treatment improved recovery",
+    "checks": {
+     "market": {
+      "pass": true,
+      "note": "Recreational anglers already buy live wells, aerators and fish-care gear."
+     },
+     "partner": {
+      "pass": true,
+      "note": "<cite index=\"25-1\">Frabill</cite> sells live well products; its site is current."
+     },
+     "carleton_role": {
+      "pass": true,
+      "note": "Holder (Carleton) is first author and Cooke (Carleton) is last author."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "Simulated angling, 12-minute monitoring, one species. Only the 15-minute flow chamber treatment improved recovery."
+     }
+    },
+    "would_change": "Field trials with survival data, then a prototype with a tackle company."
+   },
+   {
+    "id": "W7225704677",
+    "title": "Differential Activity of Bacillus velezensis Strains Producing Antimicrobial Lipopeptides on Mycelial Growth Inhibition of Pome Fruit Pathogens",
+    "why": "evidence: Plate assays and LC-MS only. No fruit or storage trials reported",
+    "checks": {
+     "market": {
+      "pass": true,
+      "note": "Apple and pear packers already buy postharvest biocontrol products."
+     },
+     "partner": {
+      "pass": true,
+      "note": "<cite index=\"8-1\">Lallemand Plant Care</cite> (Montreal) sells biocontrol products for field and postharvest use."
+     },
+     "carleton_role": {
+      "pass": true,
+      "note": "All four authors are Carleton. Luong is first and Avis is last."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "Plate assays and LC-MS only. No fruit or storage trials reported."
+     }
+    },
+    "would_change": "Wound-inoculated fruit trials showing decay reduction in storage."
+   },
+   {
+    "id": "W7225630550",
+    "title": "In silico and in vitro studies suggest anti-inflammatory and immunomodulatory potential of Turbinaria ornata and Turbinaria decurrens",
+    "why": "Carleton's role: Tsopmo is fifth of nine authors. First and last authors are Indonesian; evidence: Docking plus one cell line (RAW264.7) at a single concentration. No in vivo data",
+    "checks": {
+     "market": {
+      "pass": true,
+      "note": "Herbal anti-inflammatory and nutraceutical products are an existing market."
+     },
+     "partner": {
+      "pass": true,
+      "note": "<cite index=\"11-3\">PT Dexa Medica</cite> (Indonesia) makes natural medicines. It cites Tsopmo's seaweed line."
+     },
+     "carleton_role": {
+      "pass": false,
+      "note": "Tsopmo is fifth of nine authors. First and last authors are Indonesian."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "Docking plus one cell line (RAW264.7) at a single concentration. No in vivo data."
+     }
+    },
+    "would_change": "A Carleton-led dose-response and in vivo study."
+   }
+  ],
+  "skipped": [
+   {
+    "id": "W7225753124",
+    "reason": "wildlife longevity observation, no buyer"
+   },
+   {
+    "id": "W7163687630",
+    "reason": "public health study, Carleton middle author"
+   },
+   {
+    "id": "W7225896518",
+    "reason": "policy review of status reports"
+   },
+   {
+    "id": "W7225644812",
+    "reason": "lake ecology, Carleton middle author"
+   },
+   {
+    "id": "W7225648956",
+    "reason": "early chemistry screening, Carleton middle author"
+   },
+   {
+    "id": "W7225640349",
+    "reason": "pure theory"
+   },
+   {
+    "id": "W7225624009",
+    "reason": "petrology modelling, no buyer"
+   },
+   {
+    "id": "W7225834732",
+    "reason": "basic neuroscience in mice"
+   }
+  ],
+  "screened": "",
+  "counts": {
+   "papers": 12,
+   "large_collaborations": 1,
+   "screened": 3,
+   "skipped": 8
+  }
+ },
+ "also_title": "Preprints",
+ "also": [
+  "Apollinaire Tsopmo (Chemistry): Synthesis, DFT study, molecular docking and antibacterial evaluation of a nitrophenyl-thienochromenone azo ligand and its Mn(II), Co(II) and Fe(II) complexes. Research Square, 2026-11-09.",
+  "Prosenjit Bose (Computer Science): Containment Problems in Convex Sets. arXiv (Cornell University), 2026-11-06.",
+  "Melissa Chee (Neuroscience): Sleep deprivation differentially recruits amygdala subregions in male and female mice. bioRxiv (Cold Spring Harbor Laboratory), 2026-11-11."
+ ]
+}
