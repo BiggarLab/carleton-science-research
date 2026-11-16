@@ -1,0 +1,14 @@
+{
+ "issue": 2,
+ "week_start": "2026-11-09",
+ "week_end": "2026-11-15",
+ "lead": "A quiet week: no new Faculty of Public and Global Affairs outputs were indexed.",
+ "units": [],
+ "brand": {
+  "title": "New from Carleton FPGA",
+  "page_title": "FPGA Weekly Digest",
+  "empty": "No new Faculty of Public and Global Affairs outputs were indexed this week.",
+  "dash_label": "Open the university dashboard",
+  "foot": "Summaries were written by Claude from each paper's abstract, so check the paper before quoting. Outputs are matched to the Faculty list using OpenAlex, which can miss outputs (books, chapters, law reviews and reports especially) or lag a few weeks behind publication."
+ }
+}
