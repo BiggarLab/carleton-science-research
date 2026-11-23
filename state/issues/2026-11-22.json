@@ -1,0 +1,282 @@
+{
+ "issue": 8,
+ "week_start": "2026-11-16",
+ "week_end": "2026-11-22",
+ "lead": "This week's list has ten publications across Biology, Computer Science, Mathematics & Statistics, Neuroscience and Physics. Biology has two papers, one on genetic effects of mountain pine beetle outbreaks on lodgepole pine and one on desiccation physiology in house crickets. Computer Science has three, covering cybersecurity, robot search and graph theory, and Physics has two papers from large international collaborations (ATLAS and nEXO). Mathematics & Statistics and Neuroscience each have one paper. No papers this week link Carleton authors across units.",
+ "units": [
+  {
+   "unit": "Biology",
+   "items": [
+    {
+     "id": "W7237180176",
+     "who": [
+      [
+       "Catherine Cullingham",
+       "Biology"
+      ]
+     ],
+     "who_note": "",
+     "title": "Effects on Genetic Architecture From Mountain Pine Beetle Mortality in Lodgepole Pine",
+     "url": "https://doi.org/10.1111/mec.70653",
+     "venue": "Molecular Ecology",
+     "date": "2026-11-01",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The authors collected cones from lodgepole pine trees killed by mountain pine beetle and from trees that survived, grew the offspring in a common garden, and genotyped 418 of them at 14,267 loci. They found reduced genetic diversity at most sampled sites and loci that differed between offspring of survivors and of killed trees, which indicates the beetle selects on pine genotype and that regeneration from survivors may increase variation linked to reduced host quality for the beetle."
+    }
+   ]
+  },
+  {
+   "unit": "Computer Science",
+   "items": [
+    {
+     "id": "W7237154697",
+     "who": [
+      [
+       "Lianying Zhao",
+       "Computer Science"
+      ]
+     ],
+     "who_note": "",
+     "title": "Boosting Automated Vulnerability Condition Classification Through Multi-Source Information Aggregation",
+     "url": "https://doi.org/10.1109/cloudcom71355.2026.00062",
+     "venue": "IEEE International Conference on Cloud Computing Technology and Science",
+     "date": "2026-10-01",
+     "oa": false,
+     "big": false,
+     "cross": false,
+     "summary": "The authors built a system that classifies the preconditions and postconditions of software vulnerabilities by combining several databases, including IBM X-Force Exchange and the Red Hat CVE database, instead of relying only on the National Vulnerability Database. It improved F1 scores by 3% to 18% over single-source baselines, with gains up to 69% where the NVD had little detail, and a case study on the Free5GC 5G core showed more complete attack graphs."
+    }
+   ]
+  },
+  {
+   "unit": "Mathematics & Statistics",
+   "items": [
+    {
+     "id": "W7156714251",
+     "who": [
+      [
+       "Minyi Huang",
+       "Mathematics & Statistics"
+      ]
+     ],
+     "who_note": "",
+     "title": "Risk-Sensitive Linear-Quadratic-Gaussian Graphon Mean-Field Games",
+     "url": "https://doi.org/10.1137/25m179169x",
+     "venue": "SIAM Journal on Control and Optimization",
+     "date": "2026-11-19",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The paper develops a mathematical framework for very large networks of different agents who each want to minimize a cost while accounting for their own risk sensitivity. It shows that decentralized strategies can be defined and proves they form an approximate Nash equilibrium, under stated conditions, using new error estimates suited to the exponential cost, and it includes a numerical example."
+    }
+   ]
+  },
+  {
+   "unit": "Neuroscience",
+   "items": [
+    {
+     "id": "W7235542256",
+     "who": [
+      [
+       "Amedeo D'Angiulli",
+       "Neuroscience"
+      ]
+     ],
+     "who_note": "",
+     "title": "Depth-of-Anesthesia Monitoring in Closed-Loop Anesthesia Delivery with Open BIS Validation and Neuromorphic Feasibility",
+     "url": "https://doi.org/10.3390/app162211401",
+     "venue": "Applied Sciences",
+     "date": "2026-11-17",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "The authors validated an open implementation of the bispectral index, a clinical measure of anesthesia depth derived from EEG, against reference data from VitalDB. They also evaluated simulated population drug response under a standard PID closed-loop controller and assessed whether the same controller could be realized in a neuromorphic framework, leaving larger-cohort validation and prospective testing for future work."
+    }
+   ]
+  },
+  {
+   "unit": "Physics",
+   "items": [
+    {
+     "id": "W7165721827",
+     "who": [
+      [
+       "Dag Gillberg",
+       "Physics"
+      ],
+      [
+       "Jesse Heilman",
+       "Physics"
+      ]
+     ],
+     "who_note": "with a large collaboration",
+     "title": "Measurements of charged-particle pseudorapidity and transverse momentum distributions in O+O and Ne+Ne collisions at s N N = 5.36 TeV with the ATLAS detector",
+     "url": "https://doi.org/10.1103/5dn8-b39f",
+     "venue": "Physical Review C",
+     "date": "2026-11-19",
+     "oa": true,
+     "big": true,
+     "cross": false,
+     "summary": "The ATLAS collaboration measured how many charged particles are produced, and their transverse momentum, in oxygen-oxygen and neon-neon collisions at 5.36 TeV, as a function of angle and collision centrality. The results are compared with hydrodynamic calculations, so they give reference data for testing models of these collisions."
+    },
+    {
+     "id": "W7171923841",
+     "who": [
+      [
+       "Simon Viel",
+       "Physics"
+      ],
+      [
+       "Razvan Gornea",
+       "Physics"
+      ]
+     ],
+     "who_note": "with a large collaboration",
+     "title": "nEXO radioassay program",
+     "url": "https://doi.org/10.1103/3vhf-4ykl",
+     "venue": "Physical Review C",
+     "date": "2026-11-17",
+     "oa": false,
+     "big": true,
+     "cross": false,
+     "summary": "The nEXO collaboration reports 300 material radioactivity assays, made with several low-background counting and mass spectrometry methods, to help select clean materials for the planned nEXO double-beta decay experiment. The compilation includes some of the tightest published limits on thorium-232 and uranium-238 content, and it can save other low-radioactivity experiments from repeating material studies."
+    }
+   ]
+  }
+ ],
+ "innovation": {
+  "opportunities": [
+   {
+    "tier": "act",
+    "id": "W7237154697",
+    "heading": "Better attack graph inputs for 5G and cloud security assessment",
+    "what": "A deep learning method combines vulnerability descriptions from several databases to label attack preconditions and postconditions. The labels feed automated attack graphs. The team also built a labelled dataset.",
+    "market_fit": "Telecom vendors and operators securing 5G cores, and security tool vendors that build attack graphs. Ericsson Canada researches 5G network security and has worked with Zhao's group.",
+    "partners": [
+     {
+      "name": "Ericsson Canada",
+      "location": "Ottawa, Montreal and Toronto offices",
+      "why": "Co-authored with Zhao's line in 2024 and runs Canadian 5G security research."
+     }
+    ],
+    "next_step": "Ask Lianying Zhao to introduce Taous Madi or Makan Pourzandi at Ericsson Canada. Scope a Mitacs Accelerate or NSERC Alliance project. Check the third author's affiliation and any Ericsson IP claim first.",
+    "licensing_note": "Partnership. No public code found in search. Ericsson co-authors on this research line, so a joint project fits better than a licence.",
+    "checks": {
+     "market": true,
+     "partner": true,
+     "carleton_role": true,
+     "evidence": true
+    },
+    "evidence": {
+     "market": "Telecom vendors and security teams already buy vulnerability assessment tools for 5G and cloud networks.",
+     "partner": "Ericsson Canada has an Ottawa office and co-authored with this research line in 2024.",
+     "carleton_role": "Parsa Kootzari is first author and Lianying Zhao is last author, both Carleton.",
+     "evidence": "F1 score up 3% to 18% over single-source baselines; case study on the Free5GC 5G core."
+    }
+   }
+  ],
+  "near_misses": [
+   {
+    "id": "W7235542256",
+    "title": "Depth-of-Anesthesia Monitoring in Closed-Loop Anesthesia Delivery with Open BIS Validation and Neuromorphic Feasibility",
+    "why": "evidence: Abstract reports no performance numbers; larger-cohort and prospective testing are listed as future work",
+    "checks": {
+     "market": {
+      "pass": true,
+      "note": "Hospitals buy BIS monitors today, and closed-loop anesthesia systems are sold commercially."
+     },
+     "partner": {
+      "pass": true,
+      "note": "Medtronic sells the BIS monitor; Medsteer, Paris, sells closed-loop anesthesia delivery."
+     },
+     "carleton_role": {
+      "pass": true,
+      "note": "Amedeo D'Angiulli is last author; the first author is at Toronto Metropolitan University."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "Abstract reports no performance numbers; larger-cohort and prospective testing are listed as future work."
+     }
+    },
+    "would_change": "Larger-cohort or prospective validation with reported accuracy, led by Carleton."
+   },
+   {
+    "id": "W7236262632",
+    "title": "Energetic costs of osmo- and ionoregulatory responses to desiccation and recovery in a model insect",
+    "why": "market: Abstract frames results around climate change; it names no buyer of desiccation data; evidence: Lab physiology on one species; no method, prototype or field validation",
+    "checks": {
+     "market": {
+      "pass": false,
+      "note": "Abstract frames results around climate change; it names no buyer of desiccation data."
+     },
+     "partner": {
+      "pass": true,
+      "note": "Entomo Farms, Norwood, Ontario, currently operates and farms crickets, though a different species."
+     },
+     "carleton_role": {
+      "pass": true,
+      "note": "Jacinta Kong is first author and Heath MacMillan is last author, both Carleton."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "Lab physiology on one species; no method, prototype or field validation."
+     }
+    },
+    "would_change": "A rearing trial with a cricket producer showing a measurable yield or survival gain."
+   },
+   {
+    "id": "W7237180176",
+    "title": "Effects on Genetic Architecture From Mountain Pine Beetle Mortality in Lodgepole Pine",
+    "why": "market: Abstract names no product or customer that pays for this result; partner: No company appears on the paper, in its funding or in the research line signals; Carleton's role: Carleton authors are middle authors of 10; first and last authors are University of Alberta; evidence: Genotyped 418 progeny in a common garden; no selection method with reported accuracy",
+    "checks": {
+     "market": {
+      "pass": false,
+      "note": "Abstract names no product or customer that pays for this result."
+     },
+     "partner": {
+      "pass": false,
+      "note": "No company appears on the paper, in its funding or in the research line signals."
+     },
+     "carleton_role": {
+      "pass": false,
+      "note": "Carleton authors are middle authors of 10; first and last authors are University of Alberta."
+     },
+     "evidence": {
+      "pass": false,
+      "note": "Genotyped 418 progeny in a common garden; no selection method with reported accuracy."
+     }
+    },
+    "would_change": "Carleton-led work with a tested seed selection method and a named seed producer."
+   }
+  ],
+  "skipped": [
+   {
+    "id": "W7234728378",
+    "reason": "theoretical algorithm, no market"
+   },
+   {
+    "id": "W7236716571",
+    "reason": "pure graph theory"
+   },
+   {
+    "id": "W7156714251",
+    "reason": "mathematical control theory, no tested application"
+   }
+  ],
+  "screened": "",
+  "counts": {
+   "papers": 9,
+   "large_collaborations": 2,
+   "screened": 4,
+   "skipped": 3
+  }
+ },
+ "also_title": "Preprints",
+ "also": [
+  "Heath MacMillan, Sue Bertram (Biology): Energetic costs of osmo- and ionoregulatory responses to desiccation and recovery in a model insect. bioRxiv (Cold Spring Harbor Laboratory), 2026-11-18.",
+  "Evangelos Kranakis (Computer Science): Two-Robot Evacuation from a Unit Disk in the Segment Visibility Model. arXiv (Cornell University), 2026-11-15.",
+  "Patrick Morin (Computer Science): Treewidth 3 in the Product Structure Theorem for Bounded Degree Graphs in Minor-Closed Classes. arXiv (Cornell University), 2026-11-18."
+ ]
+}

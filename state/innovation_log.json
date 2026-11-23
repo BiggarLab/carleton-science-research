@@ -139,5 +139,28 @@
   "outcome": "near miss",
   "title": "In silico and in vitro studies suggest anti-inflammatory and immunomodulatory potential of Turbinaria ornata and Turbinaria decurrens",
   "why": "Carleton's role: Tsopmo is fifth of nine authors. First and last authors are Indonesian; evidence: Docking plus one cell line (RAW264.7) at a single concentration. No in vivo data"
+ },
+ "W7237154697": {
+  "week_end": "2026-11-22",
+  "outcome": "act",
+  "heading": "Better attack graph inputs for 5G and cloud security assessment"
+ },
+ "W7235542256": {
+  "week_end": "2026-11-22",
+  "outcome": "near miss",
+  "title": "Depth-of-Anesthesia Monitoring in Closed-Loop Anesthesia Delivery with Open BIS Validation and Neuromorphic Feasibility",
+  "why": "evidence: Abstract reports no performance numbers; larger-cohort and prospective testing are listed as future work"
+ },
+ "W7236262632": {
+  "week_end": "2026-11-22",
+  "outcome": "near miss",
+  "title": "Energetic costs of osmo- and ionoregulatory responses to desiccation and recovery in a model insect",
+  "why": "market: Abstract frames results around climate change; it names no buyer of desiccation data; evidence: Lab physiology on one species; no method, prototype or field validation"
+ },
+ "W7237180176": {
+  "week_end": "2026-11-22",
+  "outcome": "near miss",
+  "title": "Effects on Genetic Architecture From Mountain Pine Beetle Mortality in Lodgepole Pine",
+  "why": "market: Abstract names no product or customer that pays for this result; partner: No company appears on the paper, in its funding or in the research line signals; Carleton's role: Carleton authors are middle authors of 10; first and last authors are University of Alberta; evidence: Genotyped 418 progeny in a common garden; no selection method with reported accuracy"
  }
 }
