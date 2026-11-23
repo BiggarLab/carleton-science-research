@@ -1,0 +1,38 @@
+{
+ "issue": 3,
+ "week_start": "2026-11-16",
+ "week_end": "2026-11-22",
+ "lead": "One publication this week, from Journalism and Communication. Dwayne Winseck contributed a published conversation on the current state of critical media and communication studies. There were no cross-unit collaborations among Carleton authors this week.",
+ "units": [
+  {
+   "unit": "Journalism and Communication",
+   "items": [
+    {
+     "id": "W1496080822",
+     "who": [
+      [
+       "Dwayne Winseck",
+       "Journalism and Communication"
+      ]
+     ],
+     "who_note": "",
+     "title": "Critical Media and Communication Studies Today. A Conversation",
+     "url": "https://doi.org/10.31269/triplec.v9i2.270",
+     "venue": "tripleC Communication Capitalism & Critique Open Access Journal for a Global Sustainable Information Society",
+     "date": "2026-11-19",
+     "oa": true,
+     "big": false,
+     "cross": false,
+     "summary": "This article records a conversation between Dwayne Winseck and a co-author, first posted on their two blogs, about the current state of critical media and communication studies. They cover topics such as the work of Dallas Smythe, how to study Google, the role of Karl Marx and ideology critique in the political economy of the media, and neoliberalism and capitalist crisis as context for the field. It matters because it sets out how scholars in this area see the field's main questions and points of disagreement, in an open access format that invited reader comments."
+    }
+   ]
+  }
+ ],
+ "brand": {
+  "title": "New from Carleton FPGA",
+  "page_title": "FPGA Weekly Digest",
+  "empty": "No new Faculty of Public and Global Affairs outputs were indexed this week.",
+  "dash_label": "Open the university dashboard",
+  "foot": "Summaries were written by Claude from each paper's abstract, so check the paper before quoting. Outputs are matched to the Faculty list using OpenAlex, which can miss outputs (books, chapters, law reviews and reports especially) or lag a few weeks behind publication."
+ }
+}
